@@ -1,6 +1,6 @@
 {
-    "name": "your-vendor/your-package",
-    "description": "A short description of your website",
+    "name": "danrosefishing/website",
+    "description": "A website for Dan Rose Fishing",
     "type": "project",
     "require": {
         "php": "^7.2",
