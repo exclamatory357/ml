@@ -24,19 +24,20 @@ function get_cottage($con)
 
                     <td>".$i."</td>
 
-                    <td><img src='function/".$fetch['img']."' alt='image' width='60px'></td>
+                <!-- <td><img src='function/".$fetch['img']."' alt='image' width='60px'></td> -->
 
-                    <td class='text-center'>".$fetch['actual_no']."</td>
+
+                <!--    <td class='text-center'>".$fetch['actual_no']."</td>    !-->
 
                     <td>".$fetch['name']."</td>
 
-                    <td>".$fetch['category']."</td>
+                 <!--   <td>".$fetch['category']."</td> !-->
 
                     <td>".$fetch['type']."</td>
 
                     <td>".$fetch['max_person']."</td>
 
-                    <td>".$fetch['price']."</td>
+               <!--     <td>".$fetch['price']."</td>    !-->
 
                     <td><a href='?cottage-edit=".$fetch['id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a>
 
@@ -1277,9 +1278,9 @@ function get_feedback($con)
 
 
 
-function count_me($con) {
+function count_pumpboats($con) {
     // Prepare the SQL query
-    $sql = "SELECT COUNT(*) AS total FROM `cottage/hall`";
+    $sql = "SELECT COUNT(*) AS total FROM `pumpboats`";
     $stmt = $con->prepare($sql);
     
     if ($stmt === false) {
@@ -1315,3 +1316,31 @@ function count_me2($con){
 }
 
 
+function count_totalagents($con) {
+    // Prepare the SQL query
+    $sql = "SELECT COUNT(*) AS total FROM `cottage/hall`";
+    $stmt = $con->prepare($sql);
+    
+    if ($stmt === false) {
+        die("Prepare failed: " . $con->error);
+    }
+    
+    // Execute the statement
+    if (!$stmt->execute()) {
+        die("Execute failed: " . $stmt->error);
+    }
+    
+    // Bind the result
+    $stmt->bind_result($total);
+    
+    // Fetch the result
+    if (!$stmt->fetch()) {
+        die("Fetch failed: " . $stmt->error);
+    }
+    
+    // Close the statement
+    $stmt->close();
+    
+    // Output the total
+    echo $total;
+}

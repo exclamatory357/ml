@@ -34,13 +34,13 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Image</th>
-                        <th>Cottage No.</th>
+                   <!--     <th>Image</th>  !-->
+                   <!--     <th>Cottage No.</th>    !-->
                         <th>Name</th>
-                        <th>Category</th>
+                  <!--      <th>Category</th> !-->
                         <th>Type</th>
                         <th>Max Person</th>
-                        <th>Price</th>
+                  <!--      <th>Price</th>      !-->
                         <th><i class="fa fa-cogs"></i></th>
                     </tr>
                 </thead>
@@ -81,18 +81,18 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group row">
+                       <!-- <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Upload Image</label>
                             <div class="col-sm-8">
                                 <input type="file" accept=".jpg,.jpeg,.png" name="img" class="form-control" required>
                             </div>
-                        </div>
+                        </div> 
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Actual No.</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" name="actual_no" required>
                             </div>
-                        </div>
+                        </div> !-->
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Agent Name</label>
                             <div class="col-sm-8">

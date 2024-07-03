@@ -47,7 +47,7 @@ if (isset($_GET["dashboard"])) {?>
             <!-- small box -->
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3><?php count_me($con, 'Pending')?></h3>
+                    <h3><?php count_pumpboats($con, 'Pending')?></h3>
                     <p>Sailing Boats</p>
                 </div>
                 <div class="icon">
@@ -60,7 +60,7 @@ if (isset($_GET["dashboard"])) {?>
             <!-- small box -->
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3><?php count_me($con, 'Fullypaid')?></h3>
+                    <h3><?php count_me2($con, 'Fullypaid')?></h3>
                     <p>Available Boats</p>
                 </div>
                 <div class="icon">
@@ -73,7 +73,7 @@ if (isset($_GET["dashboard"])) {?>
             <!-- small box -->
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3><?php count_me($con, 'Canceled')?></h3>
+                    <h3><?php count_totalagents($con, 'Canceled')?></h3>
                     <p>Total Agents</p>
                 </div>
                 <div class="icon">
@@ -86,7 +86,7 @@ if (isset($_GET["dashboard"])) {?>
             <!-- small box -->
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3><?php count_me($con, 'SupplierSales')?></h3>
+                    <h3><?php count_me2($con, 'SupplierSales')?></h3>
                     <p>Supplier Sales</p>
                 </div>
                 <div class="icon">
@@ -99,7 +99,7 @@ if (isset($_GET["dashboard"])) {?>
             <!-- small box -->
             <div class="small-box bg-secondary">
                 <div class="inner">
-                    <h3><?php count_me($con, 'AgentSales')?></h3>
+                    <h3><?php count_me2($con, 'AgentSales')?></h3>
                     <p>Agent Sales</p>
                 </div>
                 <div class="icon">
