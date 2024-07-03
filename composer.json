@@ -3,7 +3,7 @@
   "description": "A website for Dan Rose Fishing",
   "type": "project",
   "require": {
-      "php": "^7.2",
+      "php": "^8.2",
       "ext-json": "*",
       "ext-mbstring": "*",
       "ext-openssl": "*",
