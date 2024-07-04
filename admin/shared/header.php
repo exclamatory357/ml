@@ -14,10 +14,10 @@
             <span class="sr-only">Toggle navigation</span>
         </a>
         
-        <!-- Notifications Dropdown -->
+    <!--    //Notifications Dropdown 
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-                <!-- Notifications Menu -->
+                //Notifications Menu
                 <li class="dropdown notifications-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-bell-o"></i>
@@ -26,7 +26,7 @@
                     <ul class="dropdown-menu">
                         <li class="header">You have 10 notifications</li>
                         <li>
-                            <!-- Inner Menu: contains the notifications -->
+                          //Inner Menu: contains the notifications 
                             <ul class="menu">
                                 <li>
                                     <a href="#">
@@ -59,6 +59,6 @@
                     </ul>
                 </li>
             </ul>
-        </div>
+        </div> !-->
     </nav>
 </header>
