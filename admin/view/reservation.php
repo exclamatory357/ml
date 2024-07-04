@@ -208,10 +208,10 @@
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
-                    <div class="col-sm-6">
+                    <div class="col-6">
                         <h1><a href="?manage_pumpboats">Back</a></h1>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-6">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
