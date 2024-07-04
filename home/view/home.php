@@ -57,7 +57,7 @@ if (isset($_GET["home"])) {?>
                           </div>
            
                               <button type="submit" class="btn btn-primary btn-block btn-flat btn-lg" name="btnlogin">Sign In</button>
-                              <button type="button" data-toggle="modal" data-target="#modal-registration" class="btn btn-success btn-block btn-flat btn-lg">Create Acount</button>
+                      <!--        <button type="button" data-toggle="modal" data-target="#modal-registration" class="btn btn-success btn-block btn-flat btn-lg">Create Acount</button> !-->
                  
                           </div>
                         </form>
