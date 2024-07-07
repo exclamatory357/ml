@@ -23,5 +23,5 @@ if (!$con) {
 }
 
 //echo "Connected successfully";
-3
+
 ?>
