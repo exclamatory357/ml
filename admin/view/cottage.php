@@ -4,6 +4,8 @@
 <!-- FontAwesome CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
+
+
 <?php if (isset($_GET["cottage"])) { ?>
 
     <section class="content-header">
@@ -32,16 +34,16 @@
         <div class="card-body">
             <table id="example2" class="table table-bordered">
                 <thead>
-                    <tr>
-                        <th>#</th>
-                   <!--     <th>Image</th>  !-->
-                   <!--     <th>Cottage No.</th>    !-->
-                        <th>Name</th>
-                  <!--      <th>Category</th> !-->
-                        <th>Type</th>
-                        <th>Max Person</th>
-                  <!--      <th>Price</th>      !-->
-                        <th><i class="fa fa-cogs"></i></th>
+                <th>#</th>
+                <!-- <th>Image</th> Uncomment if needed -->
+                <!-- <th>Cottage No.</th> Uncomment if needed -->
+                <th>Name</th>
+                <th>Pumpboat No.</th>
+             <!--   <th>Max Person</th> !-->
+                <th>Category</th>
+                <th>Team</th>
+                <th><i class="fa fa-cogs"></i></th>
+                      
                     </tr>
                 </thead>
                 <?php get_cottage($con); ?>
@@ -94,12 +96,18 @@
                             </div>
                         </div> !-->
                         <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Team</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="team" required>
+                        </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Agent Name</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" name="name" required>
                             </div>
                         </div>
-                        <div class="form-group row">
+                    <!--    <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Category</label>
                             <div class="col-sm-8">
                                 <select class="form-control" name="type" required>
@@ -107,7 +115,59 @@
                                     <option value="Kama">Kama</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> !-->
+
+                        <?php
+// Database connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "resevation";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$sql = "SELECT pumpboat_no, status FROM pumpboats";
+$result = $conn->query($sql);
+
+$pumpboats = [];
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $pumpboats[] = $row;
+    }
+}
+$conn->close();
+?>
+
+<div class="form-group row">
+        <label class="col-sm-4 col-form-label">Category</label>
+        <div class="col-sm-8">
+            <select class="form-control" name="type" id="pumpboat-select" required>
+               <!-- <option value="Pumpboat">Pumpboat</option>
+                <option value="Kama">Kama</option> !-->
+                <option value="">Select Pumpboats</option> 
+            </select>
+        </div>
+    </div>
+
+    <script>
+        const pumpboats = <?php echo json_encode($pumpboats); ?>;
+        
+        const pumpboatSelect = document.getElementById('pumpboat-select');
+        
+        pumpboats.forEach(pumpboat => {
+            const option = document.createElement('option');
+            option.value = pumpboat.pumpboat_no;
+            option.text = 'Pumpboat ' + pumpboat.pumpboat_no;
+            if (pumpboat.status == 1) {
+                option.disabled = true;
+            }
+            pumpboatSelect.appendChild(option);
+        });
+    </script>
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Type</label>
                             <div class="col-sm-8">
@@ -118,12 +178,13 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row">
+                    <!--    <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Max Person</label>
                             <div class="col-sm-8">
                                 <input type="number" class="form-control" name="max-person" required>
                             </div>
-                        </div>
+                        </div> !-->
+                        
                         <div class="form-group row">
                             <div class="col-sm-8 offset-sm-4">
                                 <button type="submit" class="btn btn-primary" name="btn-cottage-add">Submit</button>

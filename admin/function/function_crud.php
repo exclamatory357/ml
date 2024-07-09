@@ -4,53 +4,28 @@ session_start();
 
 include "../../config/db.php";
 
-//add cottage
-
+// Add cottage
 if (isset($_POST["btn-cottage-add"])) {
+    $name = $_POST["name"];
+    $type = $_POST["type"];
+    $cat = $_POST["category"];
+    $team = $_POST["team"];  // New team field
 
-    $target_dir = "uploads/";
-
-    $target_file = $target_dir . basename($_FILES["img"]["name"]);
-
-    $actual_no = $_POST["actual_no"];
-
-    $name        = $_POST["name"];
-
-    $type         = $_POST["type"];
-
-    $cat         = $_POST["category"];
-
-    $max_person  = $_POST["max-person"];
-
-    $price       = $_POST["price"];
-
-
-
-    $sqlcott = "INSERT INTO `cottage/hall`(`img`, `actual_no`, `name`,`type`,`category`,`max_person`,`price`) 
-
-            VALUES('$target_file','$actual_no','$name','$type','$cat','$max_person','$price')";
+    $sqlcott = "INSERT INTO `cottage/hall` (`name`, `type`, `category`, `team`) 
+                VALUES ('$name', '$type', '$cat', '$team')";
 
     $query = mysqli_query($con, $sqlcott);
 
-
-
     if ($query) {
-
-        move_uploaded_file($_FILES["img"]["tmp_name"], $target_file);
-
         $_SESSION["notify"] = "success-add";
-
         header("location: ../?cottage");
-
-    }else {
-
+    } else {
         $_SESSION["notify"] = "failed-add";
-
+        error_log("Failed to insert into cottage/hall: " . mysqli_error($con));
         header("location: ../?cottage");
-
     }
-
 }
+
 
 //delte cottage
 
