@@ -10,6 +10,6 @@
 
     <!-- Default to the left -->
 
-    <strong>Copyright &copy; 2024 <a href="#">DanRose Fishing Agency Management System</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2024 <a href="?dashboard">DanRose Fishing Agency Management System</a>.</strong> All rights reserved.
 
   </footer>
