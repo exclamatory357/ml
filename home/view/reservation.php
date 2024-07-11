@@ -1,93 +1,164 @@
 <?php
+if (isset($_GET["reservation"])) {
+    if (isset($_SESSION["username"])) { ?>
+        <div class="container mt-5">
+            <!-- Add spacing between header and buttons -->
+            <div class="mt-5 d-flex justify-content-center" style="margin-top: 50px;">
+                <!-- Button to trigger Maintenance Request Modal -->
+                <button type="button" class="btn btn-primary mx-2" data-toggle="modal" data-target="#maintenanceRequestModal">
+                    Open Maintenance Request Form
+                </button>
 
-if (isset($_GET["reservation"])) {?>
-    <!-- Main content -->
-    <section class="">
-    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                  <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                  <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
-                  <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
-                </ol>
-                <div class="carousel-inner">
-                  <div class="item active">
-                    <img src="image/a1.jpg" alt="First slide" width="100%">
+                <!-- Button to trigger Cash Advance Request Modal -->
+                <button type="button" class="btn btn-primary mx-2" data-toggle="modal" data-target="#cashAdvanceRequestModal">
+                    Open Cash Advance Request Form
+                </button>
+            </div>
 
-                    <div class="carousel-caption">
-                      First Slide
+            <!-- Maintenance Request Modal -->
+            <div class="modal fade" id="maintenanceRequestModal" tabindex="-1" aria-labelledby="maintenanceRequestModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="maintenanceRequestModalLabel">Maintenance Request Form</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="function/function_crud.php" method="post">
+                                <div class="mb-3">
+                                    <label for="item_name" class="form-label">Item Name:</label>
+                                    <input type="text" id="item_name" name="item_name" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description:</label>
+                                    <textarea id="description" name="description" class="form-control" required></textarea>
+                                </div>
+                                <button type="submit" name="maintenance_request" class="btn btn-primary">Submit Maintenance Request</button>
+                            </form>
+                        </div>
                     </div>
-                  </div>
-                  <div class="item">
-                    <img src="image/a2.jpg" alt="Second slide" width="100%">
-
-                    <div class="carousel-caption">
-                      Second Slide
-                    </div>
-                  </div>
-                  <div class="item">
-                    <img src="image/a4.jpg" alt="Third slide" width="100%">
-
-                    <div class="carousel-caption">
-                      Third Slide
-                    </div>
-                  </div>
                 </div>
-                <!--<a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                  <span class="fa fa-angle-left"></span>
-                </a>
-                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                  <span class="fa fa-angle-right"></span>
-                </a>-->
-              </div>
-              <!-- RESERVAION PAGE -->
-              <?php
-                  if(isset($_SESSION["username"])){?>
-                  <!-- RESERVATION -->
-                      <div class="login-box-body p-absolute-reserve">
+            </div>
 
-                        <form id="check-avail-form">
-                          <div class="row">
-                            <div class="col-md-3">
-                            <div class="form-group">
-                                    <label for="">Date of Reservation</label>
-                                    <input type="date" class="form-control" name="date-res">
+            <!-- Cash Advance Request Modal -->
+            <div class="modal fade" id="cashAdvanceRequestModal" tabindex="-1" aria-labelledby="cashAdvanceRequestModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="cashAdvanceRequestModalLabel">Cash Advance Request Form</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="function/function_crud.php" method="post">
+                                <div class="mb-3">
+                                    <label for="employee_name" class="form-label">Employee Name:</label>
+                                    <input type="text" id="employee_name" name="employee_name" class="form-control" required>
                                 </div>
-                            </div>
-                            <div class="col-md-2">
-                            <div class="form-group">
-                                    <label for="">Children</label>
-                                    <input type="number" value="1" min="0" class="form-control" name="child">
+                                <div class="mb-3">
+                                    <label for="amount" class="form-label">Amount:</label>
+                                    <input type="number" step="0.01" id="amount" name="amount" class="form-control" required>
                                 </div>
-                            </div>
-                            <div class="col-md-2">
-                            <div class="form-group">
-                                    <label for="">Adult</label>
-                                    <input type="number" value="1" min="0" class="form-control" name="adult">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                            <div class="form-group">
-                                    <label for="">Type</label>
-                                    <select class="form-control" name="category">
-                                        <option value="Cottage">Cottage</option>
-                                        <option value="Hall">Hall</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-        
-                                <button type="button" class="mt btn btn-success btn-md btn-check">Check Availability</button>
-                            </div>
-                          </div>
-                        </form>
+                                <button type="submit" name="cash_advance" class="btn btn-primary">Submit Cash Advance Request</button>
+                            </form>
+                        </div>
                     </div>
+                </div>
+            </div>
 
-                    <!-- SHOW VACANT COTTAGE/HALL -->
-                    <div class="p-absolute-reserve-result res">
+            <!-- Data Grid Views -->
+            <div class="mt-5">
+                <!-- Maintenance Requests Data Grid View -->
+                <h2>Maintenance Requests</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Item Name</th>
+                            <th>Description</th>
+                            <th>Request Date</th>
+                            <th>Status</th>
+                            <th>Admin Comment</th>
+                            <th>Admin Approval</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        // Database connection
+                        $conn = new mysqli("localhost", "root", "", "resevation");
 
-                      
-                    </div>
-                  <?php }
-                ?>
-    </section>
-<?php }?>
+                        // Check connection
+                        if ($conn->connect_error) {
+                            die("Connection failed: " . $conn->connect_error);
+                        }
+
+                        // Fetch maintenance requests
+                        $sql = "SELECT * FROM maintenance_requests";
+                        $result = $conn->query($sql);
+
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<td>" . $row["id"] . "</td>";
+                                echo "<td>" . $row["item_name"] . "</td>";
+                                echo "<td>" . $row["description"] . "</td>";
+                                echo "<td>" . $row["request_date"] . "</td>";
+                                echo "<td>" . $row["status"] . "</td>";
+                                echo "<td>" . $row["admin_comment"] . "</td>";
+                                echo "<td>" . $row["admin_approval"] . "</td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='7'>No records found</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-5">
+                <!-- Cash Advances Data Grid View -->
+                <h2>Cash Advances</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        // Fetch cash advances
+                        $sql = "SELECT * FROM cash_advances";
+                        $result = $conn->query($sql);
+
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<td>" . $row["id"] . "</td>";
+                                echo "<td>" . $row["name"] . "</td>";
+                                echo "<td>" . $row["amount"] . "</td>";
+                                echo "<td>" . $row["date"] . "</td>";
+                                echo "<td>" . $row["status"] . "</td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='5'>No records found</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <?php
+        $conn->close();
+    }
+}
+?>

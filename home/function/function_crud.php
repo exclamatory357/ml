@@ -8,6 +8,49 @@ include "../../config/db.php";
 
 
 
+// Add Maintenance Request
+if (isset($_POST["maintenance_request"])) {
+    $item_name = $_POST["item_name"];
+    $description = $_POST["description"];
+
+    $sql = "INSERT INTO maintenance_requests (item_name, description) VALUES ('$item_name', '$description')";
+    $query = mysqli_query($con, $sql);
+
+    if ($query) {
+        $_SESSION["notify"] = "success-add";
+        header("location: ../?reservation");
+    } else {
+        $_SESSION["notify"] = "failed-add";
+        error_log("Failed to insert into maintenance_requests: " . mysqli_error($con));
+        header("location: ../?reservation");
+    }
+}
+
+// Add Cash Advance
+if (isset($_POST["cash_advance"])) {
+    $employee_name = $_POST["employee_name"];
+    $amount = $_POST["amount"];
+
+    $sql = "INSERT INTO cash_advances (name, amount) VALUES ('$employee_name', '$amount')";
+    $query = mysqli_query($con, $sql);
+
+    if ($query) {
+        $_SESSION["notify"] = "success-add";
+        header("location: ../?reservation");
+    } else {
+        $_SESSION["notify"] = "failed-add";
+        error_log("Failed to insert into cash_advances: " . mysqli_error($con));
+        header("location: ../?reservation");
+    }
+}
+
+
+
+
+
+
+
+
 //RESERVATION
 
 if (isset($_GET["reserve"])) {

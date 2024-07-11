@@ -1,5 +1,104 @@
 <?php
 
+// MAINTINANCE AND CASH ADVANCE REQUEST
+
+function get_maintenance_requests($con) {
+    $sql = "SELECT * FROM maintenance_requests";
+    $query = mysqli_query($con, $sql);
+    $i = 1;
+
+    if (mysqli_num_rows($query) > 0) {
+        while ($fetch = mysqli_fetch_assoc($query)) {
+            echo "
+                <tr>
+                    <td>".$i."</td>
+                    <td>".$fetch['item_name']."</td>
+                    <td>".$fetch['description']."</td>
+                    <td>".$fetch['request_date']."</td>
+                    <td>".$fetch['status']."</td>
+                    <td>".$fetch['admin_comment']."</td>
+                    <td>".$fetch['admin_approval']."</td>
+                    <td>
+                        <a href='?maintenance-edit=".$fetch['id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a>
+                        <button type='button' data-toggle='modal' data-target='#modal-delete-".$fetch['id']."' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+                    </td>
+                </tr>
+                <div class='modal fade' id='modal-delete-".$fetch['id']."' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                    <div class='modal-dialog modal-sm' role='document'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <h5 class='modal-title' id='exampleModalLabel'>Confirmation</h5>
+                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                    <span aria-hidden='true'>&times;</span>
+                                </button>
+                            </div>
+                            <div class='modal-body'>
+                                <p>Are you sure you want to delete ".$fetch['item_name']."?</p>
+                            </div>
+                            <div class='modal-footer'>
+                                <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+                                <a href='function/function_crud.php?maintenance-del=".$fetch['id']."' class='btn btn-danger'>Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ";
+            $i++;
+        }
+    } else {
+        echo "<tr><td colspan='8'>No data available</td></tr>";
+    }
+}
+
+function get_cash_advances($con) {
+    $sql = "SELECT * FROM cash_advances";
+    $query = mysqli_query($con, $sql);
+    $i = 1;
+
+    if (mysqli_num_rows($query) > 0) {
+        while ($fetch = mysqli_fetch_assoc($query)) {
+            echo "
+                <tr>
+                    <td>".$i."</td>
+                    <td>".$fetch['name']."</td>
+                    <td>".$fetch['amount']."</td>
+                    <td>".$fetch['date']."</td>
+                    <td>".$fetch['status']."</td>
+                    <td>
+                        <a href='?cash-edit=".$fetch['id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a>
+                        <button type='button' data-toggle='modal' data-target='#modal-delete-".$fetch['id']."' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+                    </td>
+                </tr>
+                <div class='modal fade' id='modal-delete-".$fetch['id']."' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                    <div class='modal-dialog modal-sm' role='document'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <h5 class='modal-title' id='exampleModalLabel'>Confirmation</h5>
+                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                    <span aria-hidden='true'>&times;</span>
+                                </button>
+                            </div>
+                            <div class='modal-body'>
+                                <p>Are you sure you want to delete ".$fetch['name']."?</p>
+                            </div>
+                            <div class='modal-footer'>
+                                <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+                                <a href='function/function_crud.php?cash-del=".$fetch['id']."' class='btn btn-danger'>Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ";
+            $i++;
+        }
+    } else {
+        echo "<tr><td colspan='6'>No data available</td></tr>";
+    }
+}
+
+
+
+
 
 
 function get_reserve($con, $user_id, $trans_no)
