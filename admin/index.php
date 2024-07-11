@@ -13,6 +13,11 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <?php include "shared/link.php"?>
 
+  <!-- Include SweetAlert2 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark/dark.css">
+  <!-- Include SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 </head>
 <body class="hold-transition skin-green-light sidebar-mini">
 <div class="wrapper">
@@ -41,9 +46,6 @@
 
   </div>
 
-
-
-
   <!-- Main Footer -->
   <?php include "shared/footer.php"?>
 
@@ -53,6 +55,7 @@
 <!-- REQUIRED JS SCRIPTS -->
 
 <?php include "shared/script.php"?>
+
 <script>
   $(function () {
     $("#example1").DataTable({
@@ -69,154 +72,157 @@
       "autoWidth": false,
       "responsive": true,
     });
+  });
 
-   //TOASTER
-   <?php
-    if (isset($_SESSION["notify"])) {
-        if ($_SESSION["notify"]=="success-add") {?>
-            toastr.success('Data successfully added.', 'Success Add!', 
-            {positionClass: 'toast-bottom-right',
-                timeOut: 5000,  
-                titleClass: 'toast-title',   
-                messageClass: 'toast-message', 
-                target: 'body',
-                newestOnTop: true,
-                preventDuplicates: false,
-                progressBar: true
-            })
-        <?php }
-        if ($_SESSION["notify"]=="success-delete") {?>
-            toastr.success('Data successfully deleted.', 'Success Delete!', 
-            {positionClass: 'toast-bottom-right',
-                timeOut: 5000,  
-                titleClass: 'toast-title',   
-                messageClass: 'toast-message', 
-                target: 'body',
-                newestOnTop: true,
-                preventDuplicates: false,
-                progressBar: true
-            })
-        <?php }
-        if ($_SESSION["notify"]=="failed-add") {?>
-          toastr.error('Failed to add.', 'Failed!', 
-          {positionClass: 'toast-bottom-right',
-              timeOut: 5000,  
-              titleClass: 'toast-title',   
-              messageClass: 'toast-message', 
-              target: 'body',
-              newestOnTop: true,
-              preventDuplicates: false,
-              progressBar: true
-          })
-      <?php }
-      if ($_SESSION["notify"]=="confirm") {?>
-        toastr.success('Success confirm.', 'Confirmed!', 
-        {positionClass: 'toast-bottom-right',
-            timeOut: 5000,  
-            titleClass: 'toast-title',   
-            messageClass: 'toast-message', 
-            target: 'body',
-            newestOnTop: true,
-            preventDuplicates: false,
-            progressBar: true
-        })
-    <?php }
-    if ($_SESSION["notify"]=="failed-adds") {?>
-        toastr.error('Failed to Confirm.', 'Failed!', 
-        {positionClass: 'toast-bottom-right',
-            timeOut: 5000,  
-            titleClass: 'toast-title',   
-            messageClass: 'toast-message', 
-            target: 'body',
-            newestOnTop: true,
-            preventDuplicates: false,
-            progressBar: true
-        })
-    <?php }
-    if ($_SESSION["notify"]=="cancel") {?>
-        toastr.success('Success cancel.', 'Canceled!', 
-        {positionClass: 'toast-bottom-right',
-            timeOut: 5000,  
-            titleClass: 'toast-title',   
-            messageClass: 'toast-message', 
-            target: 'body',
-            newestOnTop: true,
-            preventDuplicates: false,
-            progressBar: true
-        })
-    <?php }
-    if ($_SESSION["notify"]=="cancel-failed") {?>
-        toastr.error('Failed to cancel.', 'Failed!', 
-        {positionClass: 'toast-bottom-right',
-            timeOut: 5000,  
-            titleClass: 'toast-title',   
-            messageClass: 'toast-message', 
-            target: 'body',
-            newestOnTop: true,
-            preventDuplicates: false,
-            progressBar: true
-        })
-    <?php }
-    if ($_SESSION["notify"]=="failed") {?>
-        toastr.error('', 'Failed!', 
-        {positionClass: 'toast-bottom-right',
-            timeOut: 5000,  
-            titleClass: 'toast-title',   
-            messageClass: 'toast-message', 
-            target: 'body',
-            newestOnTop: true,
-            preventDuplicates: false,
-            progressBar: true
-        })
-    <?php }
-    if ($_SESSION["notify"]=="success") {?>
-        toastr.success('', 'Success!', 
-        {positionClass: 'toast-bottom-right',
-            timeOut: 5000,  
-            titleClass: 'toast-title',   
-            messageClass: 'toast-message', 
-            target: 'body',
-            newestOnTop: true,
-            preventDuplicates: false,
-            progressBar: true
-        })
-    <?php }
-    if ($_SESSION["notify"]=="paid") {?>
-      toastr.success('', 'Fullypaid!', 
-      {positionClass: 'toast-bottom-right',
-          timeOut: 6000,  
-          titleClass: 'toast-title',   
-          messageClass: 'toast-message', 
-          target: 'body',
-          newestOnTop: true,
-          preventDuplicates: false,
-          progressBar: true
-      })
-  <?php }
-   unset($_SESSION["notify"]); }
-   ?>
+  // SWEETALERT NOTIFICATION
+  document.addEventListener('DOMContentLoaded', (event) => {
+    <?php if (isset($_SESSION["notify"])) {
+        $notify = $_SESSION["notify"];
+        unset($_SESSION["notify"]);
+    ?>
+    let notification = "<?php echo $notify; ?>";
+    switch(notification) {
+        case "success-add":
+            Swal.fire({
+                title: 'Success Add!',
+                text: 'Data successfully added.',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                position: 'bottom-right',
+                toast: true
+            });
+            break;
+        case "success-delete":
+            Swal.fire({
+                title: 'Success Delete!',
+                text: 'Data successfully deleted.',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                position: 'bottom-right',
+                toast: true
+            });
+            break;
+        case "failed-add":
+            Swal.fire({
+                title: 'Failed!',
+                text: 'Failed to add.',
+                icon: 'error',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                position: 'bottom-right',
+                toast: true
+            });
+            break;
+        case "confirm":
+            Swal.fire({
+                title: 'Confirmed!',
+                text: 'Success confirm.',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                position: 'bottom-right',
+                toast: true
+            });
+            break;
+        case "failed-adds":
+            Swal.fire({
+                title: 'Failed!',
+                text: 'Failed to Confirm.',
+                icon: 'error',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                position: 'bottom-right',
+                toast: true
+            });
+            break;
+        case "cancel":
+            Swal.fire({
+                title: 'Canceled!',
+                text: 'Success cancel.',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                position: 'bottom-right',
+                toast: true
+            });
+            break;
+        case "cancel-failed":
+            Swal.fire({
+                title: 'Failed!',
+                text: 'Failed to cancel.',
+                icon: 'error',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                position: 'bottom-right',
+                toast: true
+            });
+            break;
+        case "failed":
+            Swal.fire({
+                title: 'Failed!',
+                icon: 'error',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                position: 'bottom-right',
+                toast: true
+            });
+            break;
+        case "success":
+            Swal.fire({
+                title: 'Success!',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                position: 'bottom-right',
+                toast: true
+            });
+            break;
+        case "paid":
+            Swal.fire({
+                title: 'Fully paid!',
+                icon: 'success',
+                timer: 6000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                position: 'bottom-right',
+                toast: true
+            });
+            break;
+        default:
+            break;
+    }
+    <?php } ?>
+  });
 
-$("body").on("click",".view", function (e) {
-   e.preventDefault();
-   let res_id = $(this).attr("id");
-   $.ajax({
-     url: "function/view.php",
-     type: "POST",
-     data: {res_id: res_id},
-     cache: false,
-     success: function (result) {
-       $("div#view-reserve").html(result);
-     }
-   });
- });
-  
- $(".btnhide").on("click", function () {
-  $(".hideme").modal('hide');
- })
+  $("body").on("click", ".view", function(e) {
+      e.preventDefault();
+      let res_id = $(this).attr("id");
+      $.ajax({
+          url: "function/view.php",
+          type: "POST",
+          data: { res_id: res_id },
+          cache: false,
+          success: function(result) {
+              $("div#view-reserve").html(result);
+          }
+      });
+  });
 
-
- 
+  $(".btnhide").on("click", function() {
+      $(".hideme").modal('hide');
   });
 </script>
+
 </body>
 </html>

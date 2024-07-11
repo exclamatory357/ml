@@ -4,7 +4,7 @@ session_start();
 
 include "../../config/db.php";
 
-// Add cottage
+// Add agent
 if (isset($_POST["btn-cottage-add"])) {
     $name = $_POST["name"];
     $type = $_POST["type"];
@@ -406,52 +406,29 @@ if (isset($_GET["feedback-del"])) {
 
 }
 
-
-
-//update cottage
+//edit agent
 
 if (isset($_POST["btn-cottage-edit"])) {
-
     $id = $_POST["id"];
-
-    $actual_no  = $_POST["actual_no"];
-
+    $team  = $_POST["team"];
     $name = $_POST["name"];
-
     $type = $_POST["type"];
-
     $category = $_POST["category"];
 
-    $max_person = $_POST["max-person"];
-
-    $price    = $_POST["price"];
-
-
-
-    $sql = "UPDATE `cottage/hall` SET `name`='$name', `actual_no` = '$actual_no',`type`='$type',`category`='$category',`max_person`='$max_person',`price`='$price' WHERE id = '$id'";
-
+    $sql = "UPDATE `cottage/hall` SET `team`='$team', `name`='$name', `type`='$type', `category`='$category' WHERE id = '$id'";
     $query = mysqli_query($con, $sql);
 
     if (!$query) {
-
         $_SESSION["notify"] = "failed";
-
         header("location: ../?cottage");
-
         return;
-
     }
 
     if ($query) {
-
         $_SESSION["notify"] = "success";
-
         header("location: ../?cottage");
-
         return;
-
     }
-
 }
 
 //update user

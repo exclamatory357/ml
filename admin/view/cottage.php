@@ -202,49 +202,82 @@ $conn->close();
 
 <?php } ?>
 
-<!-- COTTAGE/HALL EDIT FORM -->
+<!-- AGENT EDIT FORM -->
 <?php if (isset($_GET["cottage-edit"])) { ?>
 
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-6">
+            <div class="col-6">
                 <h1><a href="?cottage">Back</a></h1>
             </div>
-            <div class="col-sm-6">
+            <div class="col-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li class="breadcrumb-item active">Edit Cottage/Hall</li>
+                    <li class="breadcrumb-item active">Edit Agent</li>
                 </ol>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Main content -->
+
+<?php 
+include('../../config/db.php'); // Database connection
+$getid = $_GET["cottage-edit"];
+$sql = "SELECT * FROM `cottage/hall` WHERE id = '$getid'";
+$query = mysqli_query($con, $sql);
+$fetch = mysqli_fetch_assoc($query);
+?>
+<?php
+// Database connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "resevation";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch agent data
+$getid = $_GET["cottage-edit"];
+$sql = "SELECT * FROM `cottage/hall` WHERE id = '$getid'";
+$query = mysqli_query($conn, $sql);
+$fetch = mysqli_fetch_assoc($query);
+
+// Fetch pumpboats data
+$sqlPumpboats = "SELECT pumpboat_no, status FROM pumpboats";
+$resultPumpboats = $conn->query($sqlPumpboats);
+
+$pumpboats = [];
+if ($resultPumpboats->num_rows > 0) {
+    while($row = $resultPumpboats->fetch_assoc()) {
+        $pumpboats[] = $row;
+    }
+}
+$conn->close();
+?>
+
 <section class="content container-fluid">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Edit Cottage/Hall</h3>
+            <h3 class="card-title">Edit Agent</h3>
         </div>
-        <?php 
-            $getid = $_GET["cottage-edit"];
-            $sql = "SELECT * FROM `cottage/hall` WHERE id = '$getid'";
-            $query = mysqli_query($con, $sql);
-            $fetch = mysqli_fetch_assoc($query);
-        ?>
         <form action="function/function_crud.php" method="post" enctype="multipart/form-data" class="form-horizontal">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Cottage No.</label>
+                            <label class="col-sm-4 col-form-label">Team</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" value="<?php echo $fetch["actual_no"] ?>" name="actual_no" required>
+                                <input type="text" class="form-control" value="<?php echo $fetch["team"] ?>" name="team" required>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Cottage/Hall Name</label>
+                            <label class="col-sm-4 col-form-label">Agent Name</label>
                             <div class="col-sm-8">
                                 <input type="hidden" class="form-control" value="<?php echo $fetch["id"] ?>" name="id" required>
                                 <input type="text" class="form-control" value="<?php echo $fetch["name"] ?>" name="name" required>
@@ -253,32 +286,18 @@ $conn->close();
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Category</label>
                             <div class="col-sm-8">
-                                <select class="form-control" name="type" required>
-                                    <option value="Cottage">Cottage</option>
-                                    <option value="Hall">Hall</option>
+                                <select class="form-control" name="category" id="pumpboat-select" required>
+                                    <option value="">Select Pumpboats</option> 
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Type</label>
                             <div class="col-sm-8">
-                                <select class="form-control" name="category" required>
-                                    <option value="1st Class">1st Class</option>
-                                    <option value="2nd Class">2nd Class</option>
-                                    <option value="3rd Class">3rd Class</option>
+                                <select class="form-control" name="type" required>
+                                    <option value="Pamo" <?php if($fetch["type"] == "Pamo") echo "selected"; ?>>Pamo</option>
+                                    <!-- Add other types as needed -->
                                 </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Max Person</label>
-                            <div class="col-sm-8">
-                                <input type="number" class="form-control" value="<?php echo $fetch["max_person"] ?>" name="max-person" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Price</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" value="<?php echo $fetch["price"] ?>" name="price">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -295,6 +314,28 @@ $conn->close();
         </form>
     </div>
 </section>
+
+<script>
+    const pumpboats = <?php echo json_encode($pumpboats); ?>;
+    
+    const pumpboatSelect = document.getElementById('pumpboat-select');
+    
+    pumpboats.forEach(pumpboat => {
+        const option = document.createElement('option');
+        option.value = pumpboat.pumpboat_no;
+        option.text = 'Pumpboat ' + pumpboat.pumpboat_no;
+        if (pumpboat.status == 1) {
+            option.disabled = true;
+        }
+        pumpboatSelect.appendChild(option);
+    });
+
+    // Set the selected value
+    const selectedCategory = "<?php echo $fetch['category']; ?>";
+    if (selectedCategory) {
+        pumpboatSelect.value = selectedCategory;
+    }
+</script>
 
 <?php } ?>
 
