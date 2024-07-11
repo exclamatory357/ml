@@ -517,31 +517,24 @@ if (isset($_POST["btn-picture-edit"])) {
 
 
         // Insert Operation PUMPBOATS
-if (isset($_POST["btn-pumpboat-add"])) {
-
-    $target_dir = "uploads/";
-    $target_file = $target_dir . basename($_FILES["img"]["name"]);
-
-    $license_no = $_POST["license_no"];
-    $pumpboat_no = $_POST["pumpboat_no"];
-    $type = $_POST["type"];
-    $category = $_POST["category"];
-    $image = $target_file;
-    $date_created = date('Y-m-d');
-
-    $sqlPumpboat = "INSERT INTO `pumpboats`(`license_no`, `pumpboat_no`, `type`, `category`, `image`, `date_created`) 
-                    VALUES('$license_no','$pumpboat_no','$type','$category','$image','$date_created')";
-    $query = mysqli_query($con, $sqlPumpboat);
-
-    if ($query) {
-        move_uploaded_file($_FILES["img"]["tmp_name"], $target_file);
-        $_SESSION["notify"] = "success-add";
-        header("location: ../?manage_pumpboats");
-    } else {
-        $_SESSION["notify"] = "failed-add";
-        header("location: ../??manage_pumpboats");
-    }
-}
+        if (isset($_POST["btn-pumpboat-add"])) {
+            $license_no = $_POST["license_no"];
+            $pumpboat_no = $_POST["pumpboat_no"];
+            $type = $_POST["type"];
+            $status = $_POST["status"];
+        
+            $sqlPumpboat = "INSERT INTO `pumpboats`(`license_no`, `pumpboat_no`, `type`, `status`) 
+                            VALUES('$license_no','$pumpboat_no','$type','$status')";
+            $query = mysqli_query($con, $sqlPumpboat);
+        
+            if ($query) {
+                $_SESSION["notify"] = "success-add";
+                header("location: ../?manage_pumpboats");
+            } else {
+                $_SESSION["notify"] = "failed-add";
+                header("location: ../?manage_pumpboats");
+            }
+        }
         // /Insert Operation PUMPBOATS
 
 
@@ -567,20 +560,10 @@ if (isset($_POST["btn-pumpboat-add"])) {
             $license_no = $_POST["license_no"];
             $pumpboat_no = $_POST["pumpboat_no"];
             $type = $_POST["type"];
-            $category = $_POST["category"];
-            $date_created = $_POST["date_created"];
+            $status = $_POST["status"];
         
-            if ($_FILES["img"]["name"]) {
-                $target_dir = "uploads/";
-                $target_file = $target_dir . basename($_FILES["img"]["name"]);
-                $image = $target_file;
-                move_uploaded_file($_FILES["img"]["tmp_name"], $target_file);
+            $sql = "UPDATE `pumpboats` SET `license_no`='$license_no',`pumpboat_no`='$pumpboat_no',`type`='$type',`status`='$status' WHERE id = '$id'";
         
-                $sql = "UPDATE `pumpboats` SET `license_no`='$license_no',`pumpboat_no`='$pumpboat_no',`type`='$type',`category`='$category',`image`='$image',`date_created`='$date_created' WHERE id = '$id'";
-            } else {
-                $sql = "UPDATE `pumpboats` SET `license_no`='$license_no',`pumpboat_no`='$pumpboat_no',`type`='$type',`category`='$category',`date_created`='$date_created' WHERE id = '$id'";
-            }
-            
             $query = mysqli_query($con, $sql);
         
             if (!$query) {

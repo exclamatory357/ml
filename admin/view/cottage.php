@@ -143,7 +143,7 @@ $conn->close();
 ?>
 
 <div class="form-group row">
-        <label class="col-sm-4 col-form-label">Category</label>
+        <label class="col-sm-4 col-form-label">Pumpboat No.</label>
         <div class="col-sm-8">
             <select class="form-control" name="type" id="pumpboat-select" required>
                <!-- <option value="Pumpboat">Pumpboat</option>
@@ -284,7 +284,7 @@ $conn->close();
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Category</label>
+                            <label class="col-sm-4 col-form-label">Pumpboat No.</label>
                             <div class="col-sm-8">
                                 <select class="form-control" name="category" id="pumpboat-select" required>
                                     <option value="">Select Pumpboats</option> 
