@@ -1,5 +1,5 @@
 <?php
-if (isset($_GET["reservation"])) {
+if (isset($_GET["request"])) {
     if (isset($_SESSION["username"])) { ?>
         <div class="container mt-5">
             <!-- Add spacing between header and buttons -->

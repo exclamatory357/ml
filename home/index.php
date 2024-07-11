@@ -59,7 +59,7 @@ include "function/function_get.php";
   </style>
 </head>
 <body class="hold-transition skin-green layout-top-nav">
-<button class="btn bg-maroon feedbackbtn2" data-toggle="modal" data-target="#modal-feedback2"><i class="fa fa-commenting-o"></i> Feedback</button>
+<!--<button class="btn bg-maroon feedbackbtn2" data-toggle="modal" data-target="#modal-feedback2"><i class="fa fa-commenting-o"></i> Feedback</button> !-->
 <div class="wrapper">
 
   <?php include "shared/header.php" ?>

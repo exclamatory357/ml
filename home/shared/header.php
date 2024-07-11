@@ -18,7 +18,7 @@
              if (!isset($_SESSION["username"])) {?>
                <!--# code...-->
             <?php } else {?>
-              <li id="reserve"><a href="?reservation">Reservation</a></li>
+              <li id="reserve"><a href="?request">Request</a></li>
             <?php }
              
             ?>
@@ -32,12 +32,12 @@
              <!-- code... -->
           <?php } else { ?>
             <ul class="nav navbar-nav">
-            <li id="cart" class="dropdown tasks-menu">
+          <!--  <li id="cart" class="dropdown tasks-menu"> !-->
               <!-- Menu Toggle Button -->
-              <a href="?cart" class="dropdown-toggle">
+             <!-- <a href="?cart" class="dropdown-toggle">
                 <i class="fa fa-shopping-cart"></i>
                 <span class="label label-danger"><?php get_count($con, $_SESSION["user_id"], $_SESSION["trans_no"])?></span>
-              </a>
+              </a> !-->
             </li>
             <!-- User Account Menu -->
             <li class="dropdown user user-menu">
@@ -48,10 +48,10 @@
                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
                 <span class="hidden-xs">Welcome, <?php echo $_SESSION["username"]?></span>
               </a>
-              <ul class="dropdown-menu" id="dropdown-width" width="100px">
+             <!-- <ul class="dropdown-menu" id="dropdown-width" width="100px">
                 <li><a href="?my-res">My Reservation</a></li>
                 <li><a href="#" data-toggle="modal" data-target="#modal-feedback">Give Feedback</a></li>
-                <li class="divider"></li>
+                <li class="divider"></li> !-->
                 <li><a href="function/logout.php">Log Out</a></li>
               </ul>
             </li>
