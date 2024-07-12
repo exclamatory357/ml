@@ -1,6 +1,19 @@
 <?php
+session_start();
+
 if (isset($_GET["request"])) {
     if (isset($_SESSION["username"])) { ?>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <title>Requests</title>
+            <!-- Other head elements -->
+        </head>
+        <body>
         <div class="container mt-5">
             <!-- Add spacing between header and buttons -->
             <div class="mt-5 d-flex justify-content-center" style="margin-top: 50px;">
@@ -143,7 +156,7 @@ if (isset($_GET["request"])) {
                                 echo "<tr>";
                                 echo "<td>" . $row["id"] . "</td>";
                                 echo "<td>" . $row["name"] . "</td>";
-                                echo "<td>" . $row["amount"] . "</td>";
+                                echo "<td>₱" . $row["amount"] . "</td>";
                                 echo "<td>" . $row["date"] . "</td>";
                                 echo "<td>" . $row["status"] . "</td>";
                                 echo "</tr>";
@@ -157,8 +170,31 @@ if (isset($_GET["request"])) {
             </div>
         </div>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                <?php if (isset($_SESSION["notify"])) { ?>
+                    <?php if ($_SESSION["notify"] == "success-add") { ?>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Your request has been submitted successfully!'
+                        });
+                    <?php } elseif ($_SESSION["notify"] == "failed-add") { ?>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'There was an error submitting your request. Please try again.'
+                        });
+                    <?php } ?>
+                    <?php unset($_SESSION["notify"]); ?>
+                <?php } ?>
+            });
+        </script>
+
+        </body>
+        </html>
+
         <?php
         $conn->close();
     }
 }
-?>

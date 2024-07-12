@@ -18,12 +18,12 @@ if (isset($_POST["maintenance_request"])) {
 
     if ($query) {
         $_SESSION["notify"] = "success-add";
-        header("location: ../?reservation");
     } else {
         $_SESSION["notify"] = "failed-add";
         error_log("Failed to insert into maintenance_requests: " . mysqli_error($con));
-        header("location: ../?reservation");
     }
+    header("location: ../?request");
+    exit();
 }
 
 // Add Cash Advance
@@ -36,12 +36,12 @@ if (isset($_POST["cash_advance"])) {
 
     if ($query) {
         $_SESSION["notify"] = "success-add";
-        header("location: ../?reservation");
     } else {
         $_SESSION["notify"] = "failed-add";
         error_log("Failed to insert into cash_advances: " . mysqli_error($con));
-        header("location: ../?reservation");
     }
+    header("location: ../?request");
+    exit();
 }
 
 
