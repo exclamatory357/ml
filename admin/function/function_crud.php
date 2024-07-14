@@ -4,6 +4,88 @@ session_start();
 
 include "../../config/db.php";
 
+// admin request form side
+
+// Update Maintenance Request
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_maintenance_request'])) {
+    $id = $_POST['id'];
+    $item_name = $_POST['item_name'];
+    $description = $_POST['description'];
+    $request_date = $_POST['request_date'];
+    $status = $_POST['status'];
+    $admin_comment = $_POST['admin_comment'];
+    $admin_approval = $_POST['admin_approval'];
+
+    $sql = "UPDATE maintenance_requests 
+            SET item_name = '$item_name', description = '$description', request_date = '$request_date', status = '$status', admin_comment = '$admin_comment', admin_approval = '$admin_approval' 
+            WHERE id = '$id'";
+
+    if (mysqli_query($con, $sql)) {
+        $_SESSION["notify"] = "success-update";
+        header("location: ../?reserved2");
+    } else {
+        $_SESSION["notify"] = "failed-update";
+        error_log("Failed to update maintenance request: " . mysqli_error($con));
+        header("location: ../?reserved2");
+    }
+}
+
+// Delete Maintenance Request
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_maintenance_request'])) {
+    $id = $_POST['id'];
+
+    $sql = "DELETE FROM maintenance_requests WHERE id = '$id'";
+
+    if (mysqli_query($con, $sql)) {
+        $_SESSION["notify"] = "success-delete";
+        header("location: ../?reserved2");
+    } else {
+        $_SESSION["notify"] = "failed-delete";
+        error_log("Failed to delete maintenance request: " . mysqli_error($con));
+        header("location: ../?reserved2");
+    }
+}
+
+// Update Cash Advance
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cash_advance'])) {
+    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $amount = $_POST['amount'];
+    $date = $_POST['date'];
+    $status = $_POST['status'];
+
+    $sql = "UPDATE cash_advances 
+            SET name = '$name', amount = '$amount', date = '$date', status = '$status' 
+            WHERE id = '$id'";
+
+    if (mysqli_query($con, $sql)) {
+        $_SESSION["notify"] = "success-update";
+        header("location: ../?reserved2");
+    } else {
+        $_SESSION["notify"] = "failed-update";
+        error_log("Failed to update cash advance: " . mysqli_error($con));
+        header("location: ../?reserved2");
+    }
+}
+
+// Delete Cash Advance
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_cash_advance'])) {
+    $id = $_POST['id'];
+
+    $sql = "DELETE FROM cash_advances WHERE id = '$id'";
+
+    if (mysqli_query($con, $sql)) {
+        $_SESSION["notify"] = "success-delete";
+        header("location: ../?reserved2");
+    } else {
+        $_SESSION["notify"] = "failed-delete";
+        error_log("Failed to delete cash advance: " . mysqli_error($con));
+        header("location: ../?reserved2");
+    }
+}
+
+
+
 // Add agent
 if (isset($_POST["btn-cottage-add"])) {
     $name = $_POST["name"];

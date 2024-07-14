@@ -1,7 +1,183 @@
 <?php 
 
+// admin side form request
+
+function get_maintenance_requests($con) {
+    $sql = "SELECT * FROM maintenance_requests";
+    $query = mysqli_query($con, $sql);
+    $i = 1;
+
+    if (mysqli_num_rows($query) > 0) {
+        while ($fetch = mysqli_fetch_assoc($query)) {
+            echo "
+            <tr>
+                <td>".$i."</td>
+                <td>".$fetch["item_name"]."</td>
+                <td>".$fetch["description"]."</td>
+                <td>".$fetch["request_date"]."</td>
+                <td>".$fetch["status"]."</td>
+                <td>".$fetch["admin_comment"]."</td>
+                <td>".$fetch["admin_approval"]."</td>
+                <td>
+                    <button type='button' data-toggle='modal' data-target='#modal-edit-".$fetch['id']."' class='btn btn-warning edit' id='".$fetch['id']."'>
+                        <i class='fa fa-pencil'></i>
+                    </button>
+                    <button type='button' data-toggle='modal' data-target='#modal-delete-".$fetch['id']."' class='btn btn-danger delete' id='".$fetch['id']."'>
+                        <i class='fa fa-trash'></i>
+                    </button>
+                </td>
+            </tr>";
+
+            // Edit Modal
+            echo "<div class='modal fade' id='modal-edit-".$fetch['id']."'>
+                <div class='modal-dialog modal-lg'>
+                    <div class='modal-content'>
+                        <div class='modal-header bg-primary'>
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>×</span></button>
+                            <h4 class='modal-title'>Edit Maintenance Request ID: ".$fetch['id']."</h4>
+                        </div>
+                        <div class='modal-body'>
+                            <form method='post' action='function/function_crud.php'>
+                                <input type='hidden' name='update_maintenance_request' value='1'>
+                                <input type='hidden' name='id' value='".$fetch['id']."'>
+                                <label>Item Name: </label> <input type='text' name='item_name' value='".$fetch["item_name"]."' class='form-control'><br>
+                                <label>Description: </label> <input type='text' name='description' value='".$fetch["description"]."' class='form-control'><br>
+                                <label>Request Date: </label> <input type='date' name='request_date' value='".$fetch["request_date"]."' class='form-control'><br>
+                                <label>Status: </label> <input type='text' name='status' value='".$fetch["status"]."' class='form-control'><br>
+                                <label>Admin Comment: </label> <input type='text' name='admin_comment' value='".$fetch["admin_comment"]."' class='form-control'><br>
+                                <label>Admin Approval: </label>
+                                <select name='admin_approval' class='form-control'>
+                                    <option value='Pending'".($fetch["admin_approval"] == 'Pending' ? ' selected' : '').">Pending</option>
+                                    <option value='Approved'".($fetch["admin_approval"] == 'Approved' ? ' selected' : '').">Approved</option>
+                                    <option value='Disapproved'".($fetch["admin_approval"] == 'Disapproved' ? ' selected' : '').">Disapproved</option>
+                                </select>
+                                <br><br>
+                                <button type='submit' class='btn btn-primary'>Update</button>
+                            </form>
+                        </div>
+                        <div class='modal-footer'>
+                            <button type='button' class='btn bg-maroon' data-dismiss='modal'>Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>";
+
+            // Delete Modal
+            echo "<div class='modal fade' id='modal-delete-".$fetch['id']."'>
+                <div class='modal-dialog modal-sm'>
+                    <div class='modal-content'>
+                        <div class='modal-header bg-danger'>
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>×</span></button>
+                            <h4 class='modal-title'>Delete Confirmation</h4>
+                        </div>
+                        <div class='modal-body'>
+                            <center><h3>Are you sure you want to delete this request?</h3></center>
+                        </div>
+                        <div class='modal-footer'>
+                            <form method='post' action='function/function_crud.php'>
+                                <input type='hidden' name='delete_maintenance_request' value='1'>
+                                <input type='hidden' name='id' value='".$fetch['id']."'>
+                                <button type='submit' class='btn btn-danger'>Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>";
+
+            $i++;
+        }
+    }
+}
+
+function get_cash_advances($con) {
+    $sql = "SELECT * FROM cash_advances";
+    $query = mysqli_query($con, $sql);
+    $i = 1;
+
+    if (mysqli_num_rows($query) > 0) {
+        while ($fetch = mysqli_fetch_assoc($query)) {
+            echo "
+            <tr>
+                <td>".$i."</td>
+                <td>".$fetch["name"]."</td>
+                <td>".$fetch["amount"]."</td>
+                <td>".$fetch["date"]."</td>
+                <td>".$fetch["status"]."</td>
+                <td>
+                    <button type='button' data-toggle='modal' data-target='#modal-edit-".$fetch['id']."' class='btn btn-warning edit' id='".$fetch['id']."'>
+                        <i class='fa fa-pencil'></i>
+                    </button>
+                    <button type='button' data-toggle='modal' data-target='#modal-delete-".$fetch['id']."' class='btn btn-danger delete' id='".$fetch['id']."'>
+                        <i class='fa fa-trash'></i>
+                    </button>
+                </td>
+            </tr>";
+
+            // Edit Modal
+            echo "<div class='modal fade' id='modal-edit-".$fetch['id']."'>
+                <div class='modal-dialog modal-lg'>
+                    <div class='modal-content'>
+                        <div class='modal-header bg-primary'>
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>×</span></button>
+                            <h4 class='modal-title'>Edit Cash Advance ID: ".$fetch['id']."</h4>
+                        </div>
+                        <div class='modal-body'>
+                            <form method='post' action='function/function_crud.php'>
+                                <input type='hidden' name='update_cash_advance' value='1'>
+                                <input type='hidden' name='id' value='".$fetch['id']."'>
+                                <label>Name: </label> <input type='text' name='name' value='".$fetch["name"]."' class='form-control'><br>
+                                <label>Amount: </label> <input type='text' name='amount' value='".$fetch["amount"]."' class='form-control'><br>
+                                <label>Date: </label> <input type='date' name='date' value='".$fetch["date"]."' class='form-control'><br>
+                                <label>Status: </label> <input type='text' name='status' value='".$fetch["status"]."' class='form-control'><br>
+                                <br><br>
+                                <button type='submit' class='btn btn-primary'>Update</button>
+                            </form>
+                        </div>
+                        <div class='modal-footer'>
+                            <button type='button' class='btn bg-maroon' data-dismiss='modal'>Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>";
+
+            // Delete Modal
+            echo "<div class='modal fade' id='modal-delete-".$fetch['id']."'>
+                <div class='modal-dialog modal-sm'>
+                    <div class='modal-content'>
+                        <div class='modal-header bg-danger'>
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>×</span></button>
+                            <h4 class='modal-title'>Delete Confirmation</h4>
+                        </div>
+                        <div class='modal-body'>
+                            <center><h3>Are you sure you want to delete this advance?</h3></center>
+                        </div>
+                        <div class='modal-footer'>
+                            <form method='post' action='function/function_crud.php'>
+                                <input type='hidden' name='delete_cash_advance' value='1'>
+                                <input type='hidden' name='id' value='".$fetch['id']."'>
+                                <button type='submit' class='btn btn-danger'>Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>";
+
+            $i++;
+        }
+    }
+}
 
 
+
+
+
+
+
+//add agent
 function get_cottage($con) {
     $sql = "SELECT * FROM `cottage/hall`";
     $query = mysqli_query($con, $sql);

@@ -320,24 +320,18 @@
 </html>
 
 
-
-
-
-<?php
-
-if (isset($_GET["reserved2"])) {?>
-
+<?php if (isset($_GET["reserved2"])) { ?>
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2 align-items-center">
             <div class="col-6">
-                <h1>Reserved</h1>
+                <h1>Mainitenance & C/A</h1>
             </div>
             <div class="col-6">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Reserved</li>
+                        <li class="breadcrumb-item active" aria-current="page">Mainitenance & C/A</li>
                     </ol>
                 </nav>
             </div>
@@ -345,61 +339,58 @@ if (isset($_GET["reserved2"])) {?>
     </div>
 </section>
 
-
-
-<!-- Main content -->
-
 <section class="content container-fluid">
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title">Maintenance Requests</h3>
+        </div>
+        <div class="box-body">
+            <table id="example2" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Item Name</th>
+                        <th>Description</th>
+                        <th>Request Date</th>
+                        <th>Status</th>
+                        <th>Admin Comment</th>
+                        <th>Admin Approval</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php get_maintenance_requests($con); ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-
-
-<div class="box box-default">
-
-           <div class="box-header with-border">
-
-             <h3 class="box-title"></h3>
-
-           </div>
-
-             <div class="box-body">
-
-               <table id="example2" class="table table-bordered">
-
-                   <thead>
-
-                   <tr>
-
-                       <th>#</th>
-
-                       <th>Transaction #</th>
-
-                       <th>Customer Name</th>
-
-                       <th>Status</th>
-
-                       <th>Date Created</th>
-
-                       <th><i class="fa fa-cogs"></i> Options</th>
-
-                       
-
-                   </tr>
-
-                   </thead>
-
-                   <?php get_reserved2($con)?>
-
-               </table>
-
-             </div>
-
-         </div>
-
-
-
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title">Cash Advances</h3>
+        </div>
+        <div class="box-body">
+            <table id="example2" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php get_cash_advances($con); ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </section>
+<?php } ?>
 
-<?php }?>
+
 
 
 

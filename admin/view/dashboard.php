@@ -11,6 +11,75 @@ if (isset($_GET["dashboard"])) {?>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .small-box {
+            border-radius: 5px;
+            position: relative;
+            padding: 20px;
+            color: #fff;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        .small-box .inner {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .small-box h3 {
+            font-size: 2.2rem;
+            font-weight: bold;
+        }
+        .small-box p {
+            font-size: 1.2rem;
+        }
+        .small-box-footer {
+            color: #fff;
+            text-decoration: none;
+        }
+        .small-box .icon {
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            z-index: 0;
+            font-size: 90px;
+            color: rgba(0, 0, 0, 0.15);
+        }
+        .bg-primary {
+            background-color: #007bff !important;
+        }
+        .bg-success {
+            background-color: #28a745 !important;
+        }
+        .bg-warning {
+            background-color: #ffc107 !important;
+        }
+        .bg-danger {
+            background-color: #dc3545 !important;
+        }
+        .bg-info {
+            background-color: #17a2b8 !important;
+        }
+        .bg-secondary {
+            background-color: #6c757d !important;
+        }
+        .dashboard-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .dashboard-col {
+            flex: 1 1 calc(50% - 10px); /* Adjust the width to create a 2x2 layout */
+            margin: 5px;
+        }
+        @media (max-width: 768px) {
+            .dashboard-col {
+                flex: 1 1 100%; /* Stack columns on smaller screens */
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -28,8 +97,8 @@ if (isset($_GET["dashboard"])) {?>
     </div>
 
     <!-- Main content -->
-    <div class="row">
-        <div class="col-lg-6 col-md-6">
+    <div class="dashboard-row">
+        <div class="dashboard-col">
             <!-- small box -->
             <div class="small-box bg-primary">
                 <div class="inner">
@@ -42,12 +111,12 @@ if (isset($_GET["dashboard"])) {?>
             </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-6 col-md-6">
+        <div class="dashboard-col">
             <!-- small box -->
             <div class="small-box bg-success">
                 <div class="inner">
                     <h3><?= htmlspecialchars(count_pumpboats($con, 'Pending')) ?></h3>
-                    <p>Sailing Boats</p>
+                    <p>Used Pumpboats</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-sailboat"></i>
@@ -55,12 +124,12 @@ if (isset($_GET["dashboard"])) {?>
             </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-6 col-md-6">
+        <div class="dashboard-col">
             <!-- small box -->
             <div class="small-box bg-warning">
                 <div class="inner">
                     <h3><?= htmlspecialchars(count_me2($con, 'Fullypaid')) ?></h3>
-                    <p>Available Boats</p>
+                    <p>Available Pumpboats</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-sailboat"></i>
@@ -68,7 +137,7 @@ if (isset($_GET["dashboard"])) {?>
             </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-6 col-md-6">
+        <div class="dashboard-col">
             <!-- small box -->
             <div class="small-box bg-danger">
                 <div class="inner">
@@ -81,8 +150,9 @@ if (isset($_GET["dashboard"])) {?>
             </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-6 col-md-6">
-            <!-- small box -->
+
+        <!-- Uncomment and use these sections if needed
+        <div class="dashboard-col">
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3><?= htmlspecialchars(count_me2($con, 'SupplierSales')) ?></h3>
@@ -93,9 +163,7 @@ if (isset($_GET["dashboard"])) {?>
                 </div>
             </div>
         </div>
-        <!-- ./col -->
-        <div class="col-lg-6 col-md-6">
-            <!-- small box -->
+        <div class="dashboard-col">
             <div class="small-box bg-secondary">
                 <div class="inner">
                     <h3><?= htmlspecialchars(count_me2($con, 'AgentSales')) ?></h3>
@@ -106,57 +174,9 @@ if (isset($_GET["dashboard"])) {?>
                 </div>
             </div>
         </div>
-        <!-- ./col -->
+        -->
     </div>
 </section>
-
-<style>
-    .small-box {
-        border-radius: 5px;
-        position: relative;
-        padding: 20px;
-        color: #fff;
-        margin-bottom: 20px;
-    }
-    .small-box h3 {
-        font-size: 2.2rem;
-        font-weight: bold;
-    }
-    .small-box p {
-        font-size: 1.2rem;
-    }
-    .small-box-footer {
-        color: #fff;
-        text-decoration: none;
-    }
-    .small-box .icon {
-        position: absolute;
-        top: -10px;
-        right: 10px;
-        z-index: 0;
-        font-size: 90px;
-        color: rgba(0, 0, 0, 0.15);
-    }
-    .bg-primary {
-        background-color: #007bff !important;
-    }
-    .bg-success {
-        background-color: #28a745 !important;
-    }
-    .bg-warning {
-        background-color: #ffc107 !important;
-        color: #000 !important;
-    }
-    .bg-danger {
-        background-color: #dc3545 !important;
-    }
-    .bg-info {
-        background-color: #17a2b8 !important;
-    }
-    .bg-secondary {
-        background-color: #6c757d !important;
-    }
-</style>
 
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>

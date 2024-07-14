@@ -72,11 +72,11 @@
 
             <li><a href="?manage_pumpboats"><i class="fa fa-tasks"></i>Manage Pumpboats</a></li>
  
-            <li><a href="?reserved2"><i class="fa fa-tasks"></i> Reserved</a></li>
+            <li><a href="?reserved2"><i class="fa fa-tasks"></i> Manage Mainitenance & C/A</a></li>
 
-            <li><a href="?reserved"><i class="fa fa-tasks"></i> Fullypaid</a></li>
+            <li><a href="?reserved"><i class="fa fa-tasks"></i>Manage Payment</a></li>
 
-            <li><a href="?canceled"><i class="fa fa-tasks"></i> Canceled</a></li>
+         <!--   <li><a href="?canceled"><i class="fa fa-tasks"></i> Canceled</a></li>  !-->
 
           </ul>
 
@@ -84,7 +84,7 @@
 
         <li><a href="?users"><i class="fa fa-users"></i> <span>Users Account</span></a></li>
 
-        <li><a href="?feedback"><i class="fa fa-users"></i> <span>Feedbacks</span></a></li>
+     <!--   <li><a href="?feedback"><i class="fa fa-users"></i> <span>Feedbacks</span></a></li> !-->s
 
         <li><a href="#" data-toggle="modal" data-target="#modal-report"><i class="fa  fa-file-o"></i> <span>Report</span></a></li>
 
