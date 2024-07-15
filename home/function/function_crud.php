@@ -12,36 +12,38 @@ include "../../config/db.php";
 if (isset($_POST["maintenance_request"])) {
     $item_name = $_POST["item_name"];
     $description = $_POST["description"];
+    $user_id = $_SESSION["user_id"]; // Assuming user_id is stored in session
 
-    $sql = "INSERT INTO maintenance_requests (item_name, description) VALUES ('$item_name', '$description')";
+    $sql = "INSERT INTO maintenance_requests (item_name, description, user_id) VALUES ('$item_name', '$description', '$user_id')";
     $query = mysqli_query($con, $sql);
 
     if ($query) {
         $_SESSION["notify"] = "success-add";
+        header("location: ../?request");
     } else {
         $_SESSION["notify"] = "failed-add";
         error_log("Failed to insert into maintenance_requests: " . mysqli_error($con));
+        header("location: ../?request");
     }
-    header("location: ../?request");
-    exit();
 }
 
 // Add Cash Advance
 if (isset($_POST["cash_advance"])) {
     $employee_name = $_POST["employee_name"];
     $amount = $_POST["amount"];
+    $user_id = $_SESSION["user_id"]; // Assuming user_id is stored in session
 
-    $sql = "INSERT INTO cash_advances (name, amount) VALUES ('$employee_name', '$amount')";
+    $sql = "INSERT INTO cash_advances (name, amount, user_id) VALUES ('$employee_name', '$amount', '$user_id')";
     $query = mysqli_query($con, $sql);
 
     if ($query) {
         $_SESSION["notify"] = "success-add";
+        header("location: ../?request");
     } else {
         $_SESSION["notify"] = "failed-add";
         error_log("Failed to insert into cash_advances: " . mysqli_error($con));
+        header("location: ../?request");
     }
-    header("location: ../?request");
-    exit();
 }
 
 

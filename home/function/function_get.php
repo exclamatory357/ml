@@ -1,9 +1,9 @@
 <?php
 
-// MAINTINANCE AND CASH ADVANCE REQUEST
+// MAINTENANCE AND CASH ADVANCE REQUEST FUNCTIONS
 
-function get_maintenance_requests($con) {
-    $sql = "SELECT * FROM maintenance_requests";
+function get_maintenance_requests($con, $user_id) {
+    $sql = "SELECT * FROM maintenance_requests WHERE user_id = $user_id";
     $query = mysqli_query($con, $sql);
     $i = 1;
 
@@ -50,8 +50,8 @@ function get_maintenance_requests($con) {
     }
 }
 
-function get_cash_advances($con) {
-    $sql = "SELECT * FROM cash_advances";
+function get_cash_advances($con, $user_id) {
+    $sql = "SELECT * FROM cash_advances WHERE user_id = $user_id";
     $query = mysqli_query($con, $sql);
     $i = 1;
 
@@ -95,9 +95,6 @@ function get_cash_advances($con) {
         echo "<tr><td colspan='6'>No data available</td></tr>";
     }
 }
-
-
-
 
 
 

@@ -84,7 +84,7 @@
 
         <li><a href="?users"><i class="fa fa-users"></i> <span>Users Account</span></a></li>
 
-     <!--   <li><a href="?feedback"><i class="fa fa-users"></i> <span>Feedbacks</span></a></li> !-->s
+     <!--   <li><a href="?feedback"><i class="fa fa-users"></i> <span>Feedbacks</span></a></li> !-->
 
         <li><a href="#" data-toggle="modal" data-target="#modal-report"><i class="fa  fa-file-o"></i> <span>Report</span></a></li>
 
