@@ -47,7 +47,7 @@ if (isset($_GET["request"])) {
                             <input type="text" id="item_name" name="item_name" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label for="description" class="form-label">Description:</label>
+                            <label for="description" class="form-label">Team:</label>
                             <textarea id="description" name="description" class="form-control" required></textarea>
                         </div>
                         <button type="submit" name="maintenance_request" class="btn btn-primary">Submit Maintenance Request</button>
@@ -93,9 +93,9 @@ if (isset($_GET["request"])) {
                 <tr>
                     <th>ID</th>
                     <th>Item Name</th>
-                    <th>Description</th>
+                    <th>Team</th>
                     <th>Request Date</th>
-                    <th>Status</th>
+              <!--      <th>Status</th>     !-->
                     <th>Admin Comment</th>
                     <th>Admin Approval</th>
                 </tr>
@@ -121,7 +121,7 @@ if (isset($_GET["request"])) {
                         echo "<td>" . $row["item_name"] . "</td>";
                         echo "<td>" . $row["description"] . "</td>";
                         echo "<td>" . $row["request_date"] . "</td>";
-                        echo "<td>" . $row["status"] . "</td>";
+                        //echo "<td>" . $row["status"] . "</td>";
                         echo "<td>" . $row["admin_comment"] . "</td>";
                         echo "<td>" . $row["admin_approval"] . "</td>";
                         echo "</tr>";

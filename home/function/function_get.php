@@ -15,7 +15,7 @@ function get_maintenance_requests($con, $user_id) {
                     <td>".$fetch['item_name']."</td>
                     <td>".$fetch['description']."</td>
                     <td>".$fetch['request_date']."</td>
-                    <td>".$fetch['status']."</td>
+                <!--    <td>".$fetch['status']."</td> !-->
                     <td>".$fetch['admin_comment']."</td>
                     <td>".$fetch['admin_approval']."</td>
                     <td>
@@ -63,7 +63,7 @@ function get_cash_advances($con, $user_id) {
                     <td>".$fetch['name']."</td>
                     <td>".$fetch['amount']."</td>
                     <td>".$fetch['date']."</td>
-                    <td>".$fetch['status']."</td>
+                   <!-- <td>".$fetch['status']."</td> !-->
                     <td>
                         <a href='?cash-edit=".$fetch['id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a>
                         <button type='button' data-toggle='modal' data-target='#modal-delete-".$fetch['id']."' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>

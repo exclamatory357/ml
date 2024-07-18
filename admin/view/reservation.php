@@ -350,9 +350,9 @@
                     <tr>
                         <th>#</th>
                         <th>Item Name</th>
-                        <th>Description</th>
+                        <th>Team</th>
                         <th>Request Date</th>
-                        <th>Status</th>
+                   <!--     <th>Status</th> !-->
                         <th>Admin Comment</th>
                         <th>Admin Approval</th>
                         <th>Options</th>
@@ -370,7 +370,7 @@
             <h3 class="box-title">Cash Advances</h3>
         </div>
         <div class="box-body">
-            <table id="example2" class="table table-bordered">
+            <table id="example1" class="table table-bordered">
                 <thead>
                     <tr>
                         <th>#</th>

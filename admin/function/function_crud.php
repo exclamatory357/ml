@@ -389,49 +389,30 @@ if (isset($_GET["res-id-cancel"])) {
 
 
 //adduser
-
-
-
 if (isset($_POST["btnAddUser"])) {
-
     $fname = $_POST["fname"];
-
     $lname = $_POST["lname"];
-
     $uname = $_POST["uname"];
-
     $pass  = $_POST["pass"];
-
     $utype = $_POST["utype"];
+    $team  = $_POST["team"];  // Add this line
 
-    $sql = "INSERT INTO `user`(`fname`, `lname`, `uname`, `pass`, `user_type_id`) 
-
-                       VALUES ('$fname','$lname','$uname','$pass','$utype')";
+    $sql = "INSERT INTO `user`(`fname`, `lname`, `uname`, `pass`, `user_type_id`, `team`) 
+                       VALUES ('$fname','$lname','$uname','$pass','$utype','$team')";  // Add team to the SQL
 
     $query = mysqli_query($con, $sql);
 
     if ($query) {
-
         $_SESSION["notify"] = "success";
-
         header("location: ../?users");
-
         return;
-
     } 
 
-    if(!$query) {
-
+    if (!$query) {
         $_SESSION["notify"] = "failed";
-
         header("location: ../?users");
-
         return;
-
     }
-
-    
-
 }
 
 
@@ -515,46 +496,31 @@ if (isset($_POST["btn-cottage-edit"])) {
 
 //update user
 if (isset($_POST["updateuser"])) {
-
     $id = $_POST["id"];
-
     $fname = $_POST["fname"];
-
     $lname = $_POST["lname"];
-
     $uname = $_POST["uname"];
-
     $pass  = $_POST["pass"];
-
     $utype = $_POST["utype"];
+    //$team  = $_POST["team"];  // Add this line
 
-
-
-    $sql = "UPDATE `user` SET `fname`='$fname',`lname`='$lname',`uname`='$uname',`pass`='$pass',`user_type_id`='$utype' WHERE user_id = '$id'";
+    $sql = "UPDATE `user` SET `fname`='$fname', `lname`='$lname', `uname`='$uname', `pass`='$pass', `user_type_id`='$utype', `team`='$team' WHERE user_id = '$id'";  // Add team to the SQL
 
     $query = mysqli_query($con, $sql);
 
     if (!$query) {
-
         $_SESSION["notify"] = "failed";
-
         header("location: ../?users");
-
         return;
-
     }
 
     if ($query) {
-
         $_SESSION["notify"] = "success";
-
         header("location: ../?users");
-
         return;
-
     }
-
 }
+
 
 if (isset($_POST["btn-feature-edit"])) {
     $get_id = $_POST["id"];

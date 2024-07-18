@@ -89,9 +89,8 @@
                 icon: 'success',
                 timer: 5000,
                 timerProgressBar: true,
-                showConfirmButton: false,
-                position: 'bottom-right',
-                toast: true
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
             });
             break;
         case "success-delete":
@@ -101,9 +100,8 @@
                 icon: 'success',
                 timer: 5000,
                 timerProgressBar: true,
-                showConfirmButton: false,
-                position: 'bottom-right',
-                toast: true
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
             });
             break;
         case "failed-add":
@@ -113,9 +111,8 @@
                 icon: 'error',
                 timer: 5000,
                 timerProgressBar: true,
-                showConfirmButton: false,
-                position: 'bottom-right',
-                toast: true
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
             });
             break;
         case "confirm":
@@ -125,9 +122,8 @@
                 icon: 'success',
                 timer: 5000,
                 timerProgressBar: true,
-                showConfirmButton: false,
-                position: 'bottom-right',
-                toast: true
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
             });
             break;
         case "failed-adds":
@@ -137,9 +133,8 @@
                 icon: 'error',
                 timer: 5000,
                 timerProgressBar: true,
-                showConfirmButton: false,
-                position: 'bottom-right',
-                toast: true
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
             });
             break;
         case "cancel":
@@ -149,9 +144,8 @@
                 icon: 'success',
                 timer: 5000,
                 timerProgressBar: true,
-                showConfirmButton: false,
-                position: 'bottom-right',
-                toast: true
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
             });
             break;
         case "cancel-failed":
@@ -161,9 +155,8 @@
                 icon: 'error',
                 timer: 5000,
                 timerProgressBar: true,
-                showConfirmButton: false,
-                position: 'bottom-right',
-                toast: true
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
             });
             break;
         case "failed":
@@ -172,9 +165,8 @@
                 icon: 'error',
                 timer: 5000,
                 timerProgressBar: true,
-                showConfirmButton: false,
-                position: 'bottom-right',
-                toast: true
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
             });
             break;
         case "success":
@@ -183,9 +175,8 @@
                 icon: 'success',
                 timer: 5000,
                 timerProgressBar: true,
-                showConfirmButton: false,
-                position: 'bottom-right',
-                toast: true
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
             });
             break;
         case "paid":
@@ -194,9 +185,8 @@
                 icon: 'success',
                 timer: 6000,
                 timerProgressBar: true,
-                showConfirmButton: false,
-                position: 'bottom-right',
-                toast: true
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
             });
             break;
         default:
