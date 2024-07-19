@@ -40,8 +40,8 @@
                 <td>{$row['license_no']}</td>
                 <td>{$row['pumpboat_no']}</td>
                 <td>{$row['type']}</td>
-                <td>{$row['category']}</td>
-                <td><img src='uploads/{$row['image']}' alt='Image' width='50' height='50'></td>
+          <!--      <td>{$row['category']}</td> 
+                <td><img src='uploads/{$row['image']}' alt='Image' width='50' height='50'></td> !-->
                 <td>
                     <a href='?pumpboat-edit={$row['id']}' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i> Edit</a>
                     <a href='#' class='btn btn-danger btn-sm' onclick='confirmDelete({$row['id']})'><i class='fa fa-trash'></i> Delete</a>
@@ -92,8 +92,8 @@
                                 <th>License No</th>
                                 <th>Pumpboat No</th>
                                 <th>Type</th>
-                                <th>Category</th>
-                                <th>Image</th>
+                            <!--    <th>Category</th> !-->
+                             <!--   <th>Image</th> !-->
                                 <th><i class="fa fa-cogs"></i> Options</th>
                             </tr>
                         </thead>
