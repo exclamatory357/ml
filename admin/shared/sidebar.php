@@ -208,92 +208,44 @@
     
 
         <div class="modal fade in" id="modal-report">
-
-          <div class="modal-dialog modal-md">
-
-            <div class="modal-content">
-
-              <div class="modal-header">
-
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
-                  <span aria-hidden="true">×</span></button>
-
+                    <span aria-hidden="true">×</span>
+                </button>
                 <h4 class="modal-title">Generate Report</h4>
-
-              </div>
-
-              <div class="modal-body">
-
-              <form class="form-horizontal" method="post" action="function/report.php" target="_blank">
-
-              <div class="box-body">
-
-                <div class="form-group">
-
-                  <label for="inputEmail3" class="col-sm-2 control-label">From</label>
-
-
-
-                  <div class="col-sm-10">
-
-                    <input type="date" class="form-control" name="from" required>
-
-                  </div>
-
-                </div>
-
-                <div class="form-group">
-
-                  <label for="inputPassword3" class="col-sm-2 control-label">To</label>
-
-
-
-                  <div class="col-sm-10">
-
-                    <input type="date" class="form-control" name="to" required>
-
-                  </div>
-
-                </div>
-
-
-
-                <div class="form-group">
-
-                  <label for="inputPassword3" class="col-sm-2 control-label">Category</label>
-
-                  <div class="col-sm-10">
-
-                    <select name="category" class="form-control" id="">
-
-                 
-                        <option value="Fullypaid">Reserved</option>
-
-                    </select>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            
-
-              </div>
-
-              <div class="modal-footer">
-
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-
-                <button type="submit" class="btn btn-primary" name="btnReport">Submit</button>
-
-              </div>
-
-              </form>
-
             </div>
-
-          </div>
-
+            <div class="modal-body">
+                <form class="form-horizontal" method="post" action="function/report.php" target="_blank">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">From</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" name="from" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-2 control-label">To</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" name="to" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-2 control-label">Category</label>
+                            <div class="col-sm-10">
+                                <select name="category" class="form-control" id="">
+                                    <option value="Paid">Paid</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" name="btnReport">Submit</button>
+            </div>
+                </form>
         </div>
+    </div>
+</div>
