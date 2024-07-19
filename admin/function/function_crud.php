@@ -25,19 +25,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['process_payment'])) {
     $payment_amount = floatval($payment_amount);
     $user_id = intval($user_id);
 
-    // Get the current amount from cash_advances table
-    $sql_get_amount = "SELECT amount FROM cash_advances WHERE id = '$advance_id'";
+    // Get the current amount and original amount from cash_advances table
+    $sql_get_amount = "SELECT amount, original_amount FROM cash_advances WHERE id = '$advance_id'";
     $result_get_amount = mysqli_query($con, $sql_get_amount);
     if ($result_get_amount && mysqli_num_rows($result_get_amount) > 0) {
         $row = mysqli_fetch_assoc($result_get_amount);
         $current_amount = $row['amount'];
-        $original_amount = $current_amount; // Capture the original amount
+        $original_amount = $row['original_amount'];
 
         // Ensure the payment amount is valid
         if ($payment_amount > $current_amount) {
             $_SESSION["notify"] = "invalid-amount";
             header("location: ../?manage_payment");
             exit;
+        }
+
+        // Ensure original_amount is set if it's not already
+        if (is_null($original_amount) || $original_amount == 0) {
+            $original_amount = $current_amount;
+            $sql_set_original = "UPDATE cash_advances SET original_amount = $original_amount WHERE id = '$advance_id'";
+            mysqli_query($con, $sql_set_original);
         }
 
         // Update cash_advances table by deducting the payment amount (SQL1)
@@ -69,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['process_payment'])) {
         exit;
     }
 }
+
 
 // Update Maintenance Request
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_maintenance_request'])) {

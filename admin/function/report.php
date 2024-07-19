@@ -39,9 +39,11 @@ $pdf->Ln();
 $pdf->SetY(40);
 $pdf->SetLeftMargin(20);
 
-$pdf->SetFillColor(217, 217, 217);
-$pdf->SetDrawColor(0);
-$pdf->SetLineWidth(0);
+// Set colors for the table headers
+$pdf->SetFillColor(100, 100, 255); // Light blue
+$pdf->SetTextColor(255, 255, 255); // White text
+$pdf->SetDrawColor(0, 0, 0); // Black border
+$pdf->SetLineWidth(0.5); // Line width
 
 if (isset($_POST["btnReport"])) {
     // Ensure the date format is correct
@@ -93,13 +95,13 @@ if (isset($_POST["btnReport"])) {
         }
 
         $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(43, 5, '', 1, 0, 'L');
-        $pdf->Cell(30, 5, '', 1, 0, 'L');
-        $pdf->Cell(40, 5, '', 1, 0, 'L');
-        $pdf->Cell(33, 5, 'Total', 1, 0, 'R');
-        $pdf->Cell(33, 5, number_format($sumOfCottage, 2), 1, 0, 'R');
-        $pdf->Cell(33, 5, number_format($sumOfchild, 2), 1, 0, 'R');
-        $pdf->Cell(25, 5, '', 1, 0, 'L');
+     //   $pdf->Cell(43, 5, '', 1, 0, 'L');
+      //  $pdf->Cell(30, 5, '', 1, 0, 'L');
+   //     $pdf->Cell(40, 5, '', 1, 0, 'L');
+       // $pdf->Cell(33, 5, 'Total', 1, 0, 'R');
+      //  $pdf->Cell(33, 5, number_format($sumOfCottage, 2), 1, 0, 'R');
+       // $pdf->Cell(33, 5, number_format($sumOfchild, 2), 1, 0, 'R');
+    //    $pdf->Cell(25, 5, '', 1, 0, 'L');
         $pdf->Ln();
     } else {
         $pdf->SetFont('Arial', '', 10);
