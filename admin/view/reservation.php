@@ -475,6 +475,100 @@
 ?>
 
 
+<!-- Manage payment form -->
+<?php if (isset($_GET["manage_payment"])) { ?>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2 align-items-center">
+                <div class="col-6">
+                    <h1>Manage Payments</h1>
+                </div>
+                <div class="col-6">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Manage Payments</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title"></h3>
+            </div>
+            <div class="box-body">
+                <table id="example2" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th><i class="fa fa-cogs"></i> Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $result = manage_payment($con);
+                        if ($result && mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                echo "<tr>
+                                        <td>{$row['id']}</td>
+                                        <td>{$row['name']}</td>
+                                        <td>{$row['amount']}</td>
+                                        <td>{$row['date']}</td>
+                                        <td>{$row['status']}</td>
+                                        <td>
+                                            <button class='btn btn-primary' data-toggle='modal' data-target='#paymentModal-{$row['id']}'>
+                                                Process Payment
+                                            </button>
+                                            <!-- Payment Modal for each row -->
+                                            <div class='modal fade' id='paymentModal-{$row['id']}' tabindex='-1' role='dialog' aria-labelledby='paymentModalLabel-{$row['id']}' aria-hidden='true'>
+                                                <div class='modal-dialog' role='document'>
+                                                    <div class='modal-content'>
+                                                        <div class='modal-header'>
+                                                            <h5 class='modal-title' id='paymentModalLabel-{$row['id']}'>Process Payment</h5>
+                                                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                                                <span aria-hidden='true'>&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form method='post' action='function/function_crud.php'>
+                                                            <div class='modal-body'>
+                                                                <input type='hidden' name='process_payment' value='1'>
+                                                                <input type='hidden' name='advance_id' value='{$row['id']}'>
+                                                                <input type='hidden' name='user_id' value='{$row['user_id']}'>
+                                                                <div class='form-group'>
+                                                                    <label for='payment-amount-{$row['id']}'>Payment Amount</label>
+                                                                    <input type='number' name='payment_amount' id='payment-amount-{$row['id']}' class='form-control' required>
+                                                                </div>
+                                                            </div>
+                                                            <div class='modal-footer'>
+                                                                <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+                                                                <button type='submit' class='btn btn-primary'>Process</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                      </tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='6'>No records found</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+<?php } ?>
 
 <?php
 

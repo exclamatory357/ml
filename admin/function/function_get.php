@@ -130,7 +130,7 @@ function get_cash_advances($con) {
                                 <input type='hidden' name='id' value='".$fetch['id']."'>
                                 <label>Name: </label> <input type='text' name='name' value='".$fetch["name"]."' class='form-control'><br>
                                 <label>Amount: </label> <input type='text' name='amount' value='".$fetch["amount"]."' class='form-control'><br>
-                                <label>Date: </label> <input type='date' name='date' value='".$fetch["date"]."' class='form-control'><br>
+                                <label>Date: </label> <input type='date' name='date' value='".$fetch["date"]."' class='form-control' readonly><br>
                                 <label>Status: </label> <input type='text' name='status' value='".$fetch["status"]."' class='form-control'><br>
                                 <br><br>
                                 <button type='submit' class='btn btn-primary'>Update</button>
@@ -1100,6 +1100,17 @@ function get_cancld($con)
 
 }
 
+// Manage Payment 
+function manage_payment($con) {
+    $sql = "SELECT * FROM cash_advances";
+    $result = mysqli_query($con, $sql);
+    return $result;
+}
+
+
+
+
+
 
 
  function get_reserved($con)
@@ -1167,6 +1178,7 @@ function get_cancld($con)
     }
 
 }
+
 
 function get_canceled($con)
 

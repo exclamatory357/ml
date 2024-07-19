@@ -74,7 +74,7 @@
  
             <li><a href="?reserved2"><i class="fa fa-tasks"></i> Manage Mainitenance & C/A</a></li>
 
-            <li><a href="?reserved"><i class="fa fa-tasks"></i>Manage Payment</a></li>
+            <li><a href="?manage_payment"><i class="fa fa-tasks"></i>Manage Payment</a></li>
 
          <!--   <li><a href="?canceled"><i class="fa fa-tasks"></i> Canceled</a></li>  !-->
 

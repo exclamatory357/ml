@@ -4,7 +4,71 @@ session_start();
 
 include "../../config/db.php";
 
-// admin request form side
+
+
+//payment manage
+// Process Payment
+// Process Payment
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['process_payment'])) {
+    $advance_id = $_POST['advance_id'];
+    $payment_amount = $_POST['payment_amount'];
+    $user_id = $_POST['user_id'];
+
+    // Input validation
+    if (!is_numeric($advance_id) || !is_numeric($payment_amount) || !is_numeric($user_id)) {
+        $_SESSION["notify"] = "invalid-input";
+        header("location: ../?manage_payment");
+        exit;
+    }
+
+    $advance_id = intval($advance_id);
+    $payment_amount = floatval($payment_amount);
+    $user_id = intval($user_id);
+
+    // Get the current amount from cash_advances table
+    $sql_get_amount = "SELECT amount FROM cash_advances WHERE id = '$advance_id'";
+    $result_get_amount = mysqli_query($con, $sql_get_amount);
+    if ($result_get_amount && mysqli_num_rows($result_get_amount) > 0) {
+        $row = mysqli_fetch_assoc($result_get_amount);
+        $current_amount = $row['amount'];
+        $original_amount = $current_amount; // Capture the original amount
+
+        // Ensure the payment amount is valid
+        if ($payment_amount > $current_amount) {
+            $_SESSION["notify"] = "invalid-amount";
+            header("location: ../?manage_payment");
+            exit;
+        }
+
+        // Update cash_advances table by deducting the payment amount (SQL1)
+        $sql1 = "UPDATE cash_advances SET amount = amount - $payment_amount WHERE id = '$advance_id'";
+        if (mysqli_query($con, $sql1)) {
+            // Insert the payment in invoices table (SQL2)
+            $remaining_amount = $current_amount - $payment_amount;
+            $sql2 = "INSERT INTO invoices (user_id, date_issued, amount, original_amount, remaining_amount, status, description) 
+                     VALUES ('$user_id', NOW(), '$payment_amount', '$original_amount', '$remaining_amount', 'Paid', 'Payment Processed')";
+            if (mysqli_query($con, $sql2)) {
+                $_SESSION["notify"] = "success-payment";
+                header("location: ../?manage_payment");
+                exit;
+            } else {
+                $_SESSION["notify"] = "failed-insert-invoices";
+                error_log("Failed to insert into invoices: " . mysqli_error($con));
+                header("location: ../?manage_payment");
+                exit;
+            }
+        } else {
+            $_SESSION["notify"] = "failed-update-cash-advances";
+            error_log("Failed to update cash advances: " . mysqli_error($con));
+            header("location: ../?manage_payment");
+            exit;
+        }
+    } else {
+        $_SESSION["notify"] = "no-record-found";
+        header("location: ../?manage_payment");
+        exit;
+    }
+}
 
 // Update Maintenance Request
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_maintenance_request'])) {
