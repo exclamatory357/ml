@@ -74,6 +74,43 @@
 </section>
 
 <!-- Main content -->
+<!-- Main content -->
+<?php
+
+include "../../config/db.php";
+
+// Fetch agent names from the database
+function fetch_agents($con) {
+    $sql = "SELECT CONCAT(fname, ' ', lname) AS full_name FROM user WHERE user_type_id = 3";
+    $query = mysqli_query($con, $sql);
+    $agents = [];
+    if (mysqli_num_rows($query) > 0) {
+        while ($row = mysqli_fetch_assoc($query)) {
+            $agents[] = $row;
+        }
+    }
+    return $agents;
+}
+
+// Fetch pumpboat numbers from the database
+function fetch_pumpboats($con) {
+    $sql = "SELECT pumpboat_no, status FROM pumpboats";
+    $query = mysqli_query($con, $sql);
+    $pumpboats = [];
+    if (mysqli_num_rows($query) > 0) {
+        while ($row = mysqli_fetch_assoc($query)) {
+            $pumpboats[] = $row;
+        }
+    }
+    return $pumpboats;
+}
+
+$agents = fetch_agents($con);
+$pumpboats = fetch_pumpboats($con);
+?>
+
+
+<!-- Main content -->
 <section class="content container-fluid">
     <div class="card">
         <div class="card-header">
@@ -83,91 +120,38 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                       <!-- <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Upload Image</label>
-                            <div class="col-sm-8">
-                                <input type="file" accept=".jpg,.jpeg,.png" name="img" class="form-control" required>
-                            </div>
-                        </div> 
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Actual No.</label>
+                            <label class="col-sm-4 col-form-label">Team</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="actual_no" required>
+                                <input type="text" class="form-control" name="team" required>
                             </div>
-                        </div> !-->
-                        <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Team</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" name="team" required>
-                        </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Agent Name</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="name" required>
-                            </div>
-                        </div>
-                    <!--    <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Category</label>
-                            <div class="col-sm-8">
-                                <select class="form-control" name="type" required>
-                                    <option value="Pumpboat">Pumpboat</option>
-                                    <option value="Kama">Kama</option>
+                                <select class="form-control" name="name" required>
+                                    <option value="">Select Agent</option>
+                                    <?php foreach ($agents as $agent): ?>
+                                        <option value="<?php echo $agent['full_name']; ?>">
+                                            <?php echo $agent['full_name']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
-                        </div> !-->
-
-                        <?php
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "resevation";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$sql = "SELECT pumpboat_no, status FROM pumpboats";
-$result = $conn->query($sql);
-
-$pumpboats = [];
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $pumpboats[] = $row;
-    }
-}
-$conn->close();
-?>
-
-<div class="form-group row">
-        <label class="col-sm-4 col-form-label">Pumpboat No.</label>
-        <div class="col-sm-8">
-            <select class="form-control" name="type" id="pumpboat-select" required>
-               <!-- <option value="Pumpboat">Pumpboat</option>
-                <option value="Kama">Kama</option> !-->
-                <option value="">Select Pumpboats</option> 
-            </select>
-        </div>
-    </div>
-
-    <script>
-        const pumpboats = <?php echo json_encode($pumpboats); ?>;
-        
-        const pumpboatSelect = document.getElementById('pumpboat-select');
-        
-        pumpboats.forEach(pumpboat => {
-            const option = document.createElement('option');
-            option.value = pumpboat.pumpboat_no;
-            option.text = 'Pumpboat ' + pumpboat.pumpboat_no;
-            if (pumpboat.status == 1) {
-                option.disabled = true;
-            }
-            pumpboatSelect.appendChild(option);
-        });
-    </script>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Pumpboat No.</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="type" id="pumpboat-select" required>
+                                    <option value="">Select Pumpboats</option>
+                                    <?php foreach ($pumpboats as $pumpboat): ?>
+                                        <option value="<?php echo $pumpboat['pumpboat_no']; ?>" <?php echo $pumpboat['status'] == 1 ? 'disabled' : ''; ?>>
+                                            Pumpboat <?php echo $pumpboat['pumpboat_no']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Type</label>
                             <div class="col-sm-8">
@@ -178,13 +162,6 @@ $conn->close();
                                 </select>
                             </div>
                         </div>
-                    <!--    <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Max Person</label>
-                            <div class="col-sm-8">
-                                <input type="number" class="form-control" name="max-person" required>
-                            </div>
-                        </div> !-->
-                        
                         <div class="form-group row">
                             <div class="col-sm-8 offset-sm-4">
                                 <button type="submit" class="btn btn-primary" name="btn-cottage-add">Submit</button>
@@ -199,6 +176,12 @@ $conn->close();
         </form>
     </div>
 </section>
+
+
+<!-- Bootstrap and other necessary scripts -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
 
 <?php } ?>
 

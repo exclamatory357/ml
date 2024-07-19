@@ -1,27 +1,16 @@
 <?php
 
-error_reporting(0);
+$host = "sql109.infinityfree.com";
+$username = "if0_36823419";
+$password = "nexus3572";
+$db = "if0_36823419_resevation";
 
-$host = "localhost";
+$con = mysqli_connect($host, $username, $password, $db);
 
-$username = "root";
-
-$password ="";
-
-$db = "resevation";
-
-$con = mysqli_connect($host,$username,$password,$db);
-
-
-
-// Check connection
-
-if (!$con) {
-
-    die("Connection failed: " . mysqli_connect_error());
-
+if ($con) {
+    echo "Connected successfully";
+} else {
+    echo "Connection failed: " . mysqli_connect_error();
 }
-
-//echo "Connected successfully";
 
 ?>

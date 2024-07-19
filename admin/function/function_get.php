@@ -1409,6 +1409,13 @@ function count_me2($con){
     echo $total_sales;
 }
 
+function count_me0($con){
+    $sql = "SELECT COUNT(*) AS user_count FROM user WHERE user_type_id = 3";
+    $query = mysqli_query($con, $sql);
+    $result = mysqli_fetch_assoc($query);
+    $user_count = $result['user_count'];
+    echo $user_count;
+}
 
 function count_totalagents($con) {
     // Prepare the SQL query

@@ -54,7 +54,7 @@ if (isset($_POST["btnlogin"])) {
 
                 echo "welcome superadmin";
 
-            }if ($get_user_type == "customer") {
+            }if ($get_user_type == "agent") {
 
                 $_SESSION["trans_no"]=rand();
 

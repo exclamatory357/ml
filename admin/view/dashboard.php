@@ -116,7 +116,7 @@ if (isset($_GET["dashboard"])) {?>
             <div class="small-box bg-success">
                 <div class="inner">
                     <h3><?= htmlspecialchars(count_pumpboats($con, 'Pending')) ?></h3>
-                    <p>Used Pumpboats</p>
+                    <p>Pumpboats</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-sailboat"></i>
@@ -128,8 +128,8 @@ if (isset($_GET["dashboard"])) {?>
             <!-- small box -->
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3><?= htmlspecialchars(count_me2($con, 'Fullypaid')) ?></h3>
-                    <p>Available Pumpboats</p>
+                    <h3><?= htmlspecialchars(count_me0($con, 'Fullypaid')) ?></h3>
+                    <p>User Accounts</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-sailboat"></i>
