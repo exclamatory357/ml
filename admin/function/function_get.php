@@ -1414,12 +1414,13 @@ function count_pumpboats($con) {
 }
 
 function count_me2($con){
-    $sql = "SELECT SUM(ammount_payment) AS total_sales FROM payment";
+    $sql = "SELECT SUM(remaining_amount) AS total_sales FROM invoices";
     $query = mysqli_query($con, $sql);
     $result = mysqli_fetch_assoc($query);
     $total_sales = $result['total_sales'];
     echo $total_sales;
 }
+
 
 function count_me0($con){
     $sql = "SELECT COUNT(*) AS user_count FROM user WHERE user_type_id = 3";

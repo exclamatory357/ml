@@ -28,7 +28,7 @@ $pdf->Cell(90, 10, 'DanRose Fishing', '', 0, 'C');
 $pdf->Ln();
 $pdf->SetX(90); 
 $pdf->SetFont('Arial', 'B', 16);
-$pdf->Cell(90, 10, 'Generate Report', '', 0, 'C');
+$pdf->Cell(90, 10, 'Generate Report C/A', '', 0, 'C');
 $pdf->Ln();
 
 $pdf->SetFont('Arial', 'B', 10);
