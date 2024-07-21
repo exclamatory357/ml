@@ -54,6 +54,21 @@
                 background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for readability on mobile */
             }
         }
+
+        @media (max-width: 576px) {
+            .p-absolute-login {
+                top: 40%; /* Adjust further for smaller screens */
+                left: 50%;
+                transform: translate(-50%, -40%);
+                max-width: 95%;
+                padding: 10px;
+                background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for readability on mobile */
+            }
+
+            .login-box-body {
+                padding: 10px; /* Reduce padding on very small screens */
+            }
+        }
     </style>
 </head>
 <body>
