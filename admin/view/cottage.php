@@ -206,7 +206,7 @@ $pumpboats = fetch_pumpboats($con);
 
 
 <?php 
-include('../../config/db.php'); // Database connection
+
 $getid = $_GET["cottage-edit"];
 $sql = "SELECT * FROM `cottage/hall` WHERE id = '$getid'";
 $query = mysqli_query($con, $sql);
