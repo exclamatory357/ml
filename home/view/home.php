@@ -32,7 +32,6 @@
             position: absolute;
             top: 10%;
             width: 100%;
-            right: 70%;
             text-align: center;
             color: white;
         }
@@ -47,12 +46,12 @@
 
         @media (max-width: 768px) {
             .p-absolute-login {
-                top: 60%; /* Adjusted for better mobile view */
+                top: 40%; /* Adjusted for better mobile view */
                 left: 50%;
-                transform: translate(-50%, -60%);
-                max-width: 90%; /* Allow more width on mobile */
+                transform: translate(-50%, -40%);
+                max-width: 95%; /* Allow more width on mobile */
                 padding: 15px;
-                background: rgba(255, 255, 255, 0.9); /* Slightly more opaque for readability on mobile */
+                background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for readability on mobile */
             }
         }
     </style>
@@ -123,10 +122,10 @@ if (isset($_GET["home"])) { ?>
             </div>
         <?php } ?>
         
-        <div class="system-title p-absolute-system-title text-center mt-5">
+       <!-- <div class="system-title p-absolute-system-title text-center mt-5">
             <span class="text-white display-4">DanRose</span><br>
             <span class="text-white h4">Management System</span>
-        </div>
+        </div> !--> 
 
         <!-- MODAL REGISTRATION -->
         <div class="modal fade" id="modal-registration">
