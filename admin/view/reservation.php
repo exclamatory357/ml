@@ -13,17 +13,7 @@
 </head>
 <body>
     <?php
-    // Enable error reporting
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-
-    include "../../config/db.php";
-
-    // Check database connection
-    if (!$con) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
+   
 
     function get_pumpboats($con) {
         $query = "SELECT * FROM pumpboats";
