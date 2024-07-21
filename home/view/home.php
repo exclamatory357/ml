@@ -22,7 +22,7 @@
         .p-absolute-login {
             position: absolute;
             top: 50%;
-            left: 50%;
+            left: 30%;
             transform: translate(-50%, -50%);
             width: 100%;
             max-width: 400px; /* Adjust width as needed */
@@ -34,6 +34,7 @@
             width: 100%;
             text-align: center;
             color: white;
+            
         }
         
         .carousel-caption {
