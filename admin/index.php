@@ -1,6 +1,6 @@
 <?php
  session_start();
- include "../config/db.php";
+ include "../../config/db.php";
  include "function/function_get.php";
  $datetoday = date("Y-m-d");
 ?>

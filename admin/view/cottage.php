@@ -214,16 +214,13 @@ $fetch = mysqli_fetch_assoc($query);
 ?>
 <?php
 // Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "resevation";
+$host = "127.0.0.1";
+$username = "u510162695_resevation";
+$password = "1Resevation";
+$db = "u510162695_resevation";
+$port = 3306;
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+$con = mysqli_connect($host, $username, $password, $db, $port);
 
 // Fetch agent data
 $getid = $_GET["cottage-edit"];

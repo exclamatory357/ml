@@ -19,7 +19,7 @@
     error_reporting(E_ALL);
 
     // Include database connection
-    include 'db.php';
+    include "../../config/db.php";
 
     // Check database connection
     if (!$con) {
