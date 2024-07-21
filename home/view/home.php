@@ -12,7 +12,7 @@
         }
 
         .login-box-body {
-            background: rgba(255, 255, 255, 0.9); /* Add a slight background to the form */
+            background: rgba(255, 255, 255, 0.7); /* Add a slight background to the form */
             padding: 20px;
             border-radius: 10px;
             max-width: 400px;
@@ -22,7 +22,7 @@
         .p-absolute-login {
             position: absolute;
             top: 50%;
-            left: 30%;
+            left: 75%;
             transform: translate(-50%, -50%);
             width: 100%;
             max-width: 400px; /* Adjust width as needed */
