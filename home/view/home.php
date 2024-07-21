@@ -34,7 +34,6 @@
             width: 100%;
             text-align: center;
             color: white;
-            
         }
         
         .carousel-caption {
@@ -45,6 +44,16 @@
             color: white;
         }
 
+        @media (max-width: 768px) {
+            .p-absolute-login {
+                top: 60%; /* Adjusted for better mobile view */
+                left: 50%;
+                transform: translate(-50%, -60%);
+                max-width: 90%; /* Allow more width on mobile */
+                padding: 15px;
+                background: rgba(255, 255, 255, 0.9); /* Slightly more opaque for readability on mobile */
+            }
+        }
     </style>
 </head>
 <body>
