@@ -235,7 +235,7 @@
                             <label for="inputPassword3" class="col-sm-2 control-label">Category</label>
                             <div class="col-sm-10">
                                 <select name="category" class="form-control" id="">
-                                    <option value="Paid">Paid</option>
+                                    <option value="Paid">Cash Advances</option>
                                 </select>
                             </div>
                         </div>
