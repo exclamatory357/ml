@@ -11,7 +11,7 @@ if (isset($_GET["home"])) { ?>
             </ol> -->
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="image/danrose_house1.jpg" alt="First slide" class="d-block w-100 img-fluid">
+                    <img src="image/danrose_house1.jpg" alt="First slide" class="d-block w-100">
                     <!-- Carousel captions commented out -->
                     <!-- <div class="carousel-caption">
                         First Slide
@@ -19,13 +19,13 @@ if (isset($_GET["home"])) { ?>
                 </div>
                 <!-- Additional carousel items commented out -->
                 <!-- <div class="carousel-item">
-                    <img src="image/danrose3.jpg" alt="Second slide" class="d-block w-100 img-fluid">
+                    <img src="image/danrose3.jpg" alt="Second slide" class="d-block w-100">
                     <div class="carousel-caption">
                         Second Slide
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="image/danrose.jpg" alt="Third slide" class="d-block w-100 img-fluid">
+                    <img src="image/danrose.jpg" alt="Third slide" class="d-block w-100">
                     <div class="carousel-caption">
                         Third Slide
                     </div>
@@ -66,9 +66,6 @@ if (isset($_GET["home"])) { ?>
             <span class="text-white display-4">DanRose</span><br>
             <span class="text-white h4">Management System</span>
         </div>
-    </section>
-<?php } ?>
-
 
         <!-- MODAL REGISTRATION -->
         <div class="modal fade" id="modal-registration">
