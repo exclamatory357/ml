@@ -1,3 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRMS</title>
+  
+    <style>
+        .carousel-inner img {
+            width: 100%;
+            height: auto;
+        }
+
+        .login-box-body {
+            background: rgba(255, 255, 255, 0.9); /* Add a slight background to the form */
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .p-absolute-login {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 400px; /* Adjust width as needed */
+        }
+
+        .p-absolute-system-title {
+            position: absolute;
+            top: 10%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
 <?php
 if (isset($_GET["home"])) { ?>
     <!-- Main content -->
@@ -11,7 +50,7 @@ if (isset($_GET["home"])) { ?>
             </ol> -->
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="image/danrose_house1.jpg" alt="First slide" class="d-block w-100">
+                    <img src="image/danrose_house1.jpg" alt="First slide" class="d-block w-100 img-fluid">
                     <!-- Carousel captions commented out -->
                     <!-- <div class="carousel-caption">
                         First Slide
@@ -19,13 +58,13 @@ if (isset($_GET["home"])) { ?>
                 </div>
                 <!-- Additional carousel items commented out -->
                 <!-- <div class="carousel-item">
-                    <img src="image/danrose3.jpg" alt="Second slide" class="d-block w-100">
+                    <img src="image/danrose3.jpg" alt="Second slide" class="d-block w-100 img-fluid">
                     <div class="carousel-caption">
                         Second Slide
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="image/danrose.jpg" alt="Third slide" class="d-block w-100">
+                    <img src="image/danrose.jpg" alt="Third slide" class="d-block w-100 img-fluid">
                     <div class="carousel-caption">
                         Third Slide
                     </div>
@@ -138,3 +177,9 @@ if (isset($_GET["home"])) { ?>
         </div>
     </section>
 <?php } ?>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
