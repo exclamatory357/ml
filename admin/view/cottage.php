@@ -207,31 +207,37 @@ $pumpboats = fetch_pumpboats($con);
 
 <?php 
 
-$getid = $_GET["cottage-edit"];
-$sql = "SELECT * FROM `cottage/hall` WHERE id = '$getid'";
-$query = mysqli_query($con, $sql);
-$fetch = mysqli_fetch_assoc($query);
-?>
-<?php
-
 // Fetch agent data
 $getid = $_GET["cottage-edit"];
-$sql = "SELECT * FROM `cottage/hall` WHERE id = '$getid'";
-$query = mysqli_query($conn, $sql);
-$fetch = mysqli_fetch_assoc($query);
+$sql = "SELECT * FROM `cottage/hall` WHERE id = ?";
+$stmt = $con->prepare($sql);
+$stmt->bind_param("i", $getid);
+$stmt->execute();
+$result = $stmt->get_result();
+$fetch = $result->fetch_assoc();
+
+// Check if agent data was fetched successfully
+if ($fetch === null) {
+    echo "No data found for the given ID.";
+    exit();
+}
 
 // Fetch pumpboats data
 $sqlPumpboats = "SELECT pumpboat_no, status FROM pumpboats";
-$resultPumpboats = $conn->query($sqlPumpboats);
+$resultPumpboats = $con->query($sqlPumpboats);
 
 $pumpboats = [];
 if ($resultPumpboats->num_rows > 0) {
     while($row = $resultPumpboats->fetch_assoc()) {
         $pumpboats[] = $row;
     }
+} else {
+    echo "No pumpboats data found.";
 }
-$conn->close();
+
+$con->close();
 ?>
+
 
 <section class="content container-fluid">
     <div class="card">
