@@ -32,7 +32,18 @@
             position: absolute;
             top: 10%;
             width: 100%;
+            text-align: center;
+            color: white;
         }
+        
+        .carousel-caption {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+        }
+
     </style>
 </head>
 <body>
