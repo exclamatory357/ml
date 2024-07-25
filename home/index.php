@@ -112,6 +112,7 @@ include "function/function_get.php";
 </div>
 
 <?php include "shared/script.php" ?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   var swiper = new Swiper(".mySwiper", {
     slidesPerView: 3,
@@ -122,7 +123,7 @@ include "function/function_get.php";
     },
   });
 
-  // TOASTER
+  // TOASTER replacement with SweetAlert2
   $("body").on("click", ".view", function (e) {
     e.preventDefault();
     let res_id = $(this).attr("id");
@@ -141,25 +142,80 @@ include "function/function_get.php";
   if (isset($_SESSION["notify"])) {
       switch ($_SESSION["notify"]) {
           case "success-reg":
-              echo "toastr.success('Data successfully Registered.', 'Success Registration!', {positionClass: 'toast-bottom-right', timeOut: 5000, titleClass: 'toast-title', messageClass: 'toast-message', target: 'body', newestOnTop: true, preventDuplicates: false, progressBar: true})";
+              echo "Swal.fire({
+                      icon: 'success',
+                      title: 'Success Registration!',
+                      text: 'Data successfully Registered.',
+                      timer: 5000,
+                      timerProgressBar: true,
+                      showConfirmButton: false,
+                      position: 'bottom-end'
+                  });";
               break;
           case "success-reserve":
-              echo "toastr.success('Reservation Added.', 'Success Added!', {positionClass: 'toast-bottom-right', timeOut: 5000, titleClass: 'toast-title', messageClass: 'toast-message', target: 'body', newestOnTop: true, preventDuplicates: false, progressBar: true})";
+              echo "Swal.fire({
+                      icon: 'success',
+                      title: 'Success Added!',
+                      text: 'Reservation Added.',
+                      timer: 5000,
+                      timerProgressBar: true,
+                      showConfirmButton: false,
+                      position: 'bottom-end'
+                  });";
               break;
           case "failed":
-              echo "toastr.error('Failed.', 'Failed Action!', {positionClass: 'toast-bottom-right', timeOut: 5000, titleClass: 'toast-title', messageClass: 'toast-message', target: 'body', newestOnTop: true, preventDuplicates: false, progressBar: true})";
+              echo "Swal.fire({
+                      icon: 'error',
+                      title: 'Failed Action!',
+                      text: 'Failed.',
+                      timer: 5000,
+                      timerProgressBar: true,
+                      showConfirmButton: false,
+                      position: 'bottom-end'
+                  });";
               break;
           case "success":
-              echo "toastr.success('Success.', 'Success Action!', {positionClass: 'toast-bottom-right', timeOut: 5000, titleClass: 'toast-title', messageClass: 'toast-message', target: 'body', newestOnTop: true, preventDuplicates: false, progressBar: true})";
+              echo "Swal.fire({
+                      icon: 'success',
+                      title: 'Success Action!',
+                      text: 'Success.',
+                      timer: 5000,
+                      timerProgressBar: true,
+                      showConfirmButton: false,
+                      position: 'bottom-end'
+                  });";
               break;
           case "invalid":
-              echo "toastr.error('Invalid.', 'Invalid password!', {positionClass: 'toast-bottom-right', timeOut: 5000, titleClass: 'toast-title', messageClass: 'toast-message', target: 'body', newestOnTop: true, preventDuplicates: false, progressBar: true})";
+              echo "Swal.fire({
+                      icon: 'error',
+                      title: 'Invalid password!',
+                      text: 'Invalid.',
+                      timer: 5000,
+                      timerProgressBar: true,
+                      showConfirmButton: false,
+                      position: 'bottom-end'
+                  });";
               break;
           case "not-found":
-              echo "toastr.error('Not found.', 'Record not found!', {positionClass: 'toast-bottom-right', timeOut: 5000, titleClass: 'toast-title', messageClass: 'toast-message', target: 'body', newestOnTop: true, preventDuplicates: false, progressBar: true})";
+              echo "Swal.fire({
+                      icon: 'error',
+                      title: 'Record not found!',
+                      text: 'Not found.',
+                      timer: 5000,
+                      timerProgressBar: true,
+                      showConfirmButton: false,
+                      position: 'bottom-end'
+                  });";
               break;
           case "cancel":
-              echo "toastr.error('', 'Cancelled success!', {positionClass: 'toast-bottom-right', timeOut: 5000, titleClass: 'toast-title', messageClass: 'toast-message', target: 'body', newestOnTop: true, preventDuplicates: false, progressBar: true})";
+              echo "Swal.fire({
+                      icon: 'error',
+                      title: 'Cancelled success!',
+                      timer: 5000,
+                      timerProgressBar: true,
+                      showConfirmButton: false,
+                      position: 'bottom-end'
+                  });";
               break;
       }
       unset($_SESSION["notify"]);
