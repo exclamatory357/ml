@@ -17,7 +17,7 @@
             border-radius: 10px;
             max-width: 400px;
             margin: 0 auto;
-            max-height: 90%; /* Add max-height for better mobile view */
+            max-height: 5%; /* Add max-height for better mobile view */
             overflow-y: auto; /* Add scroll if content exceeds max-height */
         }
 
