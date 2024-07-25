@@ -4,6 +4,13 @@ session_start();
 if (isset($_GET["request"])) {
     if (isset($_SESSION["username"])) {
         $user_id = $_SESSION["user_id"]; // Assuming user_id is stored in session
+
+        include "../../config/db.php"; // Database connection
+
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -95,42 +102,35 @@ if (isset($_GET["request"])) {
                     <th>Item Name</th>
                     <th>Team</th>
                     <th>Request Date</th>
-              <!--      <th>Status</th>     !-->
                     <th>Admin Comment</th>
                     <th>Admin Approval</th>
                 </tr>
             </thead>
             <tbody>
-            <?php
-include "../../config/db.php";
+                <?php
+                // Fetch maintenance requests for the logged-in user
+                $sql = "SELECT * FROM maintenance_requests WHERE user_id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $user_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
-// Fetch maintenance requests for the logged-in user using a prepared statement
-$sql = "SELECT * FROM maintenance_requests WHERE user_id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        echo "<tr>";
-        echo "<td>" . htmlspecialchars($row["id"]) . "</td>";
-        echo "<td>" . htmlspecialchars($row["item_name"]) . "</td>";
-        echo "<td>" . htmlspecialchars($row["description"]) . "</td>";
-        echo "<td>" . htmlspecialchars($row["request_date"]) . "</td>";
-        // echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
-        echo "<td>" . htmlspecialchars($row["admin_comment"]) . "</td>";
-        echo "<td>" . htmlspecialchars($row["admin_approval"]) . "</td>";
-        echo "</tr>";
-    }
-} else {
-    echo "<tr><td colspan='7'>No records found</td></tr>";
-}
-
-$stmt->close();
-$conn->close();
-?>
-
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($row["id"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["item_name"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["description"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["request_date"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["admin_comment"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["admin_approval"]) . "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='6'>No records found</td></tr>";
+                }
+                $stmt->close();
+                ?>
             </tbody>
         </table>
     </div>
@@ -151,22 +151,27 @@ $conn->close();
             <tbody>
                 <?php
                 // Fetch cash advances for the logged-in user
-                $sql = "SELECT * FROM cash_advances WHERE user_id = $user_id";
-                $result = $conn->query($sql);
+                $sql = "SELECT * FROM cash_advances WHERE user_id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $user_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
                         echo "<tr>";
-                        echo "<td>" . $row["id"] . "</td>";
-                        echo "<td>" . $row["name"] . "</td>";
-                        echo "<td>₱" . $row["amount"] . "</td>";
-                        echo "<td>" . $row["date"] . "</td>";
-                        echo "<td>" . $row["status"] . "</td>";
+                        echo "<td>" . htmlspecialchars($row["id"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["name"]) . "</td>";
+                        echo "<td>₱" . htmlspecialchars($row["amount"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["date"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
                         echo "</tr>";
                     }
                 } else {
                     echo "<tr><td colspan='5'>No records found</td></tr>";
                 }
+                $stmt->close();
+                $conn->close();
                 ?>
             </tbody>
         </table>
@@ -197,7 +202,6 @@ $conn->close();
 </html>
 
 <?php
-        $conn->close();
     }
 }
 ?>
