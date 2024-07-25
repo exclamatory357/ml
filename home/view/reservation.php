@@ -1,5 +1,6 @@
 <?php
 session_start();
+include "../../config/db.php"; // Including the external database connection file
 
 if (isset($_GET["request"])) {
     if (isset($_SESSION["username"])) {
@@ -95,41 +96,31 @@ if (isset($_GET["request"])) {
                     <th>Item Name</th>
                     <th>Team</th>
                     <th>Request Date</th>
-              <!--      <th>Status</th>     !-->
                     <th>Admin Comment</th>
                     <th>Admin Approval</th>
                 </tr>
             </thead>
             <tbody>
-            <?php
-// Database connection
-include "../../config/db.php";
+                <?php
+                // Fetch maintenance requests for the logged-in user
+                $sql = "SELECT * FROM maintenance_requests WHERE user_id = $user_id";
+                $result = $con->query($sql);
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Fetch maintenance requests for the logged-in user
-function fetch_maintenance_requests($conn, $user_id) {
-    $sql = "SELECT * FROM maintenance_requests WHERE user_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $maintenance_requests = [];
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $maintenance_requests[] = $row;
-        }
-    }
-    $stmt->close();
-    return $maintenance_requests;
-}
-
-$user_id = $_SESSION["user_id"]; // Assuming user_id is stored in session
-$maintenance_requests = fetch_maintenance_requests($conn, $user_id);
-?>
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["id"] . "</td>";
+                        echo "<td>" . $row["item_name"] . "</td>";
+                        echo "<td>" . $row["description"] . "</td>";
+                        echo "<td>" . $row["request_date"] . "</td>";
+                        echo "<td>" . $row["admin_comment"] . "</td>";
+                        echo "<td>" . $row["admin_approval"] . "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='6'>No records found</td></tr>";
+                }
+                ?>
             </tbody>
         </table>
     </div>
@@ -148,35 +139,25 @@ $maintenance_requests = fetch_maintenance_requests($conn, $user_id);
                 </tr>
             </thead>
             <tbody>
-            <?php
-// Database connection
-include "../../config/db.php";
+                <?php
+                // Fetch cash advances for the logged-in user
+                $sql = "SELECT * FROM cash_advances WHERE user_id = $user_id";
+                $result = $con->query($sql);
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Fetch cash advances for the logged-in user
-function fetch_cash_advances($conn, $user_id) {
-    $sql = "SELECT * FROM cash_advances WHERE user_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $cash_advances = [];
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $cash_advances[] = $row;
-        }
-    }
-    $stmt->close();
-    return $cash_advances;
-}
-
-$user_id = $_SESSION["user_id"]; // Assuming user_id is stored in session
-$cash_advances = fetch_cash_advances($conn, $user_id);
-?>
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["id"] . "</td>";
+                        echo "<td>" . $row["name"] . "</td>";
+                        echo "<td>₱" . $row["amount"] . "</td>";
+                        echo "<td>" . $row["date"] . "</td>";
+                        echo "<td>" . $row["status"] . "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='5'>No records found</td></tr>";
+                }
+                ?>
             </tbody>
         </table>
     </div>
@@ -206,7 +187,7 @@ $cash_advances = fetch_cash_advances($conn, $user_id);
 </html>
 
 <?php
-        $conn->close();
+        $con->close();
     }
 }
 ?>
