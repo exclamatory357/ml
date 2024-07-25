@@ -46,23 +46,22 @@
 
         @media (max-width: 768px) {
             .p-absolute-login {
-                top: 5%; /* Adjusted for better mobile view */
+                top: 30%; /* Adjusted for better mobile view */
                 left: 50%;
-                transform: translate(-50%, -40%);
-                max-width: 95%; /* Allow more width on mobile */
+                transform: translate(-50%, -30%);
+                max-width: 90%; /* Allow more width on mobile */
                 padding: 15px;
-                background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for readability on mobile */
+                background: rgba(255, 255, 255, 0.9); /* Slightly more opaque for readability on mobile */
             }
         }
 
         @media (max-width: 576px) {
             .p-absolute-login {
-                top: 5%; /* Adjust further for smaller screens */
+                top: 30%; /* Adjust further for smaller screens */
                 left: 50%;
-                transform: translate(-50%, -40%);
+                transform: translate(-50%, -30%);
                 max-width: 95%;
                 padding: 10px;
-                background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for readability on mobile */
             }
 
             .login-box-body {
