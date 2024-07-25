@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DRMS</title>
-    
+  
     <style>
         .carousel-inner img {
             width: 100%;
@@ -47,24 +47,24 @@
         @media (max-width: 768px) {
             .p-absolute-login {
                 position: absolute;
-                top: 25%; /* Adjusted for better mobile view */
+                top: 40%; /* Adjusted for better mobile view */
                 left: 50%;
-                transform: translate(-50%, -25%);
+                transform: translate(-50%, -40%);
                 max-width: 95%; /* Allow more width on mobile */
                 padding: 15px;
-                background: rgba(255, 255, 255, 0.9); /* Slightly more opaque for readability on mobile */
+                background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for readability on mobile */
             }
         }
 
         @media (max-width: 576px) {
             .p-absolute-login {
                 position: absolute;
-                top: 25%; /* Adjust further for smaller screens */
+                top: 40%; /* Adjust further for smaller screens */
                 left: 50%;
-                transform: translate(-50%, -25%);
+                transform: translate(-50%, -40%);
                 max-width: 95%;
                 padding: 10px;
-                background: rgba(255, 255, 255, 0.9); /* Slightly more opaque for readability on mobile */
+                background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for readability on mobile */
             }
 
             .login-box-body {
@@ -90,9 +90,9 @@ if (isset($_GET["home"])) { ?>
                 <div class="carousel-item active">
                     <img src="image/danrose_house1.jpg" alt="First slide" class="d-block w-100 img-fluid">
                     <!-- Carousel captions commented out -->
-                    <div class="carousel-caption">
-                        <h2>DanRose Management System</h2>
-                    </div>
+                    <!-- <div class="carousel-caption">
+                        First Slide
+                    </div> -->
                 </div>
                 <!-- Additional carousel items commented out -->
                 <!-- <div class="carousel-item">
@@ -139,10 +139,10 @@ if (isset($_GET["home"])) { ?>
             </div>
         <?php } ?>
         
-        <div class="system-title p-absolute-system-title text-center mt-5">
+       <!-- <div class="system-title p-absolute-system-title text-center mt-5">
             <span class="text-white display-4">DanRose</span><br>
             <span class="text-white h4">Management System</span>
-        </div>
+        </div> !--> 
 
         <!-- MODAL REGISTRATION -->
         <div class="modal fade" id="modal-registration">
