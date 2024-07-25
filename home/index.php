@@ -23,7 +23,7 @@ include "function/function_get.php";
       font-size: 14px;
       color: #000;
       margin: 0;
-      padding: 0;
+      padding: 0.
     }
     .swiper {
       width: 100%;
@@ -40,21 +40,21 @@ include "function/function_get.php";
       display: block;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: cover.
     }
     .feedbackbtn2 {
       position: fixed;
       right: 10px;
       bottom: 55px;
-      z-index: 999;
+      z-index: 999.
     }
     /* typography */
     h1 {
       text-align: center;
-      margin-bottom: -20px !important;
+      margin-bottom: -20px !important.
     }
     p {
-      font-style: italic;
+      font-style: italic.
     }
   </style>
 </head>
@@ -148,8 +148,7 @@ include "function/function_get.php";
                       text: 'Data successfully Registered.',
                       timer: 5000,
                       timerProgressBar: true,
-                      showConfirmButton: false,
-                      position: 'bottom-end'
+                      showConfirmButton: false
                   });";
               break;
           case "success-reserve":
@@ -159,8 +158,7 @@ include "function/function_get.php";
                       text: 'Reservation Added.',
                       timer: 5000,
                       timerProgressBar: true,
-                      showConfirmButton: false,
-                      position: 'bottom-end'
+                      showConfirmButton: false
                   });";
               break;
           case "failed":
@@ -170,8 +168,7 @@ include "function/function_get.php";
                       text: 'Failed.',
                       timer: 5000,
                       timerProgressBar: true,
-                      showConfirmButton: false,
-                      position: 'bottom-end'
+                      showConfirmButton: false
                   });";
               break;
           case "success":
@@ -181,8 +178,7 @@ include "function/function_get.php";
                       text: 'Success.',
                       timer: 5000,
                       timerProgressBar: true,
-                      showConfirmButton: false,
-                      position: 'bottom-end'
+                      showConfirmButton: false
                   });";
               break;
           case "invalid":
@@ -192,8 +188,7 @@ include "function/function_get.php";
                       text: 'Invalid.',
                       timer: 5000,
                       timerProgressBar: true,
-                      showConfirmButton: false,
-                      position: 'bottom-end'
+                      showConfirmButton: false
                   });";
               break;
           case "not-found":
@@ -203,8 +198,7 @@ include "function/function_get.php";
                       text: 'Not found.',
                       timer: 5000,
                       timerProgressBar: true,
-                      showConfirmButton: false,
-                      position: 'bottom-end'
+                      showConfirmButton: false
                   });";
               break;
           case "cancel":
@@ -213,8 +207,7 @@ include "function/function_get.php";
                       title: 'Cancelled success!',
                       timer: 5000,
                       timerProgressBar: true,
-                      showConfirmButton: false,
-                      position: 'bottom-end'
+                      showConfirmButton: false
                   });";
               break;
       }
