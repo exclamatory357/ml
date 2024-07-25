@@ -49,7 +49,7 @@
                 position: absolute;
                 top: 5%; /* Adjusted for better mobile view */
                 left: 50%;
-                transform: translate(-50%, -80%);
+                transform: translate(-30%, -80%);
                 max-width: 95%; /* Allow more width on mobile */
                 padding: 15px;
                 background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for readability on mobile */
@@ -58,10 +58,11 @@
 
         @media (max-width: 576px) {
             .p-absolute-login {
+                
                 position: absolute;
                 top: 5%; /* Adjust further for smaller screens */
                 left: 50%;
-                transform: translate(-50%, -80%);
+                transform: translate(-30%, -80%);
                 max-width: 95%;
                 padding: 10px;
                 background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for readability on mobile */
