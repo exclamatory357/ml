@@ -4,13 +4,44 @@ session_start();
 if (isset($_GET["request"])) {
     if (isset($_SESSION["username"])) {
         $user_id = $_SESSION["user_id"]; // Assuming user_id is stored in session
+        include "../../config/db.php"; // Include the database connection
 
-        include "../../config/db.php"; // Database connection
-
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+        // Fetch maintenance requests for the logged-in user
+        function fetch_maintenance_requests($con, $user_id) {
+            $sql = "SELECT * FROM maintenance_requests WHERE user_id = ?";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $maintenance_requests = [];
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $maintenance_requests[] = $row;
+                }
+            }
+            $stmt->close();
+            return $maintenance_requests;
         }
+
+        // Fetch cash advances for the logged-in user
+        function fetch_cash_advances($con, $user_id) {
+            $sql = "SELECT * FROM cash_advances WHERE user_id = ?";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $cash_advances = [];
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $cash_advances[] = $row;
+                }
+            }
+            $stmt->close();
+            return $cash_advances;
+        }
+
+        $maintenance_requests = fetch_maintenance_requests($conn, $user_id);
+        $cash_advances = fetch_cash_advances($conn, $user_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -108,28 +139,20 @@ if (isset($_GET["request"])) {
             </thead>
             <tbody>
                 <?php
-                // Fetch maintenance requests for the logged-in user
-                $sql = "SELECT * FROM maintenance_requests WHERE user_id = ?";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $user_id);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
+                if (count($maintenance_requests) > 0) {
+                    foreach ($maintenance_requests as $request) {
                         echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row["id"]) . "</td>";
-                        echo "<td>" . htmlspecialchars($row["item_name"]) . "</td>";
-                        echo "<td>" . htmlspecialchars($row["description"]) . "</td>";
-                        echo "<td>" . htmlspecialchars($row["request_date"]) . "</td>";
-                        echo "<td>" . htmlspecialchars($row["admin_comment"]) . "</td>";
-                        echo "<td>" . htmlspecialchars($row["admin_approval"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($request["id"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($request["item_name"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($request["description"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($request["request_date"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($request["admin_comment"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($request["admin_approval"]) . "</td>";
                         echo "</tr>";
                     }
                 } else {
                     echo "<tr><td colspan='6'>No records found</td></tr>";
                 }
-                $stmt->close();
                 ?>
             </tbody>
         </table>
@@ -150,28 +173,19 @@ if (isset($_GET["request"])) {
             </thead>
             <tbody>
                 <?php
-                // Fetch cash advances for the logged-in user
-                $sql = "SELECT * FROM cash_advances WHERE user_id = ?";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $user_id);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
+                if (count($cash_advances) > 0) {
+                    foreach ($cash_advances as $advance) {
                         echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row["id"]) . "</td>";
-                        echo "<td>" . htmlspecialchars($row["name"]) . "</td>";
-                        echo "<td>₱" . htmlspecialchars($row["amount"]) . "</td>";
-                        echo "<td>" . htmlspecialchars($row["date"]) . "</td>";
-                        echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($advance["id"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($advance["name"]) . "</td>";
+                        echo "<td>₱" . htmlspecialchars($advance["amount"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($advance["date"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($advance["status"]) . "</td>";
                         echo "</tr>";
                     }
                 } else {
                     echo "<tr><td colspan='5'>No records found</td></tr>";
                 }
-                $stmt->close();
-                $conn->close();
                 ?>
             </tbody>
         </table>
@@ -202,6 +216,7 @@ if (isset($_GET["request"])) {
 </html>
 
 <?php
+        $conn->close();
     }
 }
 ?>
