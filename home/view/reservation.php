@@ -148,25 +148,35 @@ $maintenance_requests = fetch_maintenance_requests($conn, $user_id);
                 </tr>
             </thead>
             <tbody>
-                <?php
-                // Fetch cash advances for the logged-in user
-                $sql = "SELECT * FROM cash_advances WHERE user_id = $user_id";
-                $result = $conn->query($sql);
+            <?php
+// Database connection
+include "../../config/db.php";
 
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $row["id"] . "</td>";
-                        echo "<td>" . $row["name"] . "</td>";
-                        echo "<td>₱" . $row["amount"] . "</td>";
-                        echo "<td>" . $row["date"] . "</td>";
-                        echo "<td>" . $row["status"] . "</td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='5'>No records found</td></tr>";
-                }
-                ?>
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch cash advances for the logged-in user
+function fetch_cash_advances($conn, $user_id) {
+    $sql = "SELECT * FROM cash_advances WHERE user_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $cash_advances = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $cash_advances[] = $row;
+        }
+    }
+    $stmt->close();
+    return $cash_advances;
+}
+
+$user_id = $_SESSION["user_id"]; // Assuming user_id is stored in session
+$cash_advances = fetch_cash_advances($conn, $user_id);
+?>
             </tbody>
         </table>
     </div>
