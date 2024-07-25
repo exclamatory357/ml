@@ -17,6 +17,8 @@
             border-radius: 10px;
             max-width: 400px;
             margin: 0 auto;
+            max-height: 90%; /* Add max-height for better mobile view */
+            overflow-y: auto; /* Add scroll if content exceeds max-height */
         }
 
         .p-absolute-login {
@@ -46,7 +48,6 @@
 
         @media (max-width: 768px) {
             .p-absolute-login {
-                height: 10px;
                 position: absolute;
                 top: 5%; /* Adjusted for better mobile view */
                 left: 50%;
@@ -59,7 +60,6 @@
 
         @media (max-width: 576px) {
             .p-absolute-login {
-                height: 10px;
                 position: absolute;
                 top: 5%; /* Adjust further for smaller screens */
                 left: 50%;
