@@ -101,28 +101,36 @@ if (isset($_GET["request"])) {
                 </tr>
             </thead>
             <tbody>
-                <?php
-                include "../../config/db.php";
-                // Fetch maintenance requests for the logged-in user
-                $sql = "SELECT * FROM maintenance_requests WHERE user_id = $user_id";
-                $result = $conn->query($sql);
+            <?php
+include "../../config/db.php";
 
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $row["id"] . "</td>";
-                        echo "<td>" . $row["item_name"] . "</td>";
-                        echo "<td>" . $row["description"] . "</td>";
-                        echo "<td>" . $row["request_date"] . "</td>";
-                        //echo "<td>" . $row["status"] . "</td>";
-                        echo "<td>" . $row["admin_comment"] . "</td>";
-                        echo "<td>" . $row["admin_approval"] . "</td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='7'>No records found</td></tr>";
-                }
-                ?>
+// Fetch maintenance requests for the logged-in user using a prepared statement
+$sql = "SELECT * FROM maintenance_requests WHERE user_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($row["id"]) . "</td>";
+        echo "<td>" . htmlspecialchars($row["item_name"]) . "</td>";
+        echo "<td>" . htmlspecialchars($row["description"]) . "</td>";
+        echo "<td>" . htmlspecialchars($row["request_date"]) . "</td>";
+        // echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
+        echo "<td>" . htmlspecialchars($row["admin_comment"]) . "</td>";
+        echo "<td>" . htmlspecialchars($row["admin_approval"]) . "</td>";
+        echo "</tr>";
+    }
+} else {
+    echo "<tr><td colspan='7'>No records found</td></tr>";
+}
+
+$stmt->close();
+$conn->close();
+?>
+
             </tbody>
         </table>
     </div>
