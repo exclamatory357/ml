@@ -101,35 +101,41 @@ if (isset($_GET["request"])) {
                 </tr>
             </thead>
             <tbody>
-                <?php
-                // Database connection
-                $conn = new mysqli("localhost", "root", "", "resevation");
+            <?php
+include "../../config/db.php"; // Including the db.php file
 
-                // Check connection
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
+// Assuming $user_id is already defined somewhere in your session or previous code
+$user_id = $_SESSION['user_id'];
 
-                // Fetch maintenance requests for the logged-in user
-                $sql = "SELECT * FROM maintenance_requests WHERE user_id = $user_id";
-                $result = $conn->query($sql);
+// Fetch maintenance requests for the logged-in user
+$sql = "SELECT * FROM maintenance_requests WHERE user_id = $user_id";
+$result = mysqli_query($con, $sql);
 
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $row["id"] . "</td>";
-                        echo "<td>" . $row["item_name"] . "</td>";
-                        echo "<td>" . $row["description"] . "</td>";
-                        echo "<td>" . $row["request_date"] . "</td>";
-                        //echo "<td>" . $row["status"] . "</td>";
-                        echo "<td>" . $row["admin_comment"] . "</td>";
-                        echo "<td>" . $row["admin_approval"] . "</td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='7'>No records found</td></tr>";
-                }
-                ?>
+// Display the results in a table
+echo "<table>";
+echo "<tr><th>ID</th><th>Item Name</th><th>Description</th><th>Request Date</th><th>Admin Comment</th><th>Admin Approval</th></tr>";
+
+if (mysqli_num_rows($result) > 0) {
+    while($row = mysqli_fetch_assoc($result)) {
+        echo "<tr>";
+        echo "<td>" . $row["id"] . "</td>";
+        echo "<td>" . $row["item_name"] . "</td>";
+        echo "<td>" . $row["description"] . "</td>";
+        echo "<td>" . $row["request_date"] . "</td>";
+        echo "<td>" . $row["admin_comment"] . "</td>";
+        echo "<td>" . $row["admin_approval"] . "</td>";
+        echo "</tr>";
+    }
+} else {
+    echo "<tr><td colspan='6'>No records found</td></tr>";
+}
+
+echo "</table>";
+
+// Close the connection
+mysqli_close($con);
+?>
+
             </tbody>
         </table>
     </div>
