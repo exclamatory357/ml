@@ -46,7 +46,7 @@
 
         @media (max-width: 768px) {
             .p-absolute-login {
-                top: 30%; /* Adjusted for better mobile view */
+                top: 5%; /* Adjusted for better mobile view */
                 left: 50%;
                 transform: translate(-50%, -30%);
                 max-width: 90%; /* Allow more width on mobile */
