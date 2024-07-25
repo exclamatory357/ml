@@ -50,7 +50,7 @@
                 top: 5%; /* Adjusted for better mobile view */
                 left: 50%;
                 transform: translate(-50%, -80%);
-                max-width: 70%; /* Allow more width on mobile */
+                max-width: 80%; /* Allow more width on mobile */
                 padding: 15px;
                 background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for readability on mobile */
             }
@@ -62,7 +62,7 @@
                 top: 5%; /* Adjust further for smaller screens */
                 left: 50%;
                 transform: translate(-50%, -80%);
-                max-width: 70%;
+                max-width: 80%;
                 padding: 10px;
                 background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for readability on mobile */
             }
