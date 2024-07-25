@@ -184,7 +184,7 @@ include "function/function_get.php";
           case "invalid":
               echo "Swal.fire({
                       icon: 'error',
-                      title: 'Invalid password!',
+                      title: 'Invalid  Username or Password!',
                       text: 'Invalid.',
                       timer: 5000,
                       timerProgressBar: true,
