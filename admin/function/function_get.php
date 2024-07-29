@@ -171,7 +171,15 @@ function get_cash_advances($con) {
     }
 }
 
-
+function get_cash_advances_data($con) {
+    $sql = "SELECT month, SUM(remaining_amount) AS total_sales FROM invoices GROUP BY month";
+    $query = mysqli_query($con, $sql);
+    $data = [];
+    while ($row = mysqli_fetch_assoc($query)) {
+        $data[] = $row;
+    }
+    return $data;
+}
 
 
 
