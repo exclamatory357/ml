@@ -1,6 +1,21 @@
 <?php
-if (isset($_GET["dashboard"])) {?>
+if (isset($_GET["dashboard"])) {
+    include "../../config/db.php";
 
+    // Fetch data for Cash Advances chart
+    $query = "SELECT date_issued, remaining_amount FROM invoices WHERE remaining_amount > 0";
+    $result = $con->query($query);
+
+    $dates = [];
+    $amounts = [];
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $dates[] = $row['date_issued'];
+            $amounts[] = $row['remaining_amount'];
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,6 +95,8 @@ if (isset($_GET["dashboard"])) {?>
             }
         }
     </style>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -176,13 +193,59 @@ if (isset($_GET["dashboard"])) {?>
         </div>
         -->
     </div>
+
+    <!-- Cash Advances Chart -->
+    <div class="dashboard-row">
+        <div class="dashboard-col" style="flex: 1 1 100%;">
+            <canvas id="cashAdvancesChart"></canvas>
+        </div>
+    </div>
 </section>
 
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('cashAdvancesChart').getContext('2d');
+        const cashAdvancesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: <?= json_encode($dates) ?>,
+                datasets: [{
+                    label: 'Remaining Amount',
+                    data: <?= json_encode($amounts) ?>,
+                    backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                    borderColor: 'rgba(0, 123, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'day'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Date Issued'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Remaining Amount'
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
-
 <?php } ?>
