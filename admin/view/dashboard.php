@@ -1,10 +1,5 @@
 <?php
-if (isset($_GET["dashboard"])) { 
-    include "../../config/db.php"; 
-    $cash_advances_data = get_cash_advances_data($con);
-    $months = array_column($cash_advances_data, 'month');
-    $total_sales = array_column($cash_advances_data, 'total_sales');
-?>
+if (isset($_GET["dashboard"])) {?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -113,8 +108,6 @@ if (isset($_GET["dashboard"])) {
                 <div class="icon">
                     <i class="fas fa-shopping-bag"></i>
                 </div>
-                <!-- Chart container -->
-                <canvas id="cashAdvancesChart"></canvas>
             </div>
         </div>
         <!-- ./col -->
@@ -188,43 +181,6 @@ if (isset($_GET["dashboard"])) {
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Embed the cash advances data from PHP
-    const labels = <?php echo json_encode($months); ?>;
-    const values = <?php echo json_encode($total_sales); ?>;
-
-    const chartData = {
-        labels: labels,
-        datasets: [{
-            label: 'Cash Advances',
-            data: values,
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }]
-    };
-
-    const config = {
-        type: 'line',
-        data: chartData,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    };
-
-    const cashAdvancesChart = new Chart(
-        document.getElementById('cashAdvancesChart'),
-        config
-    );
-});
-</script>
 
 </body>
 </html>
