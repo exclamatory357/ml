@@ -197,7 +197,7 @@ if (isset($_GET["dashboard"])) {
 
     <!-- Cash Advances Chart -->
     <div class="dashboard-row">
-        <div class="dashboard-col" style="flex: 1 1 100%;">
+        <div class="dashboard-col" style="flex: 1 1 40%;">
             <canvas id="cashAdvancesChart"></canvas>
         </div>
     </div>
@@ -214,7 +214,7 @@ if (isset($_GET["dashboard"])) {
             data: {
                 labels: <?= json_encode($dates) ?>,
                 datasets: [{
-                    label: 'Remaining Amount',
+                    label: 'Cash Advances',
                     data: <?= json_encode($amounts) ?>,
                     backgroundColor: 'rgba(0, 123, 255, 0.2)',
                     borderColor: 'rgba(0, 123, 255, 1)',
@@ -238,7 +238,7 @@ if (isset($_GET["dashboard"])) {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Remaining Amount'
+                            text: 'Cash Advances'
                         }
                     }
                 }
