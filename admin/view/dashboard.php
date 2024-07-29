@@ -103,7 +103,7 @@ if (isset($_GET["dashboard"])) {?>
             <div class="small-box bg-primary">
                 <div class="inner">
                     <h3><?= htmlspecialchars(count_me2($con)) ?></h3>
-                    <p>Total Sales</p>
+                    <p>Cash Advances</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-shopping-bag"></i>
