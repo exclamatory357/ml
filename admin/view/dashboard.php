@@ -1,6 +1,6 @@
 <?php
 if (isset($_GET["dashboard"])) { 
-    include "../../config/db.php"; 
+     
     $cash_advances_data = get_cash_advances_data($con);
 ?>
 
