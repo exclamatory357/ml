@@ -32,8 +32,8 @@
           <!--      <td>{$row['category']}</td> 
                 <td><img src='uploads/{$row['image']}' alt='Image' width='50' height='50'></td> !-->
                 <td>
-                    <a href='?pumpboat-edit={$row['id']}' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i> Edit</a>
-                    <a href='#' class='btn btn-danger btn-sm' onclick='confirmDelete({$row['id']})'><i class='fa fa-trash'></i> Delete</a>
+                    <a href='?pumpboat-edit={$row['id']}' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a>
+                    <a href='#' class='btn btn-danger btn-sm' onclick='confirmDelete({$row['id']})'><i class='fa fa-trash'></i></a>
                 </td>
             </tr>";
             $i++;
