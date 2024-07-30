@@ -128,7 +128,7 @@ function get_cash_advances($con) {
                             <form method='post' action='function/function_crud.php'>
                                 <input type='hidden' name='update_cash_advance' value='1'>
                                 <input type='hidden' name='id' value='".$fetch['id']."'>
-                                <label>Name: </label> <input type='text' name='name' value='".$fetch["name"]."' class='form-control'><br>
+                                <label>Name: </label> <input type='text' name='name' value='".$fetch["name"]."' class='form-control' readonly><br>
                                 <label>Amount: </label> <input type='text' name='amount' value='".$fetch["amount"]."' class='form-control' readonly><br>
                                 <label>Date: </label> <input type='date' name='date' value='".$fetch["date"]."' class='form-control' readonly><br>
                                 <label>Status: </label> <input type='text' name='status' value='".$fetch["status"]."' class='form-control'><br>
