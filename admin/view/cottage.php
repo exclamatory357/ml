@@ -40,7 +40,7 @@
                 <th>Name</th>
                 <th>Pumpboat No.</th>
              <!--   <th>Max Person</th> !-->
-                <th>Category</th>
+           <!--     <th>Category</th> !-->
                 <th>Team</th>
                 <th><i class="fa fa-cogs"></i></th>
                       

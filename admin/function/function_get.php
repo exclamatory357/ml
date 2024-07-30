@@ -194,7 +194,7 @@ function get_cottage($con) {
                     <!-- <td>".$fetch['category']."</td> -->
                     <td>".$fetch['type']."</td>
                   <!--  <td>".$fetch['max_person']."</td> !-->
-                    <td>".$fetch['category']."</td>
+                 <!--   <td>".$fetch['category']."</td> !-->
                     <td>".$fetch['team']."</td>
                     <td>
                         <a href='?cottage-edit=".$fetch['id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a>
