@@ -120,7 +120,7 @@ if (isset($_GET["dashboard"])) {
             <!-- small box -->
             <div class="small-box bg-primary">
                 <div class="inner">
-                    <h3><?= htmlspecialchars(count_me2($con)) ?></h3>
+                    <h3>₱<?= htmlspecialchars(count_me2($con)) ?></h3>
                     <p>Cash Advances</p>
                 </div>
                 <div class="icon">
