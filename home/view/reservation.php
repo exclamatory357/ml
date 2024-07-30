@@ -51,7 +51,9 @@ if (isset($_GET["request"])) {
                             <label for="description" class="form-label">Team:</label>
                             <textarea id="description" name="description" class="form-control" required></textarea>
                         </div>
+                        <div class="modal-footer">
                         <button type="submit" name="maintenance_request" class="btn btn-primary">Submit Maintenance Request</button>
+                         </div>
                     </form>
                 </div>
             </div>
