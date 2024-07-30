@@ -1267,8 +1267,8 @@ function get_users($con) {
                         <i id='eye-icon-".$passwordFieldId."' class='fa fa-eye' style='cursor: pointer;' onclick='togglePasswordVisibility(\"".$passwordFieldId."\")'></i>
                      </td>
                    <!--  <td>".$fetch['team']."</td>    !-->
-                     <td><a href='?users-edit=".$fetch['user_id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i> Edit</a>
-                     <button type='button' data-toggle='modal' data-target='#user-".$fetch['user_id']."' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i> Delete</button></td>
+                     <td><a href='?users-edit=".$fetch['user_id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a>
+                     <button type='button' data-toggle='modal' data-target='#user-".$fetch['user_id']."' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button></td>
                     </tr>
                   </tbody>";
 
