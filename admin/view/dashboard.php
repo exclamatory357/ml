@@ -3,7 +3,7 @@ if (isset($_GET["dashboard"])) {
     include "../../config/db.php";
 
     // Fetch data for Cash Advances chart
-    $query = "SELECT date_issued, remaining_amount FROM invoices WHERE remaining_amount > 0";
+    $query = "SELECT date_issued, amount FROM invoices WHERE amount > 0";
     $result = $con->query($query);
 
     $dates = [];
@@ -12,7 +12,7 @@ if (isset($_GET["dashboard"])) {
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $dates[] = $row['date_issued'];
-            $amounts[] = $row['remaining_amount'];
+            $amounts[] = $row['amount'];
         }
     }
 ?>
