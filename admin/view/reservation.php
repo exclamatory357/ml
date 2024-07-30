@@ -515,7 +515,7 @@
                                         <td>{$row['status']}</td>
                                         <td>
                                             <button class='btn btn-primary' data-toggle='modal' data-target='#paymentModal-{$row['id']}'>
-                                                Process Payment
+                                                <i class='fa fa-credit-card'></i> Process Payment
                                             </button>
                                             <!-- Payment Modal for each row -->
                                             <div class='modal fade' id='paymentModal-{$row['id']}' tabindex='-1' role='dialog' aria-labelledby='paymentModalLabel-{$row['id']}' aria-hidden='true'>
