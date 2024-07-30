@@ -227,7 +227,11 @@ if (isset($_GET["dashboard"])) {
                     x: {
                         type: 'time',
                         time: {
-                            unit: 'day'
+                            unit: 'day',
+                            tooltipFormat: 'MMM d, yyyy', // Display only date in tooltip
+                            displayFormats: {
+                                day: 'MMM d' // Display only date on x-axis
+                            }
                         },
                         title: {
                             display: true,
