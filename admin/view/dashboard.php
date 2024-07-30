@@ -150,7 +150,7 @@ if (isset($_GET["dashboard"])) {
                     <p>User Accounts</p>
                 </div>
                 <div class="icon">
-                    <i class="fa fa-sailboat"></i>
+                    <i class="fa fa-users"></i>
                 </div>
             </div>
         </div>
