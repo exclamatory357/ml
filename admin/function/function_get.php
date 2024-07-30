@@ -132,13 +132,11 @@ function get_cash_advances($con) {
                                 <label>Amount: </label> <input type='text' name='amount' value='".$fetch["amount"]."' class='form-control' readonly><br>
                                 <label>Date: </label> <input type='date' name='date' value='".$fetch["date"]."' class='form-control' readonly><br>
                                 <label>Status: </label> <input type='text' name='status' value='".$fetch["status"]."' class='form-control'><br>
-                                <br><br>
-                                <button type='submit' class='btn btn-primary'>Update</button>
-                            </form>
                         </div>
                         <div class='modal-footer'>
-                            
+                            <button type='submit' class='btn btn-primary'>Update</button>
                             <button type='button' class='btn bg-maroon' data-dismiss='modal'>Close</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -171,7 +169,6 @@ function get_cash_advances($con) {
         }
     }
 }
-
 
 
 
