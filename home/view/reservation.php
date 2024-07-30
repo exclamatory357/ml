@@ -80,7 +80,9 @@ if (isset($_GET["request"])) {
                             <label for="amount" class="form-label">Amount:</label>
                             <input type="number" step="0.01" id="amount" name="amount" class="form-control" required>
                         </div>
+                        <div class="modal-footer">
                         <button type="submit" name="cash_advance" class="btn btn-primary">Submit Cash Advance Request</button>
+                        </div>
                     </form>
                 </div>
             </div>
