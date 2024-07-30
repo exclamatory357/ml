@@ -152,7 +152,7 @@ $pumpboats = fetch_pumpboats($con);
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row">
+                      <!--  <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Type</label>
                             <div class="col-sm-8">
                                 <select class="form-control" name="category" required>
@@ -160,7 +160,7 @@ $pumpboats = fetch_pumpboats($con);
                                     <option value="Panambahan">Panambahan</option>
                                     <option value="Island hopping">Island hopping</option>
                                 </select>
-                            </div>
+                            </div> !-->
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-8 offset-sm-4">
