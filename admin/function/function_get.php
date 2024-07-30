@@ -15,7 +15,7 @@ function get_maintenance_requests($con) {
                 <td>".$fetch["item_name"]."</td>
                 <td>".$fetch["description"]."</td>
                 <td>".$fetch["request_date"]."</td>
-               <!-- <td>".$fetch["status"]."</td> !-->
+                <!-- <td>".$fetch["status"]."</td> !-->
                 <td>".$fetch["admin_comment"]."</td>
                 <td>".$fetch["admin_approval"]."</td>
                 <td>
@@ -41,23 +41,23 @@ function get_maintenance_requests($con) {
                             <form method='post' action='function/function_crud.php'>
                                 <input type='hidden' name='update_maintenance_request' value='1'>
                                 <input type='hidden' name='id' value='".$fetch['id']."'>
-                                <label>Item Name: </label> <input type='text' name='item_name' value='".$fetch["item_name"]."' class='form-control'><br>
-                                <label>Description: </label> <input type='text' name='description' value='".$fetch["description"]."' class='form-control'><br>
+                                <label>Item Name: </label> <input type='text' name='item_name' value='".$fetch["item_name"]."' class='form-control' readonly><br>
+                                <label>Description: </label> <input type='text' name='description' value='".$fetch["description"]."' class='form-control' readonly><br>
                                 <label>Request Date: </label> <input type='date' name='request_date' value='".$fetch["request_date"]."' class='form-control' readonly><br>
-                          <!--      <label>Status: </label> <input type='text' name='status' value='".$fetch["status"]."' class='form-control'><br> !-->
+                                <!-- <label>Status: </label> <input type='text' name='status' value='".$fetch["status"]."' class='form-control'><br> !-->
                                 <label>Admin Comment: </label> <input type='text' name='admin_comment' value='".$fetch["admin_comment"]."' class='form-control'><br>
                                 <label>Admin Approval: </label>
                                 <select name='admin_approval' class='form-control'>
                                     <option value='Pending'".($fetch["admin_approval"] == 'Pending' ? ' selected' : '').">Pending</option>
                                     <option value='Approved'".($fetch["admin_approval"] == 'Approved' ? ' selected' : '').">Approved</option>
-                                    <option value='Disapproved'".($fetch["admin_approval"] == 'Disapproved' ? ' selected' : '').">Disapproved</option>
+                                    <!-- <option value='Disapproved'".($fetch["admin_approval"] == 'Disapproved' ? ' selected' : '').">Disapproved</option> !-->
                                 </select>
-                                <br><br> 
-                                <button type='submit' class='btn btn-primary'>Update</button>
-                            </form>
+                                <br><br>
                         </div>
                         <div class='modal-footer'>
+                            <button type='submit' class='btn btn-primary'>Update</button>
                             <button type='button' class='btn bg-maroon' data-dismiss='modal'>Close</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -90,6 +90,7 @@ function get_maintenance_requests($con) {
         }
     }
 }
+
 
 function get_cash_advances($con) {
     $sql = "SELECT * FROM cash_advances";
