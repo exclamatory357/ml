@@ -1414,7 +1414,7 @@ function count_pumpboats($con) {
 }
 
 function count_me2($con){
-    $sql = "SELECT SUM(remaining_amount) AS total_sales FROM invoices";
+    $sql = "SELECT SUM(amount) AS total_sales FROM invoices";
     $query = mysqli_query($con, $sql);
     $result = mysqli_fetch_assoc($query);
     $total_sales = $result['total_sales'];
