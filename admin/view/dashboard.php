@@ -124,7 +124,7 @@ if (isset($_GET["dashboard"])) {
                     <p>Total Payments of Cash Advances</p>
                 </div>
                 <div class="icon">
-                    <i class="fas fa-shopping-bag"></i>
+                    <i class="fas fa-credit-card"></i>
                 </div>
             </div>
         </div>
