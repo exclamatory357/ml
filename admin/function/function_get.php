@@ -107,7 +107,7 @@ function get_cash_advances($con) {
                 <td>".$fetch["status"]."</td>
                 <td>
                     <button type='button' data-toggle='modal' data-target='#modal-edit-".$fetch['id']."' class='btn btn-warning edit' id='".$fetch['id']."'>
-                        <i class='fa fa-pencil'></i>
+                        <i class='fa fa-edit'></i>
                     </button>
                     <button type='button' data-toggle='modal' data-target='#modal-delete-".$fetch['id']."' class='btn btn-danger delete' id='".$fetch['id']."'>
                         <i class='fa fa-trash'></i>
