@@ -507,6 +507,7 @@
                         $result = manage_payment($con);
                         if ($result && mysqli_num_rows($result) > 0) {
                             while ($row = mysqli_fetch_assoc($result)) {
+                                $disabled = ($row['status'] == 'Pending') ? 'disabled' : '';
                                 echo "<tr>
                                         <td>{$row['id']}</td>
                                         <td>{$row['name']}</td>
@@ -514,7 +515,7 @@
                                         <td>{$row['date']}</td>
                                         <td>{$row['status']}</td>
                                         <td>
-                                            <button class='btn btn-primary' data-toggle='modal' data-target='#paymentModal-{$row['id']}'>
+                                            <button class='btn btn-primary' data-toggle='modal' data-target='#paymentModal-{$row['id']}' {$disabled}>
                                                 <i class='fa fa-credit-card'></i> Process Payment
                                             </button>
                                             <!-- Payment Modal for each row -->
@@ -558,6 +559,7 @@
         </div>
     </section>
 <?php } ?>
+
 
 <?php
 
