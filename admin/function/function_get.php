@@ -132,13 +132,7 @@ function get_cash_advances($con) {
                                 <label>Name: </label> <input type='text' name='name' value='".$fetch["name"]."' class='form-control' readonly><br>
                                 <label>Amount: </label> <input type='text' name='amount' value='".$fetch["amount"]."' class='form-control' readonly><br>
                                 <label>Date: </label> <input type='date' name='date' value='".$fetch["date"]."' class='form-control' readonly><br>
-                                <label>Status: </label>
-                                <select name='status' class='form-control'>
-                                    <option value='Pending'".($fetch["status"] == 'Pending' ? ' selected' : '').">Pending</option>
-                                    <option value='Approved'".($fetch["status"] == 'Approved' ? ' selected' : '').">Approved</option>
-                                    <!-- <option value='Disapproved'".($fetch["status"] == 'Disapproved' ? ' selected' : '').">Disapproved</option> !-->
-                                </select>
-                                <br><br>
+                                <label>Status: </label> <input type='text' name='status' value='".$fetch["status"]."' class='form-control'><br>
                         </div>
                         <div class='modal-footer'>
                             <button type='submit' class='btn btn-primary'>Update</button>
@@ -177,6 +171,62 @@ function get_cash_advances($con) {
     }
 }
 
+
+
+
+
+
+//add agent
+function get_cottage($con) {
+    $sql = "SELECT * FROM `cottage/hall`";
+    $query = mysqli_query($con, $sql);
+    $i = 1;
+
+    if (mysqli_num_rows($query) > 0) {
+        while ($fetch = mysqli_fetch_assoc($query)) {
+            echo "
+                <tr>
+                    <td>".$i."</td>
+                    <!-- <td><img src='function/".$fetch['img']."' alt='image' width='60px'></td> -->
+                    <!-- <td class='text-center'>".$fetch['actual_no']."</td> -->
+                    <td>".$fetch['name']."</td>
+                    <!-- <td>".$fetch['category']."</td> -->
+                    <td>".$fetch['type']."</td>
+                  <!--  <td>".$fetch['max_person']."</td> !-->
+                 <!--   <td>".$fetch['category']."</td> !-->
+                    <td>".$fetch['team']."</td>
+                    <td>
+                        <a href='?cottage-edit=".$fetch['id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a>
+                        <button type='button' data-toggle='modal' data-target='#modal-delete-".$fetch['id']."' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+                    </td>
+                </tr>
+
+                <div class='modal fade' id='modal-delete-".$fetch['id']."' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                    <div class='modal-dialog modal-sm' role='document'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <h5 class='modal-title' id='exampleModalLabel'>Confirmation</h5>
+                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                    <span aria-hidden='true'>&times;</span>
+                                </button>
+                            </div>
+                            <div class='modal-body'>
+                                <p>Are you sure you want to delete ".$fetch['name']."?</p>
+                            </div>
+                            <div class='modal-footer'>
+                                <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+                                <a href='function/function_crud.php?cottage-del=".$fetch['id']."' class='btn btn-danger'>Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ";
+            $i++;
+        }
+    } else {
+        echo "<tr><td colspan='7'>No data available</td></tr>";
+    }
+}
 
 
 
