@@ -314,13 +314,13 @@
     <div class="container-fluid">
         <div class="row mb-2 align-items-center">
             <div class="col-6">
-                <h1>Mainitenance & C/A</h1>
+                <h1>Maintenance & C/A Request</h1>
             </div>
             <div class="col-6">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Mainitenance & C/A</li>
+                        <li class="breadcrumb-item active" aria-current="page">Maintenance & C/A Request</li>
                     </ol>
                 </nav>
             </div>
