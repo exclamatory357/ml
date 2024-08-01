@@ -107,17 +107,17 @@ function get_cash_advances($con) {
                 <td>".$fetch["date"]."</td>
                 <td>".$fetch["status"]."</td>
                 <td>
-                    <button type='button' data-toggle='modal' data-target='#modal-edit-".$fetch['id']."' class='btn btn-warning edit' id='".$fetch['id']."'>
+                    <button type='button' data-toggle='modal' data-target='#modal-edit-cash-".$fetch['id']."' class='btn btn-warning edit' id='".$fetch['id']."'>
                         <i class='fa fa-edit'></i>
                     </button>
-                    <button type='button' data-toggle='modal' data-target='#modal-delete-".$fetch['id']."' class='btn btn-danger delete' id='".$fetch['id']."'>
+                    <button type='button' data-toggle='modal' data-target='#modal-delete-cash-".$fetch['id']."' class='btn btn-danger delete' id='".$fetch['id']."'>
                         <i class='fa fa-trash'></i>
                     </button>
                 </td>
             </tr>";
 
             // Edit Modal
-            echo "<div class='modal fade' id='modal-edit-".$fetch['id']."'>
+            echo "<div class='modal fade' id='modal-edit-cash-".$fetch['id']."'>
                 <div class='modal-dialog modal-lg'>
                     <div class='modal-content'>
                         <div class='modal-header bg-primary'>
@@ -132,7 +132,13 @@ function get_cash_advances($con) {
                                 <label>Name: </label> <input type='text' name='name' value='".$fetch["name"]."' class='form-control' readonly><br>
                                 <label>Amount: </label> <input type='text' name='amount' value='".$fetch["amount"]."' class='form-control' readonly><br>
                                 <label>Date: </label> <input type='date' name='date' value='".$fetch["date"]."' class='form-control' readonly><br>
-                                <label>Status: </label> <input type='text' name='status' value='".$fetch["status"]."' class='form-control'><br>
+                                <label>Status: </label>
+                                <select name='status' class='form-control'>
+                                    <option value='Pending'".($fetch["status"] == 'Pending' ? ' selected' : '').">Pending</option>
+                                    <option value='Approved'".($fetch["status"] == 'Approved' ? ' selected' : '').">Approved</option>
+                                    <!-- <option value='Disapproved'".($fetch["status"] == 'Disapproved' ? ' selected' : '').">Disapproved</option> !-->
+                                </select>
+                                <br><br>
                         </div>
                         <div class='modal-footer'>
                             <button type='submit' class='btn btn-primary'>Update</button>
@@ -144,7 +150,7 @@ function get_cash_advances($con) {
             </div>";
 
             // Delete Modal
-            echo "<div class='modal fade' id='modal-delete-".$fetch['id']."'>
+            echo "<div class='modal fade' id='modal-delete-cash-".$fetch['id']."'>
                 <div class='modal-dialog modal-sm'>
                     <div class='modal-content'>
                         <div class='modal-header bg-danger'>
@@ -170,6 +176,7 @@ function get_cash_advances($con) {
         }
     }
 }
+
 
 
 
