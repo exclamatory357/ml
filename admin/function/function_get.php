@@ -198,7 +198,7 @@ function get_cottage($con) {
                     <!-- <td class='text-center'>".$fetch['actual_no']."</td> -->
                     <td>".$fetch['name']."</td>
                     <!-- <td>".$fetch['category']."</td> -->
-                 <!--   <td>".$fetch['type']."</td> !-->
+                    <td>".$fetch['type']."</td>
                   <!--  <td>".$fetch['max_person']."</td> !-->
                  <!--   <td>".$fetch['category']."</td> !-->
                     <td>".$fetch['team']."</td>
