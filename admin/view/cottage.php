@@ -269,15 +269,15 @@ $con->close();
                                 </select>
                             </div>
                         </div>
-                  <!--      <div class="form-group row">
+                        <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Type</label>
                             <div class="col-sm-8">
                                 <select class="form-control" name="type" required>
                                     <option value="Pamo" <?php if($fetch["type"] == "Pamo") echo "selected"; ?>>Pamo</option>
-                                    Add other types as needed 
+                                    <!-- Add other types as needed -->
                                 </select>
                             </div>
-                        </div>  !-->
+                        </div>
                         <div class="form-group row">
                             <div class="col-sm-8 offset-sm-4">
                                 <button type="submit" class="btn btn-primary" name="btn-cottage-edit">Update</button>
