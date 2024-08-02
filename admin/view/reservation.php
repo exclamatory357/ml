@@ -236,18 +236,7 @@
                                         <input type="text" class="form-control" value="<?= htmlspecialchars($fetch["pumpboat_no"]) ?>" name="pumpboat_no" required>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Type</label>
-                                    <div class="col-sm-8">
-                                        <select class="form-control" name="type" required>
-                                            <option value="Type1" <?= $fetch["type"] == "Type1" ? 'selected' : '' ?>>Type1</option>
-                                            <option value="Type2" <?= $fetch["type"] == "Type2" ? 'selected' : '' ?>>Type2</option> 
-                                            <option value="Pamo">Pamo</option>
-                                            <option value="Panambahan">Panambahan</option>
-                                            <option value="Island hopping">Island hopping</option>
-                                        </select>
-                                    </div>
-                                </div> 
+                               
                              <!--   <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Category</label>
                                     <div class="col-sm-8">
