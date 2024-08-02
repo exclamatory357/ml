@@ -265,7 +265,7 @@ $con->close();
                             <label class="col-sm-4 col-form-label">Pumpboat No.</label>
                             <div class="col-sm-8">
                                 <select class="form-control" name="category" id="pumpboat-select" required>
-                                    <option value="">Select Pumpboats</option> 
+                                    <option value="">Select Pumpboat</option> 
                                 </select>
                             </div>
                         </div>
@@ -294,26 +294,32 @@ $con->close();
 </section>
 
 <script>
-    const pumpboats = <?php echo json_encode($pumpboats); ?>;
-    
-    const pumpboatSelect = document.getElementById('pumpboat-select');
-    
-    pumpboats.forEach(pumpboat => {
-        const option = document.createElement('option');
-        option.value = pumpboat.pumpboat_no;
-        option.text = 'Pumpboat ' + pumpboat.pumpboat_no;
-        if (pumpboat.status == 1) {
-            option.disabled = true;
-        }
-        pumpboatSelect.appendChild(option);
-    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const pumpboats = <?php echo json_encode($pumpboats); ?>;
+        const pumpboatSelect = document.getElementById('pumpboat-select');
+        
+        pumpboats.forEach(pumpboat => {
+            const option = document.createElement('option');
+            option.value = pumpboat.pumpboat_no;
+            option.text = 'Pumpboat ' + pumpboat.pumpboat_no;
+            if (pumpboat.status == 1) {
+                option.disabled = true;
+            }
+            pumpboatSelect.appendChild(option);
+        });
 
-    // Set the selected value
-    const selectedCategory = "<?php echo $fetch['category']; ?>";
-    if (selectedCategory) {
-        pumpboatSelect.value = selectedCategory;
-    }
+        // Set the selected value
+        const selectedCategory = "<?php echo $fetch['category']; ?>";
+        if (selectedCategory) {
+            pumpboatSelect.value = selectedCategory;
+        }
+    });
 </script>
+
+<!-- Bootstrap and other necessary scripts -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
 
 <?php } ?>
 
