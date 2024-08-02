@@ -550,7 +550,7 @@ if (isset($_POST["btn-cottage-edit"])) {
     $type = $_POST["type"];
    // $category = $_POST["category"]; `category`='$category'
 
-    $sql = "UPDATE `cottage/hall` SET `team`='$team', `name`='$name', `type`='$type',  WHERE id = '$id'";
+    $sql = "UPDATE `cottage/hall` SET `team`='$team', `name`='$name', `type`='$type'  WHERE id = '$id'";
     $query = mysqli_query($con, $sql);
 
     if (!$query) {
