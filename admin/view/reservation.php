@@ -143,7 +143,7 @@
                                         <input type="text" class="form-control" name="pumpboat_no" required>
                                     </div>
                                 </div>
-                          <!--      <div class="form-group row">
+                             <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Type</label>
                                     <div class="col-sm-8">
                                         <select class="form-control" name="type" required>
@@ -152,7 +152,7 @@
                                             <option value="Island Hopping">Island Hopping</option>
                                         </select>
                                     </div> 
-                                </div> !-->
+                                </div> 
                              <!--   <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Category</label>
                                     <div class="col-sm-8">
@@ -236,7 +236,7 @@
                                         <input type="text" class="form-control" value="<?= htmlspecialchars($fetch["pumpboat_no"]) ?>" name="pumpboat_no" required>
                                     </div>
                                 </div>
-                      <!--          <div class="form-group row">
+                                <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Type</label>
                                     <div class="col-sm-8">
                                         <select class="form-control" name="type" required>
@@ -247,7 +247,7 @@
                                             <option value="Island hopping">Island hopping</option>
                                         </select>
                                     </div>
-                                </div> !-->
+                                </div> 
                              <!--   <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Category</label>
                                     <div class="col-sm-8">
