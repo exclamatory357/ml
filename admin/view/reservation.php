@@ -151,8 +151,8 @@
                                             <option value="Panambahan">Panambahan</option>
                                             <option value="Island Hopping">Island Hopping</option>
                                         </select>
-                                    </div> !-->
-                                </div>
+                                    </div> 
+                                </div> !-->
                              <!--   <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Category</label>
                                     <div class="col-sm-8">
