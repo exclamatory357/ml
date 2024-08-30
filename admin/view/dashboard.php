@@ -15,51 +15,6 @@ if (isset($_GET["dashboard"])) {
             $amounts[] = $row['amount'];
         }
     }
-
-    function get_weather_update($city, $apiKey) {
-        // API endpoint for WeatherAPI
-        $url = "http://api.weatherapi.com/v1/current.json?key={$apiKey}&q={$city}&aqi=no"; // aqi=no to exclude air quality data
-    
-        // Initialize cURL session
-        $ch = curl_init();
-    
-        // Set cURL options
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    
-        // Execute cURL session and store the response
-        $response = curl_exec($ch);
-    
-        // Check for errors
-        if ($response === false) {
-            die("cURL Error: " . curl_error($ch));
-        }
-    
-        // Decode JSON response
-        $weather_data = json_decode($response, true);
-    
-        // Close cURL session
-        curl_close($ch);
-    
-        // Check if the API returned an error
-        if (isset($weather_data['error'])) {
-            die("API Error: " . $weather_data['error']['message']);
-        }
-    
-        // Extract necessary weather information
-        $temperature = $weather_data['current']['temp_c'];
-        $description = $weather_data['current']['condition']['text'];
-        $humidity = $weather_data['current']['humidity'];
-    
-        // Display weather information
-        echo "Current Temperature: " . $temperature . "°C<br>";
-        echo "Weather: " . ucfirst($description) . "<br>";
-        echo "Humidity: " . $humidity . "%<br>";
-    }
-    
-    // Example usage: Replace 'your_api_key' with your actual WeatherAPI key
-    get_weather_update('Santa Fe, Cebu', '593347b3b07a454fb8870558243008');
-    
 ?>
 <!DOCTYPE html>
 <html lang="en">
