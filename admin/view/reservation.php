@@ -323,7 +323,7 @@
             <h3 class="box-title">Maintenance Requests</h3>
         </div>
         <div class="box-body">
-            <table id="example2" class="table table-bordered">
+            <table id="maintenanceRequests" class="table table-bordered">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -348,7 +348,7 @@
             <h3 class="box-title">Cash Advances</h3>
         </div>
         <div class="box-body">
-            <table id="example3" class="table table-bordered">
+            <table id="cashAdvances" class="table table-bordered">
                 <thead>
                     <tr>
                         <th>#</th>
