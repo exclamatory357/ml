@@ -18,8 +18,8 @@ $pdf->SetTitle('Monthly Report', true);
 $pdf->AddPage();
 
 // Add background image
-$background_image = 'uploads/danrose_house.jpg'; // Set the path to your background image
-$pdf->Image($background_image, 0, 0, 279.4, 215.9); // Adjust the width and height according to your page size
+//$background_image = 'uploads/danrose_house.jpg'; // Set the path to your background image
+//$pdf->Image($background_image, 0, 0, 279.4, 215.9); // Adjust the width and height according to your page size
 
 // Title header
 $pdf->SetFont('Arial', 'B', 25);
