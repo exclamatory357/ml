@@ -41,7 +41,7 @@ $pdf->SetLeftMargin(20);
 
 // Set colors for the table headers
 $pdf->SetFillColor(100, 100, 255); // Light blue
-$pdf->SetTextColor(255, 255, 255); // White text
+$pdf->SetTextColor(0, 0, 0); // White text
 $pdf->SetDrawColor(0, 0, 0); // Black border
 $pdf->SetLineWidth(0.5); // Line width
 
