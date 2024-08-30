@@ -323,7 +323,7 @@
             <h3 class="box-title">Maintenance Requests</h3>
         </div>
         <div class="box-body">
-            <table id="maintenanceRequests" class="table table-bordered">
+            <table id="example2" class="table table-bordered">
                 <thead>
                     <tr>
                         <th>#</th>

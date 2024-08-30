@@ -75,13 +75,6 @@
   });
 
   $(function () {
-    $("#maintenanceRequests").DataTable({
-        "responsive": true,
-        "lengthChange": false,
-        "autoWidth": false,
-        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#maintenanceRequests_wrapper .row .col-sm-6:eq(0)');
-    
     $('#cashAdvances').DataTable({
         "paging": true,
         "lengthChange": true,
