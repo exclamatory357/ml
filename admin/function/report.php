@@ -74,7 +74,7 @@ if (isset($_POST["btnReport"])) {
         $pdf->Cell(40, 5, 'Date Issued', 1, 0, 'L', $fill);
         $pdf->Cell(33, 5, 'Amount Pay', 1, 0, 'L', $fill);
         $pdf->Cell(33, 5, 'Original Amount', 1, 0, 'L', $fill);
-        $pdf->Cell(33, 5, 'Remaining Amount', 1, 0, 'L', $fill);
+        $pdf->Cell(33, 5, 'Balance', 1, 0, 'L', $fill);
         $pdf->Cell(25, 5, 'Status', 1, 0, 'L', $fill);
         $pdf->Ln();
 
