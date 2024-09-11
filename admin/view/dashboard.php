@@ -32,7 +32,7 @@ if (isset($_GET["dashboard"])) {
     $aggregateHours = 24; // Default aggregation
     $apiKey = "TJGXYEV6GQSNC8BELQNZG8NCG"; // Replace with your actual API key
 
-    $api_url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Bantayan%20Island?unitGroup=metric&key=$apiKey&contentType=json";
+    $api_url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Bantayan%2520island?include=fcst%2Cobs%2Chistfcst%2Cstats%2Cdays%2Chours%2Ccurrent%2Calerts&key=TJGXYEV6GQSNC8BELQNZG8NCG&options=beta&contentType=json";
 
     $json_data = file_get_contents($api_url);
 
