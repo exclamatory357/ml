@@ -128,6 +128,60 @@ if (isset($_GET["dashboard"])) {
                 flex: 1 1 100%; /* Stack columns on smaller screens */
             }
         }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container-fluid {
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+
+        .table {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .table th {
+            background-color: #007bff;
+            color: #ffffff;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table-icon {
+            font-size: 18px;
+            margin-right: 5px;
+        }
+
+        .table-row {
+            transition: background-color 0.2s;
+        }
+
+        .table-row:hover {
+            background-color: #f1f5f9;
+        }
+
+        .api-request {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #6c757d;
+        }
     </style>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -287,42 +341,45 @@ if (isset($_GET["dashboard"])) {
 
 
 <section class="container-fluid">
-    <h1>Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?></h1>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Max Temp</th>
-                <th>Min Temp</th>
-                <th>Precip</th>
-                <th>Wspd</th>
-                <th>Wgust</th>
-                <th>Cloud cover</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($days as $day) { ?>
-            <tr>
-                <td><?php echo htmlspecialchars($day->datetime); ?></td>
-                <td><?php echo htmlspecialchars($day->tempmax); ?></td>
-                <td><?php echo htmlspecialchars($day->tempmin); ?></td>
-                <td><?php echo htmlspecialchars($day->precip); ?></td>
-                <td><?php echo htmlspecialchars($day->windspeed); ?></td>
-                <td><?php echo htmlspecialchars($day->windgust); ?></td>
-                <td><?php echo htmlspecialchars($day->cloudcover); ?></td>
-            </tr>
-            <?php } ?>
-        </tbody>
-    </table>
+        <h1>Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?></h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th><i class="fas fa-temperature-high table-icon"></i> Max Temp (°C)</th>
+                    <th><i class="fas fa-temperature-low table-icon"></i> Min Temp (°C)</th>
+                    <th><i class="fas fa-cloud-rain table-icon"></i> Precip (mm)</th>
+                    <th><i class="fas fa-wind table-icon"></i> Wspd (km/h)</th>
+                    <th><i class="fas fa-wind table-icon"></i> Wgust (km/h)</th>
+                    <th><i class="fas fa-cloud table-icon"></i> Cloud Cover (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($days as $day) { ?>
+                <tr class="table-row">
+                    <td><?php echo htmlspecialchars($day->datetime); ?></td>
+                    <td><?php echo htmlspecialchars($day->tempmax); ?></td>
+                    <td><?php echo htmlspecialchars($day->tempmin); ?></td>
+                    <td><?php echo htmlspecialchars($day->precip); ?></td>
+                    <td><?php echo htmlspecialchars($day->windspeed); ?></td>
+                    <td><?php echo htmlspecialchars($day->windgust); ?></td>
+                    <td><?php echo htmlspecialchars($day->cloudcover); ?></td>
+                </tr>
+                <?php } ?>
+            </tbody>
+        </table>
 
-    <h4>API request</h4>
-    <p><?php echo htmlspecialchars($api_url); ?></p>
+        <div class="api-request">
+            <h4>API request</h4>
+            <p><?php echo htmlspecialchars($api_url); ?></p>
+        </div>
 
-    <div class="dashboard-row">
-        <!-- Add your other dashboard boxes here -->
-    </div>
-</section>
+        <div class="dashboard-row">
+            <!-- Add your other dashboard boxes here -->
+        </div>
+    </section>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </body>
 </html>
