@@ -29,7 +29,7 @@ if (isset($_GET["dashboard"])) {
     $location = extractParam($segments, 1, $query_params, "location");
     $unitGroup = extractParam($segments, 2, $query_params, "unitGroup");
     $aggregateHours = 24; // Default aggregation
-    $apiKey = "1PYNQ6AWUDJE9AFERDCHJHSXK"; // Replace with your actual API key
+    $apiKey = "TJGXYEV6GQSNC8BELQNZG8NCG"; // Replace with your actual API key
 
     $api_url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Bantayan%20Island?unitGroup=metric&key=$apiKey&contentType=json";
 
