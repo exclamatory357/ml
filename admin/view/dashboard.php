@@ -43,7 +43,7 @@ if (isset($_GET["dashboard"])) {
 
 <!-- Weather Forecast request construction -->
 <?php	
-		$api_url="https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{$location}?unitGroup={$unitGroup}&key={$apiKey}&contentType=json";
+		$api_url="https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Bantayan%20Island?unitGroup=metric&key=TJGXYEV6GQSNC8BELQNZG8NCG&contentType=json";
 
 		$json_data = file_get_contents($api_url);
 
