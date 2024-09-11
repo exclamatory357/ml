@@ -17,7 +17,7 @@ if (isset($_GET["dashboard"])) {
     }
 
 
-    function extractParam($pathSegments, $pathIndex, $query_params, $query_param) {
+     function extractParam($pathSegments, $pathIndex, $query_params, $query_param) {
         if (count($pathSegments) > $pathIndex) return trim(urldecode($pathSegments[$pathIndex]));
         if (!empty($query_params[$query_param])) return trim(urldecode($query_params[$query_param]));
         return null;
@@ -48,7 +48,7 @@ if (isset($_GET["dashboard"])) {
     }
 
     $resolvedAddress = $response_data->resolvedAddress;
-    $days = $response_data->days; // Correct assignment
+    $days = $response_data->days; // Correct assignmenty
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -284,6 +284,8 @@ if (isset($_GET["dashboard"])) {
         });
     });
 </script>
+
+
 <section class="container-fluid">
     <h1>Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?></h1>
     <table class="table table-bordered">
