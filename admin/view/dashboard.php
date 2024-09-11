@@ -339,7 +339,7 @@ if (isset($_GET["dashboard"])) {
     });
 </script>
 
-
+<!-- Weather Forcast !-->
 <section class="container-fluid">
         <h1>Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?></h1>
         <table class="table table-bordered">
@@ -378,9 +378,6 @@ if (isset($_GET["dashboard"])) {
             <!-- Add your other dashboard boxes here -->
         </div>
     </section>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </body>
 </html>
 <?php } ?>
