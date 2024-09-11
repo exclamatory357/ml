@@ -323,51 +323,7 @@ if (isset($_GET["dashboard"])) {
     </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const ctx = document.getElementById('cashAdvancesChart').getContext('2d');
-        const cashAdvancesChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: <?= json_encode($dates) ?>,
-                datasets: [{
-                    label: 'Cash Advances',
-                    data: <?= json_encode($amounts) ?>,
-                    backgroundColor: 'rgba(0, 123, 255, 0.2)',
-                    borderColor: 'rgba(0, 123, 255, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        type: 'time',
-                        time: {
-                            unit: 'day',
-                            tooltipFormat: 'MMM d, yyyy',
-                            displayFormats: {
-                                day: 'MMM d'
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Date Issued'
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Cash Advances'
-                        }
-                    }
-                }
-            }
-        });
-    });
-</script>
+
 </body>
 </html>
 <?php } ?>
