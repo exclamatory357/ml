@@ -369,10 +369,10 @@ if (isset($_GET["dashboard"])) {
             </tbody>
         </table>
 
-        <div class="api-request">
+     <!--   <div class="api-request">
             <h4>API request</h4>
             <p><?php echo htmlspecialchars($api_url); ?></p>
-        </div>
+        </div> !-->
 
         <div class="dashboard-row">
             <!-- Add your other dashboard boxes here -->
