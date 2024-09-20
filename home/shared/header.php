@@ -12,7 +12,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
-            <li id="home"><a href="?home">Home</a></li>
+            <li id="home"><a href="?homee">Home</a></li>
             <li id="home"><a href="?gallery">Gallery</a></li>
             <?php
              if (!isset($_SESSION["username"])) {?>

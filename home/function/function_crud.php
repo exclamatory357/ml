@@ -216,7 +216,7 @@ if (isset($_POST["btn-reg"])) {
 
         $_SESSION["notify"] = "success";
 
-        header("location: ../?home");
+        header("location: ../?homee");
 
     }else {
 
