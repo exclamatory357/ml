@@ -644,7 +644,6 @@ function get_feature($con)
 }
 
 
-
 function get_feedbacks($con)
 
 {
