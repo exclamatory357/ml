@@ -2,17 +2,24 @@
 
 error_reporting(0);
 
-$host = "127.0.0.1";
-$username = "u510162695_resevation";
-$password = "1Resevation";
-$db = "u510162695_resevation";
-$port = 3306;
+$host = "localhost";
 
-$con = mysqli_connect($host, $username, $password, $db, $port);
+$username = "root";
+
+$password ="";
+
+$db = "resevation";
+
+$con = mysqli_connect($host,$username,$password,$db);
+
+
 
 // Check connection
+
 if (!$con) {
+
     die("Connection failed: " . mysqli_connect_error());
+
 }
 
 //echo "Connected successfully";
