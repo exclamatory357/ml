@@ -222,7 +222,7 @@ if (isset($_POST["btn-reg"])) {
 
         $_SESSION["notify"] = "failed";
 
-        header("location: ../?home");
+        header("location: ../?homee");
 
     }
 
@@ -266,7 +266,7 @@ if (isset($_POST["btnFeedback"])) {
 
         $_SESSION["notify"] = "failed";
 
-        header("location: ../?home");
+        header("location: ../?homee");
 
         return;
 
@@ -276,7 +276,7 @@ if (isset($_POST["btnFeedback"])) {
 
         $_SESSION["notify"] = "success";
 
-        header("location: ../?home");
+        header("location: ../?homee");
 
         return;
 

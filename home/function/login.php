@@ -9,7 +9,7 @@ if (isset($_POST["btnlogin"])) {
     // Check if both username and password are provided
     if (empty($username) || empty($password)) {
         $_SESSION["notify"] = "Please enter both username and password.";
-        header("location: ../?home");
+        header("location: ../?homee");
         exit();
     }
 
@@ -50,11 +50,11 @@ if (isset($_POST["btnlogin"])) {
             }
         } else {
             $_SESSION["notify"] = "Invalid username or password."; // Incorrect password
-            header("location: ../?home");
+            header("location: ../?homee");
         }
     } else {
         $_SESSION["notify"] = "Invalid username or password."; // User not found
-        header("location: ../?home");
+        header("location: ../?homee");
     }
 
     $stmt->close();

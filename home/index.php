@@ -67,7 +67,7 @@ include "function/function_get.php";
   <div class="content-wrapper">
     <div class="">
       <!-- HOME PAGE-->
-      <?php include "view/home.php" ?>
+      <?php include "view/homee.php" ?>
       <!-- GALLERY PAGE -->
       <?php include "view/gallery.php" ?>
       <!-- RESERVATION PAGE -->
@@ -231,8 +231,8 @@ include "function/function_get.php";
     });
   });
 
-  <?php if (isset($_GET["home"])) { ?>
-    $("#home").addClass("active");
+  <?php if (isset($_GET["homee"])) { ?>
+    $("#homee").addClass("active");
   <?php } ?>
   <?php if (isset($_GET["reservation"])) { ?>
     $("#reserve").addClass("active");
