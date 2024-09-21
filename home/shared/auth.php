@@ -1,17 +1,38 @@
 <?php
-// Start the session (this must be at the top of the file)
 session_start();
 
-// Check if the user is not logged in
-if (!isset($_SESSION["agent"])) {
-    // Redirect to home or login page if not authenticated
-    header("location: ../?home");
-    exit(); // Ensure script stops executing after the redirect
-}
-
-// Optional: If you want to restrict based on roles (e.g., only allow admins)
-if (isset($_SESSION["admin"]) && $_SESSION["role"] !== 'admin') {
-    // If the user is not an admin, redirect them (adjust path as needed)
-    header("location: ../?home.php");
+// Redirect to login if not logged in
+if (!isset($_SESSION["username"])) {
+    header("Location: ../?home");
     exit();
 }
+
+// Role-based access control
+function checkRole($requiredRole) {
+    if (isset($_SESSION["role"]) && $_SESSION["role"] !== $requiredRole) {
+        // Redirect to a generic page if the user doesn't have the required role
+        header("Location: ../?home");
+        exit();
+    }
+}
+
+// Admin Access
+function checkAdmin() {
+    checkRole('admin');
+}
+
+// Superadmin Access
+function checkSuperadmin() {
+    checkRole('superadmin');
+}
+
+// Agent Access
+function checkAgent() {
+    checkRole('agent');
+}
+
+// Staff Access
+function checkStaff() {
+    checkRole('staff');
+}
+?>
