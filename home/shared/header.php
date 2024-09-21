@@ -1,4 +1,6 @@
-
+<?php
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-scripts.com;");
+?>
 <header class="main-header">
     <nav class="navbar navbar-static-top">
       <div class="container">
