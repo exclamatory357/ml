@@ -9,7 +9,7 @@ if (isset($_POST["btnlogin"])) {
     // Check if both username and password are provided
     if (empty($username) || empty($password)) {
         $_SESSION["notify"] = "Please enter both username and password.";
-        header("location: ../?home");
+        header("location: ../?gallery");
         exit();
     }
 
