@@ -5,6 +5,6 @@
  session_destroy();
  
  header("location: ../?home");
-
+exit();
 ?>
 

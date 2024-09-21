@@ -1,16 +1,4 @@
 <?php
-// PHP script to limit requests from a single IP address
-session_start();
-if (!isset($_SESSION['request_count'])) {
-    $_SESSION['request_count'] = 0;
-}
-$_SESSION['request_count']++;
-
-if ($_SESSION['request_count'] > 100) {
-    // If the user exceeds 100 requests in the session, block them
-    die("Too many requests. Please try again later.");
-}
-
 // Redirect all HTTP requests to HTTPS
 if ($_SERVER['HTTPS'] !== 'on') {
     header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
@@ -26,25 +14,6 @@ ini_set('session.cookie_httponly', '1'); // Prevents JavaScript from accessing s
 ini_set('session.cookie_samesite', 'Strict'); // Prevents CSRF by limiting cross-site cookie usage
 
 session_start();
-
-// PHP script to limit requests from a single IP address
-if (!isset($_SESSION['request_count'])) {
-    $_SESSION['request_count'] = 0;
-}
-$_SESSION['request_count']++;
-
-if ($_SESSION['request_count'] > 100) {
-    die("Too many requests. Please try again later.");
-}
-
-// Account lockout mechanism
-if (!isset($_SESSION['failed_attempts'])) {
-    $_SESSION['failed_attempts'] = 0;
-}
-
-if ($_SESSION['failed_attempts'] >= 3) {
-    die("Account locked due to too many failed login attempts.");
-}
 
 include "../../config/db.php";
 
