@@ -56,3 +56,14 @@ if (isset($_GET["gallery"])) {?>
         <?php } ?>
     </section>
 <?php }?>
+<script type="text/javascript">
+    // Disable right-click
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // Disable F12 key and Inspect Element keyboard shortcuts
+    document.onkeydown = function(e) {
+        if (e.key == "F12" || (e.ctrlKey && e.shiftKey && e.key == "I") || (e.ctrlKey && e.shiftKey && e.key == "J") || (e.ctrlKey && e.key == "U")) {
+            return false;
+        }
+    };
+</script>
