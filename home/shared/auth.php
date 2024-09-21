@@ -3,14 +3,14 @@
 session_start();
 
 // Check if the user is not logged in
-if (!isset($_SESSION["username"])) {
+if (!isset($_SESSION["agent"])) {
     // Redirect to home or login page if not authenticated
     header("location: ../?home");
     exit(); // Ensure script stops executing after the redirect
 }
 
 // Optional: If you want to restrict based on roles (e.g., only allow admins)
-if (isset($_SESSION["role"]) && $_SESSION["role"] !== 'admin') {
+if (isset($_SESSION["admin"]) && $_SESSION["role"] !== 'admin') {
     // If the user is not an admin, redirect them (adjust path as needed)
     header("location: ../?home.php");
     exit();
