@@ -1,5 +1,9 @@
 <?php
 header("Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-scripts.com;");
+header("X-Frame-Options: DENY");
+header("Content-Security-Policy: frame-ancestors 'none';");
+header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+
 ?>
 <header class="main-header">
     <!-- Logo -->
