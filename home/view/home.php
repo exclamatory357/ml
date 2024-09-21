@@ -189,7 +189,7 @@ if (isset($_GET["home"])) { ?>
         </div>
     </section>
 
-    <section>
+   <!-- <section>
         <div class="container my-5">
             <h3 class="text-center">About</h3>
             <div class="swiper mySwiper mt-4">
@@ -199,7 +199,7 @@ if (isset($_GET["home"])) { ?>
                 <div class="swiper-pagination"></div>
             </div>
         </div>
-    </section>
+    </section> !-->
 
     <section>
         <div class="container my-5">
