@@ -37,7 +37,7 @@ if (isset($_GET["gallery"])) {?>
 </div>
    <!-- LOGIN PAGE -->
    <?php if (!isset($_SESSION["username"])) { ?>
-            <!-- LOGIN FORM, show if session is not set -->
+            <!-- LOGIN FORM, show if session is not set 
             <div class="login-box-body p-absolute-login container mt-5">
                 <p class="login-box-msg text-center">Welcome back!</p>
                 <form action="function/login.php" method="post">
@@ -50,7 +50,7 @@ if (isset($_GET["gallery"])) {?>
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin">Sign In</button>
-                    <!-- <button type="button" data-toggle="modal" data-target="#modal-registration" class="btn btn-success btn-block btn-lg">Create Account</button> -->
+                    <button type="button" data-toggle="modal" data-target="#modal-registration" class="btn btn-success btn-block btn-lg">Create Account</button> -->
                 </form>
             </div>
         <?php } ?>
