@@ -91,6 +91,7 @@ if (isset($_GET["home"])) { ?>
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img src="image/danrose_house1.jpg" alt="First slide" class="d-block w-100 img-fluid">
+                    <h1>MGA FEELING HACKER SA SUNOD NALAT MGA DAMPAY!</h1>
                     <!-- Carousel captions commented out -->
                     <!-- <div class="carousel-caption">
                         First Slide
