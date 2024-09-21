@@ -135,7 +135,7 @@ if (isset($_GET["home"])) { ?>
                         <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required>
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin" readonly>Sign In</button>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin">Sign In</button readonly>
                     <!-- <button type="button" data-toggle="modal" data-target="#modal-registration" class="btn btn-success btn-block btn-lg">Create Account</button> -->
                 </form>
             </div>
