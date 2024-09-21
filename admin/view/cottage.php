@@ -320,3 +320,25 @@ $con->close();
 <!-- Bootstrap and other necessary scripts -->
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<?php
+if (isset($_GET['picture-del'])) {
+    $picture_id = $_GET['picture-del'];
+
+    // SQL query to delete the picture by its ID
+    $sql = "DELETE FROM `picture` WHERE id = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param('i', $picture_id);
+    $stmt->execute();
+
+    // Check if deletion was successful
+    if ($stmt->affected_rows > 0) {
+        $_SESSION['notify'] = "Picture successfully deleted!";
+    } else {
+        $_SESSION['notify'] = "Failed to delete the picture.";
+    }
+
+    // Redirect back to the pictures page
+    header('Location: ../?pictures');
+    exit();
+}
+?>
