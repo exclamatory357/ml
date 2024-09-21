@@ -1,3 +1,6 @@
+<?php
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-scripts.com;");
+?>
 <header class="main-header">
     <!-- Logo -->
     <a href="#" class="logo">
