@@ -134,7 +134,7 @@ if (isset($_GET["home"])) { ?>
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required> 
+                 <!--       <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required> !-->
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin">Sign In</button>
