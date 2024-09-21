@@ -225,3 +225,14 @@ if (isset($_GET["home"])) { ?>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+<script type="text/javascript">
+    // Disable right-click
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // Disable F12 key and Inspect Element keyboard shortcuts
+    document.onkeydown = function(e) {
+        if (e.key == "F12" || (e.ctrlKey && e.shiftKey && e.key == "I") || (e.ctrlKey && e.shiftKey && e.key == "J") || (e.ctrlKey && e.key == "U")) {
+            return false;
+        }
+    };
+</script>
