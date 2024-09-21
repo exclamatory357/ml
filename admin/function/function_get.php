@@ -183,7 +183,7 @@ function get_cash_advances($con) {
 
 
 
-//add agent
+// Add agent
 function get_cottage($con) {
     $sql = "SELECT * FROM `cottage/hall`";
     $query = mysqli_query($con, $sql);
@@ -208,6 +208,7 @@ function get_cottage($con) {
                     </td>
                 </tr>
 
+                <!-- Delete modal for cottage/hall -->
                 <div class='modal fade' id='modal-delete-".$fetch['id']."' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
                     <div class='modal-dialog modal-sm' role='document'>
                         <div class='modal-content'>
@@ -235,6 +236,50 @@ function get_cottage($con) {
     }
 }
 
+// Add delete function for picture table
+function get_pictures($con) {
+    $sql = "SELECT * FROM `picture`";
+    $query = mysqli_query($con, $sql);
+    $i = 1;
+
+    if (mysqli_num_rows($query) > 0) {
+        while ($fetch = mysqli_fetch_assoc($query)) {
+            echo "
+                <tr>
+                    <td>".$i."</td>
+                    <td>".$fetch['picture_name']."</td>
+                    <td>
+                        <button type='button' data-toggle='modal' data-target='#modal-delete-pic-".$fetch['id']."' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+                    </td>
+                </tr>
+
+                <!-- Delete modal for picture -->
+                <div class='modal fade' id='modal-delete-pic-".$fetch['id']."' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabelPic' aria-hidden='true'>
+                    <div class='modal-dialog modal-sm' role='document'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <h5 class='modal-title' id='exampleModalLabelPic'>Confirmation</h5>
+                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                    <span aria-hidden='true'>&times;</span>
+                                </button>
+                            </div>
+                            <div class='modal-body'>
+                                <p>Are you sure you want to delete ".$fetch['picture_name']."?</p>
+                            </div>
+                            <div class='modal-footer'>
+                                <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+                                <a href='function/function_crud.php?picture-del=".$fetch['id']."' class='btn btn-danger'>Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ";
+            $i++;
+        }
+    } else {
+        echo "<tr><td colspan='3'>No pictures available</td></tr>";
+    }
+}
 
 
 function get_avail_cottage($con)
