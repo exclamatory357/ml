@@ -231,28 +231,23 @@ if (isset($_GET["feature-del"])) {
 
 //delte picture
 
+// Check if the page is accessed
 if (isset($_GET["picture-del"])) {
 
-    $id = $_GET["picture-del"];
+    // Delete all records from the picture table
+    $sql = "DELETE FROM `picture`";
 
-    $sql = "DELETE FROM `picture` WHERE id = '$id'";
-
+    // Execute the query
     $query = mysqli_query($con, $sql);
 
+    // Check if the deletion was successful
     if ($query) {
-
-        $_SESSION["notify"] = "success-delete";
-
-        header("location: ../?pictures");
-
-    }else {
-
-        echo "failed to delete";
-
+        $_SESSION["notify"] = "success-delete-all";
+        header("location: ../?pictures"); // Redirect after success
+    } else {
+        echo "Failed to delete all records";
     }
-
 }
-
 
 
 //add feature
