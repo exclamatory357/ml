@@ -1,6 +1,6 @@
 <?php
-
 session_start();
+include '../../home/share/auth.php';
 if (!isset($_SESSION["admin_uname"]) && !isset($_SESSION["username"])) {
     // Redirect to login page if the user is not logged in
     header("location: ../../home/view/?home");
