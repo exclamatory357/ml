@@ -128,14 +128,14 @@ if (isset($_GET["home"])) { ?>
                 <p class="login-box-msg text-center">Welcome back!</p>
                 <form action="function/login.php" method="post">
                     <div class="form-group has-feedback">
-                        <input type="text" class="form-control form-control-lg" placeholder="Enter Username" name="username" required autofocus>
+                        <input type="text" class="form-control form-control-lg" placeholder="Enter Username" name="username" readonly autofocus>
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required>
+                        <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" readonly>
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin">Sign In</button readonly>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin">Sign In</button>
                     <!-- <button type="button" data-toggle="modal" data-target="#modal-registration" class="btn btn-success btn-block btn-lg">Create Account</button> -->
                 </form>
             </div>
