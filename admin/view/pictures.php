@@ -48,9 +48,9 @@
 
                         <th>Image</th>
 
-                        <th>Name</th>
+                  <!--      <th>Name</th>
 
-                        <th>Description</th>
+                        <th>Description</th>    !-->
 
                         <th><i class="fa fa-cogs"></i></th>
 
