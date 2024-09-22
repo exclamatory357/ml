@@ -15,7 +15,7 @@
             background: rgba(255, 255, 255, 0.7); /* Add a slight background to the form */
             padding: 20px;
             border-radius: 10px;
-            max-width: 400px;
+            max-width: 600px;
             margin: 0 auto;
         }
 
@@ -25,7 +25,7 @@
             left: 75%;
             transform: translate(-50%, -50%);
             width: 100%;
-            max-width: 500px; /* Adjust width as needed */
+            max-width: 350px; /* Adjust width as needed */
         }
 
         .p-absolute-system-title {
