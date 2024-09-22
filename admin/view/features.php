@@ -136,7 +136,7 @@
 
                         </div>
 
-                        <div class="form-group">
+                    <!--    <div class="form-group">
 
                             <label class="col-sm-4 control-label">Name</label>
 
@@ -146,7 +146,7 @@
 
                             </div>
 
-                        </div>
+                        </div> 
 
                         <div class="form-group">
 
@@ -158,7 +158,7 @@
 
                          </div>
 
-                        </div>
+                        </div>  !-->
 
                         <div class="form-group">
 
