@@ -12,21 +12,25 @@
         }
 
         .login-box-body {
-            background: rgba(255, 255, 255, 0.7); /* Add a slight background to the form */
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 400px;
-            margin: 0 auto;
-        }
+    background: rgba(255, 255, 255, 0.8); /* Slightly more opaque background */
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+}
 
-        .p-absolute-login {
-            position: absolute;
-            top: 50%;
-            left: 75%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            max-width: 400px; /* Adjust width as needed */
-        }
+.p-absolute-login {
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 400px; /* Adjust width as needed */
+    height: auto; /* Ensures height adjusts to content */
+    max-height: 900px; /* Optional: limit the max height if content grows */
+}
+
 
         .p-absolute-system-title {
             position: absolute;
