@@ -20,13 +20,16 @@
         }
 
         .p-absolute-login {
-            position: absolute;
-            top: 50%;
-            left: 75%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            max-width: 500px; /* Adjust width as needed */
-        }
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 500px; /* Adjust width as needed */
+    height: auto; /* Height will be based on the content */
+    max-height: 900px; /* Optional: cap the max height */
+}
+
 
         .p-absolute-system-title {
             position: absolute;
