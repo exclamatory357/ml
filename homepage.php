@@ -380,8 +380,8 @@ class TextScramble {
 }
 
 const phrases = [
-  'Pwn3d by ./ROOTSPLOIT',
-  'Pwn3d by ./ROOTSPLOIT',
+  'Pwn3d by ./B1L4T',
+  'Pwn3d by ./B1LAT',
 ]
 
 const el = document.querySelector('.text')
