@@ -507,9 +507,11 @@ function get_picture($con)
 
                  <!--   <td>".$fetch['des']."</td>  !-->
 
-                    <td><a href='?picture-edit=".$fetch['id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a>
+                    <td>
+                  <!--  <a href='?picture-edit=".$fetch['id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a> !-->
 
-                    <button type='button' data-toggle='modal' data-target='#modal-delete-".$fetch['id']."' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button></td>
+                    <button type='button' data-toggle='modal' data-target='#modal-delete-".$fetch['id']."' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+                    </td>
 
                     </tr>
 
