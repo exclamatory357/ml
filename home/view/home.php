@@ -25,7 +25,7 @@
             left: 75%;
             transform: translate(-50%, -50%);
             width: 100%;
-            max-height:900px;
+            height: auto; /* Ensures the height adjusts based on content */
             max-width: 350px; /* Adjust width as needed */
         }
 
