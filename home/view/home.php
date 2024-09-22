@@ -25,7 +25,7 @@
             left: 75%;
             transform: translate(-50%, -50%);
             width: 100%;
-            max-width: 400px; /* Adjust width as needed */
+            max-width: 500px; /* Adjust width as needed */
         }
 
         .p-absolute-system-title {
