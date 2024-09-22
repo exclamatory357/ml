@@ -252,7 +252,7 @@ if (isset($_GET["feature-edit"])) {?>
 
                        <div class="form-group">
 
-                           <label class="col-sm-4 control-label">Name</label>
+                <!--           <label class="col-sm-4 control-label">Name</label>   !-->
 
                            <div class="col-sm-8">
                                <input type="hidden" value="<?php echo $fetch['id']?>" name="id">
@@ -264,7 +264,7 @@ if (isset($_GET["feature-edit"])) {?>
 
                        <div class="form-group">
 
-                       <label class="col-sm-4 control-label">Description</label>                       
+               <!--        <label class="col-sm-4 control-label">Description</label>       !-->                 
 
                        <div class="col-sm-8">
 
