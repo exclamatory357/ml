@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_GET["gallery"])) {?>
+if (isset($_GET["abc/123/gallery"])) {?>
     <!-- Main content -->
     <section class="content">
     <div class="container">
