@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(1);
+error_reporting(E_ALL);
 // Redirect to login if not logged in
 if (!isset($_SESSION["username"])) {
     header("Location: ../?home");
