@@ -15,22 +15,18 @@
             background: rgba(255, 255, 255, 0.7); /* Add a slight background to the form */
             padding: 20px;
             border-radius: 10px;
-            max-width: 600px;
+            max-width: 400px;
             margin: 0 auto;
-            
         }
 
         .p-absolute-login {
-    position: absolute;
-    top: 50%;
-    left: 75%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    max-width: 600px; /* Adjust width as needed */
-    height: auto; /* Height will be based on the content */
-    max-height: 900px; /* Optional: cap the max height */
-}
-
+            position: absolute;
+            top: 50%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 400px; /* Adjust width as needed */
+        }
 
         .p-absolute-system-title {
             position: absolute;
