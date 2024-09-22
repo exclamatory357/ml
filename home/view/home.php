@@ -77,6 +77,52 @@
                 padding: 10px; /* Reduce padding on very small screens */
             }
         }
+
+
+
+        /* Style for the Sign In button */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+/* Style for the Register button */
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+/* General button styles */
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.btn-lg {
+    font-size: 1.25rem;
+    padding: 10px 16px;
+}
+
     </style>
 </head>
 <body>
