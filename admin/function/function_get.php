@@ -503,9 +503,9 @@ function get_picture($con)
 
                     <td><img src='function/".$fetch['img']."' alt='image' width='60px'></td>
 
-                 <!--   <td>".$fetch['name']."</td>
+                 <!--   <td>".$fetch['name']."</td> !-->
 
-                    <td>".$fetch['des']."</td>  !-->
+                 <!--   <td>".$fetch['des']."</td>  !-->
 
                     <td><a href='?picture-edit=".$fetch['id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a>
 
