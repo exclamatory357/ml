@@ -186,12 +186,11 @@ if (isset($_GET["home"])) { ?>
                     <div class="form-group has-feedback">
                  <!--       <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required> !-->
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    
+                    </div>
                     <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin">Sign In</button>
                     
-                     <button type="button" data-toggle="modal" data-target="#modal-registration" class="btn btn-success btn-block btn-lg"></button> 
-                     </div>
-                    </form>
+                     <button type="button" data-toggle="modal" data-target="#modal-registration" class="btn btn-success btn-block btn-lg">Forgot password</button> 
+                </form>
             </div>
         <?php } ?>
         
