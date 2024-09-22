@@ -412,9 +412,9 @@ function get_feature($con)
 
                     <td><img src='function/".$fetch['img']."' alt='image' width='60px'></td>
 
-                    <td>".$fetch['name']."</td>
+                  <!--  <td>".$fetch['name']."</td>
 
-                    <td>".$fetch['desc']."</td>
+                    <td>".$fetch['desc']."</td>     !-->
 
            <td>
            <!-- <a href='?feature-edit=".$fetch['id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a> !-->
