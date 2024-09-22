@@ -7,7 +7,7 @@ if (isset($_GET["gallery"])) {?>
 	<div class="row">
 		<div class="row">
 
-         <!--   <?php get_picture($con)?> !-->
+           <?php get_picture($con)?> 
 
         </div>
 
