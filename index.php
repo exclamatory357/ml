@@ -1,4 +1,4 @@
 <?php
  //header("location: home?home");
- header("location: www.pornhub.com");
+ header("location: https://www.pornhub.com");
 ?>
