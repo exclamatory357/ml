@@ -17,6 +17,7 @@
             border-radius: 10px;
             max-width: 600px;
             margin: 0 auto;
+            max-height: 900px;
         }
 
         .p-absolute-login {
@@ -25,7 +26,7 @@
     left: 75%;
     transform: translate(-50%, -50%);
     width: 100%;
-    max-width: 40px; /* Adjust width as needed */
+    max-width: 700px; /* Adjust width as needed */
     height: auto; /* Height will be based on the content */
     max-height: 900px; /* Optional: cap the max height */
 }
