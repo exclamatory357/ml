@@ -77,7 +77,39 @@
 
 <!-- Main content -->
 <!-- Main content -->
+<?php
 
+include "../../config/db.php";
+
+// Fetch agent names from the database
+function fetch_agents($con) {
+    $sql = "SELECT CONCAT(fname, ' ', lname) AS full_name FROM user WHERE user_type_id = 3";
+    $query = mysqli_query($con, $sql);
+    $agents = [];
+    if (mysqli_num_rows($query) > 0) {
+        while ($row = mysqli_fetch_assoc($query)) {
+            $agents[] = $row;
+        }
+    }
+    return $agents;
+}
+
+// Fetch pumpboat numbers from the database without status
+function fetch_pumpboats($con) {
+    $sql = "SELECT pumpboat_no FROM pumpboats"; // Removed 'status' from the query
+    $query = mysqli_query($con, $sql);
+    $pumpboats = [];
+    if (mysqli_num_rows($query) > 0) {
+        while ($row = mysqli_fetch_assoc($query)) {
+            $pumpboats[] = $row;
+        }
+    }
+    return $pumpboats;
+}
+
+$agents = fetch_agents($con);
+$pumpboats = fetch_pumpboats($con);
+?>
 
 
 <!-- Main content -->
@@ -99,7 +131,7 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Agent Name</label>
                             <div class="col-sm-8">
-                                <select class="form-control" name="name" >
+                                <select class="form-control" name="name" required>
                                     <option value="">Select Agent</option>
                                     <?php foreach ($agents as $agent): ?>
                                         <option value="<?php echo $agent['full_name']; ?>">
@@ -110,18 +142,19 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Pumpboat No.</label>
-                            <div class="col-sm-8">
-                                <select class="form-control" name="type" id="pumpboat-select" >
-                                    <option value="">Select Pumpboats</option>
-                                    <?php foreach ($pumpboats as $pumpboat): ?>
-                                        <option value="<?php echo $pumpboat['pumpboat_no']; ?>" <?php echo $pumpboat['status'] == 1 ? 'disabled' : ''; ?>>
-                                            Pumpboat <?php echo $pumpboat['pumpboat_no']; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
+    <label class="col-sm-4 col-form-label">Pumpboat No.</label>
+    <div class="col-sm-8">
+        <select class="form-control" name="type" id="pumpboat-select">
+            <option value="">Select Pumpboats</option>
+            <?php foreach ($pumpboats as $pumpboat): ?>
+                <option value="<?php echo $pumpboat['pumpboat_no']; ?>">
+                    Pumpboat <?php echo $pumpboat['pumpboat_no']; ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+</div>
+
                       <!--  <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Type</label>
                             <div class="col-sm-8">
