@@ -184,16 +184,42 @@ if (isset($_GET["home"])) { ?>
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                 <!--       <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required> !-->
+                       <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required> 
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin">Sign In</button>
                     
-                     <button type="button" data-toggle="modal" data-target="#modal-registration" class="btn btn-success btn-block btn-lg">Forgot password</button> 
+                     <button type="button" data-toggle="modal" data-target="#modal-forgot-password" class="btn btn-success btn-block btn-lg">Forgot password</button> 
+                     
                 </form>
             </div>
         <?php } ?>
         
+                <!-- FORGOT PASSWORD MODAL -->
+<div class="modal fade" id="modal-forgot-password" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forgotPasswordModalLabel">Forgot Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="function/forgot_password.php" method="post">
+                    <div class="form-group has-feedback">
+                        <label for="email">Enter your registered email address:</label>
+                        <input type="email" class="form-control form-control-lg" placeholder="Email" name="email" required autofocus>
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="btn-forgot-password">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
        <!-- <div class="system-title p-absolute-system-title text-center mt-5">
             <span class="text-white display-4">DanRose</span><br>
             <span class="text-white h4">Management System</span>
@@ -276,14 +302,44 @@ if (isset($_GET["home"])) { ?>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-<script type="text/javascript">
-    // Disable right-click
-    document.addEventListener('contextmenu', event => event.preventDefault());
 
-    // Disable F12 key and Inspect Element keyboard shortcuts
+<script type="text/javascript">
+    // Disable right-click with an alert
+    document.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+        alert("Right-click is disabled on this page.");
+    });
+
+    // Disable F12 key and Inspect Element keyboard shortcuts with alerts
     document.onkeydown = function(e) {
-        if (e.key == "F12" || (e.ctrlKey && e.shiftKey && e.key == "I") || (e.ctrlKey && e.shiftKey && e.key == "J") || (e.ctrlKey && e.key == "U")) {
+        // F12
+        if (e.key === "F12") {
+            alert("F12 (DevTools) is disabled.");
+            e.preventDefault(); // Prevent default action
+            return false;
+        }
+        
+        // Ctrl + Shift + I (Inspect)
+        if (e.ctrlKey && e.shiftKey && e.key === "I") {
+            alert("Inspect Element is disabled.");
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl + Shift + J (Console)
+        if (e.ctrlKey && e.shiftKey && e.key === "J") {
+            alert("Console is disabled.");
+            e.preventDefault();
+            return false;
+        }
+        
+       
+         // Ctrl + U or Ctrl + u (View Source)
+         if (e.ctrlKey && (e.key === "U" || e.key === "u" || e.keyCode === 85)) {
+            alert("Viewing page source is disabled.");
+            e.preventDefault();
             return false;
         }
     };
 </script>
+

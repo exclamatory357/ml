@@ -4,6 +4,10 @@ include 'auth.php';
 checkAdmin();
 
 
+include 'admin_check.php'; // Include the admin check
+
+
+
 if (isset($_GET["dashboard"])) {
     include "../../config/db.php";
 
@@ -386,3 +390,27 @@ if (isset($_GET["dashboard"])) {
 </body>
 </html>
 <?php } ?>
+
+<script type="text/javascript">
+    // Disable right-click with an alert
+    document.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+        alert("Right-click is disabled on this page.");
+    });
+
+    // Disable F12 key and Inspect Element keyboard shortcuts with alerts
+    document.onkeydown = function(e) {
+        if (e.key === "F12") {
+            alert("F12 (DevTools) is disabled.");
+            return false;
+        }
+        if (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J")) {
+            alert("Inspect Element is disabled.");
+            return false;
+        }
+        if (e.ctrlKey && e.key === "U") {
+            alert("Viewing page source is disabled.");
+            return false;
+        }
+    };
+</script>

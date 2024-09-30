@@ -1,27 +1,39 @@
 <?php
-// Start session and enforce secure session settings
+// Start session securely
 session_start();
 
-// Redirect all HTTP requests to HTTPS
-if ($_SERVER['HTTPS'] !== 'on') {
-    header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-    exit();
-}
+// Redirect all HTTP requests to HTTPS if not already using HTTPS
+//if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
+  //  header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+    //exit();
+//}
 
 // Enforce HTTPS with HSTS
-header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+//header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
 
 // Secure session cookie settings
-ini_set('session.cookie_secure', '1');   // Enforces HTTPS-only session cookies
-ini_set('session.cookie_httponly', '1'); // Prevents JavaScript from accessing session cookies
+ini_set('session.cookie_secure', '1');    // Enforces HTTPS-only session cookies
+ini_set('session.cookie_httponly', '1');  // Prevents JavaScript from accessing session cookies
 ini_set('session.cookie_samesite', 'Strict'); // Prevents CSRF by limiting cross-site cookie usage
+
+// Additional security headers
+header("X-Content-Type-Options: nosniff");
+header("X-Frame-Options: DENY");
+header("X-XSS-Protection: 1; mode=block");
 
 include "../../config/db.php";
 
 if (isset($_POST["btnlogin"])) {
+    // Sanitize and validate inputs
+    $username = trim(filter_var($_POST["username"], FILTER_SANITIZE_STRING));
+    $password = $_POST["password"]; // Password entered by the user
 
-    $username = $_POST["username"];
-    $password = $_POST["password"];  // Direct plain text password comparison
+    // Check for empty inputs (basic validation)
+    if (empty($username) || empty($password)) {
+        $_SESSION["notify"] = "invalid"; // Empty credentials
+        header("Location: ../?home");
+        exit();
+    }
 
     // Use prepared statements to prevent SQL injection
     $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id 
@@ -37,12 +49,15 @@ if (isset($_POST["btnlogin"])) {
         $res = $result->fetch_assoc();
         $get_user_id = $res["user_id"];
         $get_username = $res["uname"];
-        $get_password = $res["pass"];  // Plain text password stored in the database
+        $get_password_hash = $res["pass"]; // Hashed password from the database
         $get_user_type = $res["user_type_name"];
         $type_id = $res["user_type_id"];
 
-        // Direct comparison of plain text passwords
-        if ($password === $get_password) {
+        // Verify the password using password_verify()
+        if (password_verify($password, $get_password_hash)) {
+
+            // Regenerate session ID to prevent session fixation attacks
+            session_regenerate_id(true);
 
             // Set session variables based on user role
             $_SESSION["username"] = $get_username;
@@ -74,10 +89,12 @@ if (isset($_POST["btnlogin"])) {
         } else {
             $_SESSION["notify"] = "invalid"; // Invalid password
             header("Location: ../?home");
+            exit(); // Prevent further code execution
         }
     } else {
         $_SESSION["notify"] = "invalid"; // User not found
         header("Location: ../?home");
+        exit(); // Prevent further code execution
     }
 }
 ?>

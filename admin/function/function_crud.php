@@ -460,32 +460,41 @@ if (isset($_GET["res-id-cancel"])) {
 
 
 
-//adduser
+// adduser
 if (isset($_POST["btnAddUser"])) {
-    $fname = $_POST["fname"];
-    $lname = $_POST["lname"];
-    $uname = $_POST["uname"];
-    $pass  = $_POST["pass"];
-    $utype = $_POST["utype"];
-    $team  = $_POST["team"];  // Add this line
+    $fname = htmlspecialchars($_POST["fname"]);
+    $mname = htmlspecialchars($_POST["mname"]);
+    $lname = htmlspecialchars($_POST["lname"]);
+    $email = htmlspecialchars($_POST["email"]);
+    $contact_no = htmlspecialchars($_POST["contact_no"]);
+    $person_to_contact = htmlspecialchars($_POST["person_to_contact"]);
+    $uname = htmlspecialchars($_POST["uname"]);
+    $pass  = htmlspecialchars($_POST["pass"]);
+    $utype = htmlspecialchars($_POST["utype"]);
+    $team  = htmlspecialchars($_POST["team"]); // if using the team input field
+    $address = htmlspecialchars($_POST["address"]); // retrieve the address from the form
 
-    $sql = "INSERT INTO `user`(`fname`, `lname`, `uname`, `pass`, `user_type_id`, `team`) 
-                       VALUES ('$fname','$lname','$uname','$pass','$utype','$team')";  // Add team to the SQL
+    // Hash the password using bcrypt
+    $hashed_pass = password_hash($pass, PASSWORD_BCRYPT);
 
+    // Insert into the database with the hashed password
+    $sql = "INSERT INTO `user`(`fname`, `mname`, `lname`, `email`, `contact_no`, `person_to_contact`, `uname`, `pass`, `user_type_id`, `team`, `address`) 
+            VALUES ('$fname','$mname','$lname','$email','$contact_no','$person_to_contact','$uname','$hashed_pass','$utype','$team', '$address')";
     $query = mysqli_query($con, $sql);
 
     if ($query) {
         $_SESSION["notify"] = "success";
         header("location: ../?users");
         return;
-    } 
-
-    if (!$query) {
+    } else {
         $_SESSION["notify"] = "failed";
         header("location: ../?users");
         return;
     }
 }
+
+
+
 
 
 
@@ -566,17 +575,26 @@ if (isset($_POST["btn-cottage-edit"])) {
     }
 }
 
-//update user
+// update user
 if (isset($_POST["updateuser"])) {
-    $id = $_POST["id"];
-    $fname = $_POST["fname"];
-    $lname = $_POST["lname"];
-    $uname = $_POST["uname"];
-    $pass  = $_POST["pass"];
-    $utype = $_POST["utype"];
-    //$team  = $_POST["team"];  // Add this line
+    $id = htmlspecialchars($_POST["id"], ENT_QUOTES, 'UTF-8');
+    $fname = htmlspecialchars($_POST["fname"], ENT_QUOTES, 'UTF-8');
+    $lname = htmlspecialchars($_POST["lname"], ENT_QUOTES, 'UTF-8');
+    $uname = htmlspecialchars($_POST["uname"], ENT_QUOTES, 'UTF-8');
+    $pass  = htmlspecialchars($_POST["pass"], ENT_QUOTES, 'UTF-8');
+    $utype = htmlspecialchars($_POST["utype"], ENT_QUOTES, 'UTF-8');
+    $team  = htmlspecialchars($_POST["team"], ENT_QUOTES, 'UTF-8'); // Uncomment if using
+    $address = htmlspecialchars($_POST["address"], ENT_QUOTES, 'UTF-8'); // Sanitize address
 
-    $sql = "UPDATE `user` SET `fname`='$fname', `lname`='$lname', `uname`='$uname', `pass`='$pass', `user_type_id`='$utype', `team`='$team' WHERE user_id = '$id'";  // Add team to the SQL
+    // Update the user information, including the address
+    $sql = "UPDATE `user` SET 
+            `fname`='$fname', 
+            `lname`='$lname', 
+            `uname`='$uname', 
+            `pass`='$pass', 
+            `user_type_id`='$utype', 
+            `address`='$address' 
+            WHERE user_id = '$id'";  // Include address in the SQL query
 
     $query = mysqli_query($con, $sql);
 

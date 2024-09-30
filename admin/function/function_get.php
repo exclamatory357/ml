@@ -1265,45 +1265,54 @@ function get_users($con) {
     if (mysqli_num_rows($query) > 0) {
         while ($fetch = mysqli_fetch_assoc($query)) {
             $passwordFieldId = "password-" . $fetch['user_id'];
-            echo "<tbody>
-                    <tr>
-                     <td>".$i."</td>
-                     <td>".$fetch['fname']."</td>
-                     <td>".$fetch['lname']."</td>
-                     <td>".$fetch['user_type_name']."</td>
-                     <td>".$fetch['uname']."</td>
-                     <td>
+
+            echo "<tr>
+                    <td>".$i."</td>
+                    <td>".$fetch['fname']."</td>
+                    <td>".$fetch['mname']."</td>
+                    <td>".$fetch['lname']."</td>
+                    <td>".$fetch['address']."</td>
+                    <td>".$fetch['email']."</td>
+                    <td>".$fetch['contact_no']."</td>
+                    <td>".$fetch['person_to_contact']."</td>
+                    <td>".$fetch['user_type_name']."</td>
+                    <td>".$fetch['uname']."</td>
+              <!--      <td>
                         <input type='password' id='".$passwordFieldId."' value='".$fetch['pass']."' readonly style='border: none; background: transparent;'>
                         <i id='eye-icon-".$passwordFieldId."' class='fa fa-eye' style='cursor: pointer;' onclick='togglePasswordVisibility(\"".$passwordFieldId."\")'></i>
-                     </td>
-                   <!--  <td>".$fetch['team']."</td>    !-->
-                     <td><a href='?users-edit=".$fetch['user_id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a>
-                     <button type='button' data-toggle='modal' data-target='#user-".$fetch['user_id']."' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button></td>
-                    </tr>
-                  </tbody>";
+                    </td> !-->
+                    <td>
+                        <a href='?users-edit=".$fetch['user_id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a>
+                        <button type='button' data-toggle='modal' data-target='#user-".$fetch['user_id']."' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+                    </td>
+                </tr>";
 
-            echo "<div class='modal fade in' id='user-".$fetch['user_id']."'>
+            // Modal for delete confirmation
+            echo "<div class='modal fade' id='user-".$fetch['user_id']."'>
                     <div class='modal-dialog modal-sm'>
                         <div class='modal-content'>
                             <div class='modal-header'>
                                 <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                                    <span aria-hidden='true'>×</span></button>
-                                <h4 class='modal-title'>Confirmation</h4>
+                                    <span aria-hidden='true'>&times;</span></button>
+                                <h4 class='modal-title'>Delete Confirmation</h4>
                             </div>
                             <div class='modal-body'>
-                                <center><h3>Delete ".$fetch['fname']."?</h3></center>
+                                <center><h3>Are you sure you want to delete ".$fetch['fname']." ".$fetch['lname']."?</h3></center>
                             </div>
                             <div class='modal-footer'>
-                                <button type='button' class='btn btn-default pull-left' data-dismiss='modal'>Close</button>
+                                <button type='button' class='btn btn-default pull-left' data-dismiss='modal'>Cancel</button>
                                 <a href='function/function_crud.php?user-del=".$fetch['user_id']."' class='btn btn-danger'>Delete</a>
                             </div>
                         </div>
                     </div>
                 </div>";
-            $i = $i + 1;
+
+            $i++;
         }
     }
 }
+
+
 
 
 
