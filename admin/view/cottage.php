@@ -99,7 +99,7 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Agent Name</label>
                             <div class="col-sm-8">
-                                <select class="form-control" name="name" required>
+                                <select class="form-control" name="name" >
                                     <option value="">Select Agent</option>
                                     <?php foreach ($agents as $agent): ?>
                                         <option value="<?php echo $agent['full_name']; ?>">
@@ -112,7 +112,7 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Pumpboat No.</label>
                             <div class="col-sm-8">
-                                <select class="form-control" name="type" id="pumpboat-select" required>
+                                <select class="form-control" name="type" id="pumpboat-select" >
                                     <option value="">Select Pumpboats</option>
                                     <?php foreach ($pumpboats as $pumpboat): ?>
                                         <option value="<?php echo $pumpboat['pumpboat_no']; ?>" <?php echo $pumpboat['status'] == 1 ? 'disabled' : ''; ?>>
