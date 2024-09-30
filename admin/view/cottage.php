@@ -4,53 +4,47 @@
 <!-- FontAwesome CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-
-
+<!-- COTTAGE MANAGEMENT -->
 <?php if (isset($_GET["cottage"])) { ?>
 
     <section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2 align-items-center">
-            <div class="col-6">
-                <h1>Manage Agents</h1>
+        <div class="container-fluid">
+            <div class="row mb-2 align-items-center">
+                <div class="col-6">
+                    <h1>Manage Agents</h1>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li class="breadcrumb-item active">Manage Agents</li>
+                    </ol>
+                </div>
             </div>
-            <div class="col-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li class="breadcrumb-item active">Manage Agents</li>
-                </ol>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <a href="?cottage-add" class="btn btn-success"><i class="fa fa-plus"></i> Add Agent</a>
+                </h3>
+            </div>
+            <div class="card-body">
+                <table id="example2" class="table table-bordered">
+                    <thead>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Pumpboat No.</th>
+                    <th>Team</th>
+                    <th><i class="fa fa-cogs"></i></th>
+                    </thead>
+                    <?php get_cottage($con); ?>
+                </table>
             </div>
         </div>
-    </div>
-</section>
-
-
-<!-- Main content -->
-<section class="content container-fluid">
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title"><a href="?cottage-add" class="btn btn-success"><i class="fa fa-plus"></i> Add Agent</a></h3>
-        </div>
-        <div class="card-body">
-            <table id="example2" class="table table-bordered">
-                <thead>
-                <th>#</th>
-                <!-- <th>Image</th> Uncomment if needed -->
-                <!-- <th>Cottage No.</th> Uncomment if needed -->
-                <th>Name</th>
-                <th>Pumpboat No.</th>
-             <!--   <th>Max Person</th> !-->
-           <!--     <th>Category</th> !-->
-                <th>Team</th>
-                <th><i class="fa fa-cogs"></i></th>
-                      
-                    </tr>
-                </thead>
-                <?php get_cottage($con); ?>
-            </table>
-        </div>
-    </div>
-</section>
+    </section>
 
 <?php } ?>
 
@@ -74,11 +68,39 @@
 </section>
 
 <!-- Main content -->
-<!-- Main content -->
+<?php
+include "../../config/db.php";
 
+// Fetch agent names from the database
+function fetch_agents($con) {
+    $sql = "SELECT CONCAT(fname, ' ', lname) AS full_name FROM user WHERE user_type_id = 3";
+    $query = mysqli_query($con, $sql);
+    $agents = [];
+    if (mysqli_num_rows($query) > 0) {
+        while ($row = mysqli_fetch_assoc($query)) {
+            $agents[] = $row;
+        }
+    }
+    return $agents;
+}
 
+// Fetch pumpboat numbers from the database
+function fetch_pumpboats($con) {
+    $sql = "SELECT pumpboat_no, status FROM pumpboats";
+    $query = mysqli_query($con, $sql);
+    $pumpboats = [];
+    if (mysqli_num_rows($query) > 0) {
+        while ($row = mysqli_fetch_assoc($query)) {
+            $pumpboats[] = $row;
+        }
+    }
+    return $pumpboats;
+}
 
-<!-- Main content -->
+$agents = fetch_agents($con);
+$pumpboats = fetch_pumpboats($con);
+?>
+
 <section class="content container-fluid">
     <div class="card">
         <div class="card-header">
@@ -111,7 +133,7 @@
                             <label class="col-sm-4 col-form-label">Pumpboat No.</label>
                             <div class="col-sm-8">
                                 <select class="form-control" name="type" id="pumpboat-select" required>
-                                    <option value="">Select Pumpboats</option>
+                                    <option value="">Select Pumpboat</option>
                                     <?php foreach ($pumpboats as $pumpboat): ?>
                                         <option value="<?php echo $pumpboat['pumpboat_no']; ?>" <?php echo $pumpboat['status'] == 1 ? 'disabled' : ''; ?>>
                                             Pumpboat <?php echo $pumpboat['pumpboat_no']; ?>
@@ -120,24 +142,11 @@
                                 </select>
                             </div>
                         </div>
-                      <!--  <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Type</label>
-                            <div class="col-sm-8">
-                                <select class="form-control" name="category" required>
-                                    <option value="Pamo">Pamo</option>
-                                    <option value="Panambahan">Panambahan</option>
-                                    <option value="Island hopping">Island hopping</option>
-                                </select>
-                            </div> !-->
-                        </div>
                         <div class="form-group row">
                             <div class="col-sm-8 offset-sm-4">
                                 <button type="submit" class="btn btn-primary" name="btn-cottage-add">Submit</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <!-- Additional form fields can go here -->
                     </div>
                 </div>
             </div>
@@ -145,11 +154,9 @@
     </div>
 </section>
 
-
 <!-- Bootstrap and other necessary scripts -->
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
 
 <?php } ?>
 
@@ -172,8 +179,37 @@
     </div>
 </section>
 
+<?php 
+// Fetch agent data
+$getid = $_GET["cottage-edit"];
+$sql = "SELECT * FROM `cottage/hall` WHERE id = ?";
+$stmt = $con->prepare($sql);
+$stmt->bind_param("i", $getid);
+$stmt->execute();
+$result = $stmt->get_result();
+$fetch = $result->fetch_assoc();
 
+// Check if agent data was fetched successfully
+if ($fetch === null) {
+    echo "No data found for the given ID.";
+    exit();
+}
 
+// Fetch pumpboats data
+$sqlPumpboats = "SELECT pumpboat_no, status FROM pumpboats";
+$resultPumpboats = $con->query($sqlPumpboats);
+
+$pumpboats = [];
+if ($resultPumpboats->num_rows > 0) {
+    while($row = $resultPumpboats->fetch_assoc()) {
+        $pumpboats[] = $row;
+    }
+} else {
+    echo "No pumpboats data found.";
+}
+
+$con->close();
+?>
 
 <section class="content container-fluid">
     <div class="card">
@@ -201,27 +237,20 @@
                             <label class="col-sm-4 col-form-label">Pumpboat No.</label>
                             <div class="col-sm-8">
                                 <select class="form-control" name="type" id="pumpboat-select" required>
-                                    <option value="">Select Pumpboats</option> 
+                                    <option value="">Select Pumpboat</option>
+                                    <?php foreach ($pumpboats as $pumpboat): ?>
+                                        <option value="<?php echo $pumpboat['pumpboat_no']; ?>" <?php echo ($pumpboat['pumpboat_no'] == $fetch['pumpboat_no']) ? 'selected' : ''; ?> <?php echo $pumpboat['status'] == 1 ? 'disabled' : ''; ?>>
+                                            Pumpboat <?php echo $pumpboat['pumpboat_no']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
-                  <!--      <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Type</label>
-                            <div class="col-sm-8">
-                                <select class="form-control" name="type" required>
-                                    <option value="Pamo" <?php if($fetch["type"] == "Pamo") echo "selected"; ?>>Pamo</option>
-                                    
-                                </select>
-                            </div>
-                        </div> !-->
                         <div class="form-group row">
                             <div class="col-sm-8 offset-sm-4">
                                 <button type="submit" class="btn btn-primary" name="btn-cottage-edit">Update</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <!-- Additional form fields can go here -->
                     </div>
                 </div>
             </div>
@@ -230,25 +259,7 @@
 </section>
 
 <script>
-    const pumpboats = <?php echo json_encode($pumpboats); ?>;
-    
-    const pumpboatSelect = document.getElementById('pumpboat-select');
-    
-    pumpboats.forEach(pumpboat => {
-        const option = document.createElement('option');
-        option.value = pumpboat.pumpboat_no;
-        option.text = 'Pumpboat ' + pumpboat.pumpboat_no;
-        if (pumpboat.status == 1) {
-            option.disabled = true;
-        }
-        pumpboatSelect.appendChild(option);
-    });
-
-    // Set the selected value
-    const selectedCategory = "<?php echo $fetch['category']; ?>";
-    if (selectedCategory) {
-        pumpboatSelect.value = selectedCategory;
-    }
+// No need for JavaScript to populate dropdowns, PHP is handling that part.
 </script>
 
 <?php } ?>
