@@ -77,8 +77,20 @@
 <!-- Main content -->
 <?php
 
-include "db.php";
+include "../../config/db.php";
 
+// Fetch agent names from the database
+function fetch_agents($con) {
+    $sql = "SELECT CONCAT(fname, ' ', lname) AS full_name FROM user WHERE user_type_id = 3";
+    $query = mysqli_query($con, $sql);
+    $agents = [];
+    if (mysqli_num_rows($query) > 0) {
+        while ($row = mysqli_fetch_assoc($query)) {
+            $agents[] = $row;
+        }
+    }
+    return $agents;
+}
 
 // Fetch pumpboat numbers from the database
 function fetch_pumpboats($con) {
