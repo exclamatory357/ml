@@ -236,6 +236,7 @@ function get_cottage($con) {
 }
 
 
+
 function get_avail_cottage($con)
 
 {
