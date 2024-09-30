@@ -236,24 +236,13 @@ $pumpboats = fetch_pumpboats($con);
                             </div>
                         </div>
                         <div class="form-group row">
-    <label class="col-sm-4 col-form-label">Pumpboat No.</label>
-    <div class="col-sm-8">
-        <select class="form-control" name="type" id="pumpboat-select" required>
-            <option value="">Select Pumpboats</option>
-            <?php 
-                // Fetch pumpboats from the database
-                $pumpboats = fetch_pumpboats($con); // Assuming you have a fetch_pumpboats function
-                foreach ($pumpboats as $pumpboat): 
-            ?>
-                <option value="<?php echo $pumpboat['pumpboat_no']; ?>" 
-                    <?php echo ($fetch['type'] == $pumpboat['pumpboat_no']) ? 'selected' : ''; ?>>
-                    Pumpboat <?php echo $pumpboat['pumpboat_no']; ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-</div>
-
+                            <label class="col-sm-4 col-form-label">Pumpboat No.</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="type" id="pumpboat-select" required>
+                                    <option value="">Select Pumpboats</option> 
+                                </select>
+                            </div>
+                        </div>
                   <!--      <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Type</label>
                             <div class="col-sm-8">
@@ -277,17 +266,6 @@ $pumpboats = fetch_pumpboats($con);
         </form>
     </div>
 </section>
-
-<?php 
-    $pumpboats = fetch_pumpboats($con); // Fetch pumpboats from the database
-    foreach ($pumpboats as $pumpboat): 
-?>
-    <option value="<?php echo $pumpboat['pumpboat_no']; ?>" 
-        <?php echo ($fetch['type'] == $pumpboat['pumpboat_no']) ? 'selected' : ''; ?>>
-        Pumpboat <?php echo $pumpboat['pumpboat_no']; ?>
-    </option>
-<?php endforeach; ?>
-
 
 <script>
     const pumpboats = <?php echo json_encode($pumpboats); ?>;
