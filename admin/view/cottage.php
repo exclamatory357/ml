@@ -77,12 +77,7 @@
 
 <!-- Main content -->
 <!-- Main content -->
-<?php
 
-include "../../config/db.php";
-
-
-?>
 
 
 <!-- Main content -->
