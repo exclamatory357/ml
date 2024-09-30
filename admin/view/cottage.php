@@ -236,13 +236,19 @@ $pumpboats = fetch_pumpboats($con);
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Pumpboat No.</label>
-                            <div class="col-sm-8">
-                                <select class="form-control" name="type" id="pumpboat-select" required>
-                                    <option value="">Select Pumpboats</option> 
-                                </select>
-                            </div>
-                        </div>
+    <label class="col-sm-4 col-form-label">Pumpboat No.</label>
+    <div class="col-sm-8">
+        <select class="form-control" name="type" id="pumpboat-select">
+            <option value="">Select Pumpboats</option>
+            <?php foreach ($pumpboats as $pumpboat): ?>
+                <option value="<?php echo $pumpboat['pumpboat_no']; ?>">
+                    Pumpboat <?php echo $pumpboat['pumpboat_no']; ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+</div>
+
                   <!--      <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Type</label>
                             <div class="col-sm-8">
