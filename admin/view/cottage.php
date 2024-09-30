@@ -75,7 +75,52 @@
 
 <!-- Main content -->
 <!-- Main content -->
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
+include "../../config/db.php";
+
+if (!$con) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// Fetch agent names from the database
+function fetch_agents($con) {
+    $sql = "SELECT CONCAT(fname, ' ', lname) AS full_name FROM user WHERE user_type_id = 3";
+    $query = mysqli_query($con, $sql);
+
+    if (!$query) {
+        die("Error fetching agents: " . mysqli_error($con));
+    }
+
+    $agents = [];
+    while ($row = mysqli_fetch_assoc($query)) {
+        $agents[] = $row;
+    }
+    return $agents;
+}
+
+// Fetch pumpboat numbers from the database
+function fetch_pumpboats($con) {
+    $sql = "SELECT pumpboat_no, status FROM pumpboats";
+    $query = mysqli_query($con, $sql);
+
+    if (!$query) {
+        die("Error fetching pumpboats: " . mysqli_error($con));
+    }
+
+    $pumpboats = [];
+    while ($row = mysqli_fetch_assoc($query)) {
+        $pumpboats[] = $row;
+    }
+    return $pumpboats;
+}
+
+$agents = fetch_agents($con);
+$pumpboats = fetch_pumpboats($con);
+?>
 
 
 <!-- Main content -->
