@@ -61,6 +61,7 @@ if (isset($_GET['token']) && isset($_GET['email'])) {
             border-radius: 4px;
             cursor: pointer;
             font-size: 1em;
+            width: 100%;
             margin-bottom: 0.5em;
         }
         .reset-container button:hover {
