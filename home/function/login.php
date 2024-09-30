@@ -3,13 +3,13 @@
 session_start();
 
 // Redirect all HTTP requests to HTTPS if not already using HTTPS
-//if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
-  //  header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-    //exit();
-//}
+if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
+    header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+    exit();
+}
 
 // Enforce HTTPS with HSTS
-//header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
 
 // Secure session cookie settings
 ini_set('session.cookie_secure', '1');    // Enforces HTTPS-only session cookies
