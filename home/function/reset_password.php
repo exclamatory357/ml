@@ -13,7 +13,7 @@ if (isset($_GET['token']) && isset($_GET['email'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password</title>
+    <title>DRFAMS</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -84,7 +84,7 @@ if (isset($_GET['token']) && isset($_GET['email'])) {
 
 <div class="reset-container">
     <h2>Reset Your Password</h2>
-
+        <p>DanRose Fishing Management System</p>
     <form action="reset_password_process.php" method="POST">
         <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>">
         <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
