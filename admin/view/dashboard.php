@@ -390,7 +390,6 @@ if (isset($_GET["dashboard"])) {
 </body>
 </html>
 <?php } ?>
-
 <script type="text/javascript">
     // Disable right-click with an alert
     document.addEventListener('contextmenu', function(event) {
