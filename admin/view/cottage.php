@@ -75,39 +75,7 @@
 
 <!-- Main content -->
 <!-- Main content -->
-<?php
 
-include "../../config/db.php";
-
-// Fetch agent names from the database
-function fetch_agents($con) {
-    $sql = "SELECT CONCAT(fname, ' ', lname) AS full_name FROM user WHERE user_type_id = 3";
-    $query = mysqli_query($con, $sql);
-    $agents = [];
-    if (mysqli_num_rows($query) > 0) {
-        while ($row = mysqli_fetch_assoc($query)) {
-            $agents[] = $row;
-        }
-    }
-    return $agents;
-}
-
-// Fetch pumpboat numbers from the database
-function fetch_pumpboats($con) {
-    $sql = "SELECT pumpboat_no, status FROM pumpboats";
-    $query = mysqli_query($con, $sql);
-    $pumpboats = [];
-    if (mysqli_num_rows($query) > 0) {
-        while ($row = mysqli_fetch_assoc($query)) {
-            $pumpboats[] = $row;
-        }
-    }
-    return $pumpboats;
-}
-
-$agents = fetch_agents($con);
-$pumpboats = fetch_pumpboats($con);
-?>
 
 
 <!-- Main content -->
@@ -205,38 +173,6 @@ $pumpboats = fetch_pumpboats($con);
 </section>
 
 
-<?php 
-
-// Fetch agent data
-$getid = $_GET["cottage-edit"];
-$sql = "SELECT * FROM `cottage/hall` WHERE id = ?";
-$stmt = $con->prepare($sql);
-$stmt->bind_param("i", $getid);
-$stmt->execute();
-$result = $stmt->get_result();
-$fetch = $result->fetch_assoc();
-
-// Check if agent data was fetched successfully
-if ($fetch === null) {
-    echo "No data found for the given ID.";
-    exit();
-}
-
-// Fetch pumpboats data
-$sqlPumpboats = "SELECT pumpboat_no, status FROM pumpboats";
-$resultPumpboats = $con->query($sqlPumpboats);
-
-$pumpboats = [];
-if ($resultPumpboats->num_rows > 0) {
-    while($row = $resultPumpboats->fetch_assoc()) {
-        $pumpboats[] = $row;
-    }
-} else {
-    echo "No pumpboats data found.";
-}
-
-$con->close();
-?>
 
 
 <section class="content container-fluid">
