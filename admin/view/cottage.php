@@ -80,7 +80,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include "../../config/db.php";
+include __DIR__ . '/../../config/db.php';
 
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
