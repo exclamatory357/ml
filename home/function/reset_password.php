@@ -17,7 +17,7 @@ if (isset($_GET['token']) && isset($_GET['email'])) {
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('danorse_house2.jpg'); /* Set this to the background image you prefer */
+            background-image: url('danrose_house2.jpg'); /* Set this to the background image you prefer */
             background-size: cover;
             background-position: center;
             display: flex;
