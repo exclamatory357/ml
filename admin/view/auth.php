@@ -1,5 +1,8 @@
 <?php
-session_start();
+// Start the session if not already started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 error_reporting(1);
 // Redirect to login if not logged in
 if (!isset($_SESSION["username"])) {
