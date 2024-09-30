@@ -278,6 +278,17 @@ $pumpboats = fetch_pumpboats($con);
     </div>
 </section>
 
+<?php 
+    $pumpboats = fetch_pumpboats($con); // Fetch pumpboats from the database
+    foreach ($pumpboats as $pumpboat): 
+?>
+    <option value="<?php echo $pumpboat['pumpboat_no']; ?>" 
+        <?php echo ($fetch['type'] == $pumpboat['pumpboat_no']) ? 'selected' : ''; ?>>
+        Pumpboat <?php echo $pumpboat['pumpboat_no']; ?>
+    </option>
+<?php endforeach; ?>
+
+
 <script>
     const pumpboats = <?php echo json_encode($pumpboats); ?>;
     
