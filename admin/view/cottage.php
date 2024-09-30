@@ -29,7 +29,9 @@
 <section class="content container-fluid">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><a href="?cottage-add" class="btn btn-success"><i class="fa fa-plus"></i> Add Agent</a></h3>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAgentModal">
+  Add Agent
+</button>
         </div>
         <div class="card-body">
             <table id="example2" class="table table-bordered">
