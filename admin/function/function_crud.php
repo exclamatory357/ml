@@ -659,10 +659,10 @@ if (isset($_POST["btn-picture-edit"])) {
             $license_no = $_POST["license_no"];
             $pumpboat_no = $_POST["pumpboat_no"];
             $type = $_POST["type"];
-            $status = $_POST["status"];
+            $team = $_POST["team"];
         
-            $sqlPumpboat = "INSERT INTO `pumpboats`(`license_no`, `pumpboat_no`, `type`, `status`) 
-                            VALUES('$license_no','$pumpboat_no','$type','$status')";
+            $sqlPumpboat = "INSERT INTO `pumpboats`(`license_no`, `pumpboat_no`, `type`, `team`) 
+                            VALUES('$license_no','$pumpboat_no','$type','$team')";
             $query = mysqli_query($con, $sqlPumpboat);
         
             if ($query) {
