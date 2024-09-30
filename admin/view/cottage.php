@@ -29,9 +29,7 @@
 <section class="content container-fluid">
     <div class="card">
         <div class="card-header">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAgentModal">
-  Add Agent
-</button>
+            <h3 class="card-title"><a href="?cottage-add" class="btn btn-success"><i class="fa fa-plus"></i> Add Agent</a></h3>
         </div>
         <div class="card-body">
             <table id="example2" class="table table-bordered">
@@ -112,60 +110,72 @@ $pumpboats = fetch_pumpboats($con);
 ?>
 
 
-<!-- Modal -->
-<div class="modal fade" id="addAgentModal" tabindex="-1" role="dialog" aria-labelledby="addAgentModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addAgentModalLabel">Add Agent</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+<!-- Main content -->
+<section class="content container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Add Agent</h3>
+        </div>
         <form action="function/function_crud.php" method="post" enctype="multipart/form-data" class="form-horizontal">
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Team</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" name="team" required>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Team</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="team" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Agent Name</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="name" required>
+                                    <option value="">Select Agent</option>
+                                    <?php foreach ($agents as $agent): ?>
+                                        <option value="<?php echo $agent['full_name']; ?>">
+                                            <?php echo $agent['full_name']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Pumpboat No.</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="type" id="pumpboat-select" required>
+                                    <option value="">Select Pumpboats</option>
+                                    <?php foreach ($pumpboats as $pumpboat): ?>
+                                        <option value="<?php echo $pumpboat['pumpboat_no']; ?>" <?php echo $pumpboat['status'] == 1 ? 'disabled' : ''; ?>>
+                                            Pumpboat <?php echo $pumpboat['pumpboat_no']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                      <!--  <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Type</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="category" required>
+                                    <option value="Pamo">Pamo</option>
+                                    <option value="Panambahan">Panambahan</option>
+                                    <option value="Island hopping">Island hopping</option>
+                                </select>
+                            </div> !-->
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-8 offset-sm-4">
+                                <button type="submit" class="btn btn-primary" name="btn-cottage-add">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Additional form fields can go here -->
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Agent Name</label>
-            <div class="col-sm-8">
-              <select class="form-control" name="name" required>
-                <option value="">Select Agent</option>
-                <?php foreach ($agents as $agent): ?>
-                  <option value="<?php echo $agent['full_name']; ?>">
-                    <?php echo $agent['full_name']; ?>
-                  </option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Pumpboat No.</label>
-            <div class="col-sm-8">
-              <select class="form-control" name="type" id="pumpboat-select" required>
-                <option value="">Select Pumpboats</option>
-                <?php foreach ($pumpboats as $pumpboat): ?>
-                  <option value="<?php echo $pumpboat['pumpboat_no']; ?>" <?php echo $pumpboat['status'] == 1 ? 'disabled' : ''; ?>>
-                    Pumpboat <?php echo $pumpboat['pumpboat_no']; ?>
-                  </option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-sm-8 offset-sm-4">
-              <button type="submit" class="btn btn-primary" name="btn-cottage-add">Submit</button>
-            </div>
-          </div>
         </form>
-      </div>
     </div>
-  </div>
-</div>
+</section>
 
 
 <!-- Bootstrap and other necessary scripts -->
