@@ -77,6 +77,7 @@
 <!-- Main content -->
 <?php
 
+include "db.php";
 
 // Fetch agent names from the database
 function fetch_agents($con) {
