@@ -29,7 +29,11 @@
 <section class="content container-fluid">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><a href="?cottage-add" class="btn btn-success"><i class="fa fa-plus"></i> Add Agent</a></h3>
+           <!-- Button to trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAgentModal">
+  Add Agent
+</button>
+        <h3 class="card-title"><a href="?cottage-add" class="btn btn-success"><i class="fa fa-plus"></i> Add Agent</a></h3>
         </div>
         <div class="card-body">
             <table id="example2" class="table table-bordered">
@@ -76,10 +80,7 @@
 
 
 
-<!-- Button to trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAgentModal">
-  Add Agent
-</button>
+
 
 <!-- Modal -->
 <div class="modal fade" id="addAgentModal" tabindex="-1" role="dialog" aria-labelledby="addAgentModalLabel" aria-hidden="true">
@@ -136,11 +137,6 @@
   </div>
 </div>
 
-<!-- Include necessary Bootstrap JS and CSS -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <!-- Main content -->
 <!-- Main content -->
