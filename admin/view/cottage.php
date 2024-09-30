@@ -73,6 +73,75 @@
     </div>
 </section>
 
+
+
+
+<!-- Button to trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAgentModal">
+  Add Agent
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="addAgentModal" tabindex="-1" role="dialog" aria-labelledby="addAgentModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addAgentModalLabel">Add Agent</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="function/function_crud.php" method="post" enctype="multipart/form-data" class="form-horizontal">
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Team</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" name="team" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Agent Name</label>
+            <div class="col-sm-8">
+              <select class="form-control" name="name" required>
+                <option value="">Select Agent</option>
+                <?php foreach ($agents as $agent): ?>
+                  <option value="<?php echo $agent['full_name']; ?>">
+                    <?php echo $agent['full_name']; ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Pumpboat No.</label>
+            <div class="col-sm-8">
+              <select class="form-control" name="type" id="pumpboat-select" required>
+                <option value="">Select Pumpboats</option>
+                <?php foreach ($pumpboats as $pumpboat): ?>
+                  <option value="<?php echo $pumpboat['pumpboat_no']; ?>" <?php echo $pumpboat['status'] == 1 ? 'disabled' : ''; ?>>
+                    Pumpboat <?php echo $pumpboat['pumpboat_no']; ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-8 offset-sm-4">
+              <button type="submit" class="btn btn-primary" name="btn-cottage-add">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Include necessary Bootstrap JS and CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 <!-- Main content -->
 <!-- Main content -->
 <?php
