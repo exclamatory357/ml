@@ -29,7 +29,7 @@ if (isset($_POST["btnlogin"])) {
 
     // Build POST request to verify token with Google
     $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
-    $recaptcha_secret = 'your_secret_key'; // Replace with your secret key from Google
+    $recaptcha_secret = '6Lfn3lAqAAAAAEmcAC4hsbGLGiNiUP79fHwLmYcM'; // Replace with your secret key from Google
 
     // Make and decode POST request
     $recaptcha = file_get_contents($recaptcha_url . '?secret=' . urlencode($recaptcha_secret) . '&response=' . urlencode($recaptcha_response) . '&remoteip=' . $_SERVER['REMOTE_ADDR']);
