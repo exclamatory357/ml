@@ -2,7 +2,7 @@
 // Start session securely
 session_start();
 
-// Redirect all HTTP requests to HTTPS if not already using HTTPS
+// Ensure all HTTP requests are redirected to HTTPS
 if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
     header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
     exit();
@@ -23,7 +23,7 @@ header("X-XSS-Protection: 1; mode=block");
 
 include "../../config/db.php";
 
-// Set login attempt limits and timeout
+// Set login attempt limits and timeout duration
 $login_attempt_limit = 3;
 $timeout_duration = 900; // 15 minutes (in seconds)
 
@@ -32,7 +32,7 @@ if (!isset($_SESSION['login_attempts'])) {
     $_SESSION['login_attempts'] = 0;
 }
 
-// Check if timeout is active
+// Check if timeout is active due to failed login attempts
 if (isset($_SESSION['timeout']) && time() < $_SESSION['timeout']) {
     $_SESSION['notify'] = "login_disabled"; // Notify that the login is disabled
     header("Location: ../?home");
@@ -52,7 +52,7 @@ if (isset($_POST["btnlogin"])) {
     }
 
     // Use prepared statements to prevent SQL injection
-    $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id 
+    $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id, user.email 
             FROM user 
             INNER JOIN user_type ON user.user_type_id = user_type.user_type_id 
             WHERE uname = ?";
@@ -68,44 +68,44 @@ if (isset($_POST["btnlogin"])) {
         $get_password_hash = $res["pass"]; // Hashed password from the database
         $get_user_type = $res["user_type_name"];
         $type_id = $res["user_type_id"];
+        $email = $res["email"]; // User's email for sending OTP
 
         // Verify the password using password_verify()
         if (password_verify($password, $get_password_hash)) {
+            // Password is correct, now generate and send OTP
 
-            // Regenerate session ID to prevent session fixation attacks
-            session_regenerate_id(true);
+            // Generate OTP and store it in session
+            $otp = rand(100000, 999999); // Generate a 6-digit OTP
+            $_SESSION["otp"] = $otp; // Store OTP in session
+            $_SESSION["otp_expiration"] = time() + 300; // Set OTP expiration (5 minutes)
+            $_SESSION["user_id"] = $get_user_id; // Temporarily store user ID
+            $_SESSION["user_type"] = $get_user_type;
 
-            // Reset login attempts on successful login
-            $_SESSION['login_attempts'] = 0;
-            unset($_SESSION['timeout']);
+            // Send OTP via email (using PHPMailer)
+            require 'phpmailer/PHPMailerAutoload.php'; // Make sure PHPMailer is properly configured
+            $mail = new PHPMailer;
+            $mail->isSMTP();
+            $mail->Host = 'smtp.example.com'; // SMTP server
+            $mail->SMTPAuth = true;
+            $mail->Username = 'danrosefishing30@gmail.com'; // Your email address
+            $mail->Password = 'meyj axmh socg tivf'; // Your email password
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
 
-            // Set session variables based on user role
-            $_SESSION["username"] = $get_username;
-            $_SESSION["user_id"] = $get_user_id;
-            $_SESSION["role"] = $get_user_type;
-            $_SESSION["type_id"] = $type_id;
+            $mail->setFrom('danrosefishing30@gmail.com', 'DanRose Fishing Management System');
+            $mail->addAddress($email); // User's email
+            $mail->Subject = 'Your OTP for Login';
+            $mail->Body = "Your OTP code is: $otp";
 
-            // Redirect based on user role
-            switch ($get_user_type) {
-                case "admin":
-                case "staff":
-                    $_SESSION["admin_uname"] = $get_username; // For backward compatibility
-                    header("Location: ../../admin/?dashboard"); // Redirect to admin side
-                    break;
-
-                case "superadmin":
-                    echo "Welcome superadmin";
-                    break;
-
-                case "agent":
-                    $_SESSION["trans_no"] = rand(); // Example of agent-specific data
-                    header("Location: ../?request"); // Redirect to agent reservation page
-                    break;
-
-                default:
-                    header("Location: ../?home"); // Default fallback if role is not recognized
-                    break;
+            if (!$mail->send()) {
+                $_SESSION["notify"] = "otp_failed"; // Notify OTP email send failure
+                header("Location: ../?home");
+                exit();
             }
+
+            // Redirect to OTP verification page
+            header("Location: otp_verification.php");
+            exit();
         } else {
             // Password is incorrect, increment login attempts
             $_SESSION['login_attempts'] += 1;
