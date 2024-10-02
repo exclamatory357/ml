@@ -3,43 +3,13 @@ include "../../config/db.php"; // Include your database connection
 
 if (
     isset($_POST['email']) &&
-    isset($_POST['email_confirm']) &&
     isset($_POST['password']) &&
     isset($_POST['password_confirm'])
 ) {
-    // Trim and lowercase emails to avoid case and space issues
+    // Trim and lowercase email to avoid case and space issues
     $email = trim(strtolower(urldecode($_POST['email'])));
-    $email_confirm = trim(strtolower(urldecode($_POST['email_confirm'])));
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
-
-    // Check if emails match
-    if ($email !== $email_confirm) {
-        // Emails do not match, display an error message using SweetAlert2
-        ?>
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <title>Emails Do Not Match</title>
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        </head>
-        <body>
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Email addresses do not match.',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    window.history.back();
-                });
-            </script>
-        </body>
-        </html>
-        <?php
-        exit;
-    }
 
     // Check if passwords match
     if ($password !== $password_confirm) {

@@ -93,9 +93,6 @@
         <label for="email">Email Address:</label>
         <input type="email" name="email" required placeholder="Enter your email">
 
-   <!--     <label for="email_confirm">Confirm Email Address:</label>
-        <input type="email" name="email_confirm" required placeholder="Confirm your email"> !-->
-
         <label for="password">New Password:</label>
         <input type="password" name="password" required placeholder="Enter new password">
 
