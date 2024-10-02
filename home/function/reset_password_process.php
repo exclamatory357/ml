@@ -3,13 +3,11 @@ include "../../config/db.php"; // Include your database connection
 
 if (
     isset($_POST['email']) &&
-    isset($_POST['token']) &&
     isset($_POST['password']) &&
     isset($_POST['password_confirm'])
 ) {
     // Trim and lowercase email to avoid case and space issues
     $email = trim(strtolower(urldecode($_POST['email'])));
-    $token = $_POST['token'];
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
 
@@ -41,8 +39,8 @@ if (
         exit;
     }
 
-    // Fetch the hashed token and expiry time from the database
-    $query = "SELECT reset_token, token_expiry FROM user WHERE email = ?";
+    // Fetch the user from the database based on the email
+    $query = "SELECT * FROM user WHERE email = ?";
     $stmt = $con->prepare($query);
 
     if (!$stmt) {
@@ -60,26 +58,29 @@ if (
     $user = $result->fetch_assoc();
 
     if ($user) {
-        $hashedToken = $user['reset_token'];
-        $tokenExpiry = $user['token_expiry'];
+        // Hash the new password using bcrypt
+        $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        // Check if token has expired
-        if (new DateTime() > new DateTime($tokenExpiry)) {
-            // Token has expired
+        // Update the password in the database
+        $query = "UPDATE user SET pass = ? WHERE email = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("ss", $newHashedPassword, $email);
+        if ($stmt->execute()) {
+            // Password reset successful
             ?>
             <!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
-                <title>Token Expired</title>
+                <title>Password Reset Successful</title>
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             </head>
             <body>
                 <script>
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'This password reset link has expired.',
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Your password has been reset successfully.',
                         confirmButtonText: 'OK'
                     }).then(() => {
                         window.location.href = '../?home';
@@ -88,77 +89,14 @@ if (
             </body>
             </html>
             <?php
-            exit;
-        }
-
-        // Verify the token using md5
-        if (md5($token) === $hashedToken) {
-            // Token is valid, proceed with password update
-
-            // Hash the new password using bcrypt
-            $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-            // Update the password in the database
-            $query = "UPDATE user SET pass = ?, reset_token = NULL, token_expiry = NULL WHERE email = ?";
-            $stmt = $con->prepare($query);
-            $stmt->bind_param("ss", $newHashedPassword, $email);
-            if ($stmt->execute()) {
-                // Password reset successful
-                ?>
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Password Reset Successful</title>
-                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                </head>
-                <body>
-                    <script>
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Your password has been reset successfully.',
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            window.location.href = '../?home';
-                        });
-                    </script>
-                </body>
-                </html>
-                <?php
-            } else {
-                // Failed to reset password
-                ?>
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Error</title>
-                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                </head>
-                <body>
-                    <script>
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Failed to reset your password. Please try again.',
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            window.history.back();
-                        });
-                    </script>
-                </body>
-                </html>
-                <?php
-            }
         } else {
-            // Invalid token
+            // Failed to reset password
             ?>
             <!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
-                <title>Invalid Token</title>
+                <title>Error</title>
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             </head>
             <body>
@@ -166,10 +104,10 @@ if (
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'Invalid or expired token.',
+                        text: 'Failed to reset your password. Please try again.',
                         confirmButtonText: 'OK'
                     }).then(() => {
-                        window.location.href = '../?home';
+                        window.history.back();
                     });
                 </script>
             </body>
