@@ -23,6 +23,22 @@ header("X-XSS-Protection: 1; mode=block");
 
 include "../../config/db.php";
 
+// Set login attempt limits and timeout
+$login_attempt_limit = 3;
+$timeout_duration = 300; // 5 minutes (in seconds)
+
+// Initialize login attempts if not set
+if (!isset($_SESSION['login_attempts'])) {
+    $_SESSION['login_attempts'] = 0;
+}
+
+// Check if timeout is active
+if (isset($_SESSION['timeout']) && time() < $_SESSION['timeout']) {
+    $_SESSION['notify'] = "login_disabled"; // Notify that the login is disabled
+    header("Location: ../?home");
+    exit();
+}
+
 if (isset($_POST["btnlogin"])) {
     // Sanitize and validate inputs
     $username = trim(filter_var($_POST["username"], FILTER_SANITIZE_STRING));
@@ -59,6 +75,10 @@ if (isset($_POST["btnlogin"])) {
             // Regenerate session ID to prevent session fixation attacks
             session_regenerate_id(true);
 
+            // Reset login attempts on successful login
+            $_SESSION['login_attempts'] = 0;
+            unset($_SESSION['timeout']);
+
             // Set session variables based on user role
             $_SESSION["username"] = $get_username;
             $_SESSION["user_id"] = $get_user_id;
@@ -87,14 +107,34 @@ if (isset($_POST["btnlogin"])) {
                     break;
             }
         } else {
-            $_SESSION["notify"] = "invalid"; // Invalid password
+            // Password is incorrect, increment login attempts
+            $_SESSION['login_attempts'] += 1;
+
+            // If login attempts exceed limit, set a timeout
+            if ($_SESSION['login_attempts'] >= $login_attempt_limit) {
+                $_SESSION['timeout'] = time() + $timeout_duration; // Set the timeout
+                $_SESSION["notify"] = "login_disabled"; // Notify the user
+            } else {
+                $_SESSION["notify"] = "invalid"; // Invalid password
+            }
+
             header("Location: ../?home");
-            exit(); // Prevent further code execution
+            exit();
         }
     } else {
-        $_SESSION["notify"] = "invalid"; // User not found
+        // User not found, increment login attempts
+        $_SESSION['login_attempts'] += 1;
+
+        // If login attempts exceed limit, set a timeout
+        if ($_SESSION['login_attempts'] >= $login_attempt_limit) {
+            $_SESSION['timeout'] = time() + $timeout_duration;
+            $_SESSION["notify"] = "login_disabled"; // Notify the user
+        } else {
+            $_SESSION["notify"] = "invalid"; // Invalid credentials
+        }
+
         header("Location: ../?home");
-        exit(); // Prevent further code execution
+        exit();
     }
 }
 ?>
