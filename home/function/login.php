@@ -24,77 +24,98 @@ header("X-XSS-Protection: 1; mode=block");
 include "../../config/db.php";
 
 if (isset($_POST["btnlogin"])) {
-    // Sanitize and validate inputs
-    $username = trim(filter_var($_POST["username"], FILTER_SANITIZE_STRING));
-    $password = $_POST["password"]; // Password entered by the user
+    // Verify reCAPTCHA response
+    $recaptcha_response = $_POST['recaptcha_response'];
 
-    // Check for empty inputs (basic validation)
-    if (empty($username) || empty($password)) {
-        $_SESSION["notify"] = "invalid"; // Empty credentials
-        header("Location: ../?home");
-        exit();
-    }
+    // Build POST request to verify token with Google
+    $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+    $recaptcha_secret = 'your_secret_key'; // Replace with your secret key from Google
 
-    // Use prepared statements to prevent SQL injection
-    $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id 
-            FROM user 
-            INNER JOIN user_type ON user.user_type_id = user_type.user_type_id 
-            WHERE uname = ?";
-    $stmt = $con->prepare($sql);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Make and decode POST request
+    $recaptcha = file_get_contents($recaptcha_url . '?secret=' . urlencode($recaptcha_secret) . '&response=' . urlencode($recaptcha_response) . '&remoteip=' . $_SERVER['REMOTE_ADDR']);
+    $recaptcha = json_decode($recaptcha);
 
-    if ($result->num_rows > 0) {
-        $res = $result->fetch_assoc();
-        $get_user_id = $res["user_id"];
-        $get_username = $res["uname"];
-        $get_password_hash = $res["pass"]; // Hashed password from the database
-        $get_user_type = $res["user_type_name"];
-        $type_id = $res["user_type_id"];
+    // Take action based on the score returned
+    if ($recaptcha->success == true && $recaptcha->score >= 0.5 && $recaptcha->action == 'login') {
+        // Proceed with login verification
 
-        // Verify the password using password_verify()
-        if (password_verify($password, $get_password_hash)) {
+        // Sanitize and validate inputs
+        $username = trim(filter_var($_POST["username"], FILTER_SANITIZE_STRING));
+        $password = $_POST["password"]; // Password entered by the user
 
-            // Regenerate session ID to prevent session fixation attacks
-            session_regenerate_id(true);
+        // Check for empty inputs (basic validation)
+        if (empty($username) || empty($password)) {
+            $_SESSION["notify"] = "invalid"; // Empty credentials
+            header("Location: ../?home");
+            exit();
+        }
 
-            // Set session variables based on user role
-            $_SESSION["username"] = $get_username;
-            $_SESSION["user_id"] = $get_user_id;
-            $_SESSION["role"] = $get_user_type;
-            $_SESSION["type_id"] = $type_id;
+        // Use prepared statements to prevent SQL injection
+        $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id 
+                FROM user 
+                INNER JOIN user_type ON user.user_type_id = user_type.user_type_id 
+                WHERE uname = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            // Redirect based on user role
-            switch ($get_user_type) {
-                case "admin":
-                case "staff":
-                    $_SESSION["admin_uname"] = $get_username; // For backward compatibility
-                    header("Location: ../../admin/?dashboard"); // Redirect to admin side
-                    break;
+        if ($result->num_rows > 0) {
+            $res = $result->fetch_assoc();
+            $get_user_id = $res["user_id"];
+            $get_username = $res["uname"];
+            $get_password_hash = $res["pass"]; // Hashed password from the database
+            $get_user_type = $res["user_type_name"];
+            $type_id = $res["user_type_id"];
 
-                case "superadmin":
-                    echo "Welcome superadmin";
-                    break;
+            // Verify the password using password_verify()
+            if (password_verify($password, $get_password_hash)) {
 
-                case "agent":
-                    $_SESSION["trans_no"] = rand(); // Example of agent-specific data
-                    header("Location: ../?request"); // Redirect to agent reservation page
-                    break;
+                // Regenerate session ID to prevent session fixation attacks
+                session_regenerate_id(true);
 
-                default:
-                    header("Location: ../?home"); // Default fallback if role is not recognized
-                    break;
+                // Set session variables based on user role
+                $_SESSION["username"] = $get_username;
+                $_SESSION["user_id"] = $get_user_id;
+                $_SESSION["role"] = $get_user_type;
+                $_SESSION["type_id"] = $type_id;
+
+                // Redirect based on user role
+                switch ($get_user_type) {
+                    case "admin":
+                    case "staff":
+                        $_SESSION["admin_uname"] = $get_username; // For backward compatibility
+                        header("Location: ../../admin/?dashboard"); // Redirect to admin side
+                        break;
+
+                    case "superadmin":
+                        echo "Welcome superadmin";
+                        break;
+
+                    case "agent":
+                        $_SESSION["trans_no"] = rand(); // Example of agent-specific data
+                        header("Location: ../?request"); // Redirect to agent reservation page
+                        break;
+
+                    default:
+                        header("Location: ../?home"); // Default fallback if role is not recognized
+                        break;
+                }
+            } else {
+                $_SESSION["notify"] = "invalid"; // Invalid password
+                header("Location: ../?home");
+                exit(); // Prevent further code execution
             }
         } else {
-            $_SESSION["notify"] = "invalid"; // Invalid password
+            $_SESSION["notify"] = "invalid"; // User not found
             header("Location: ../?home");
             exit(); // Prevent further code execution
         }
     } else {
-        $_SESSION["notify"] = "invalid"; // User not found
+        // reCAPTCHA verification failed
+        $_SESSION["notify"] = "recaptcha_failed"; // Set a session variable to display an error
         header("Location: ../?home");
-        exit(); // Prevent further code execution
+        exit();
     }
 }
 ?>
