@@ -173,27 +173,23 @@ if (isset($_GET["home"])) { ?>
             </a> -->
         </div>
 
-        <!-- LOGIN PAGE -->
-        <?php if (!isset($_SESSION["username"])) { ?>
-            <!-- LOGIN FORM, show if session is not set -->
-            <div class="login-box-body p-absolute-login container mt-5">
-                <p class="login-box-msg text-center">Welcome back!</p>
-                <form action="function/login.php" method="post">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control form-control-lg" placeholder="Enter Username" name="username" required autofocus>
-                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                    </div>
-                    <div class="form-group has-feedback">
-                       <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required> 
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin">Sign In</button>
-                    
-                     <button type="button" data-toggle="modal" data-target="#modal-forgot-password" class="btn btn-success btn-block btn-lg">Forgot password</button> 
-                     
-                </form>
-            </div>
-        <?php } ?>
+        <div class="login-box-body p-absolute-login container mt-5">
+    <p class="login-box-msg text-center">Welcome back!</p>
+    <form action="function/login.php" method="post" id="login-form">
+        <div class="form-group has-feedback">
+            <input type="text" class="form-control form-control-lg" placeholder="Enter Username" name="username" required autofocus>
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+            <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required> 
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </div>
+        <input type="hidden" name="recaptcha_token" id="recaptcha_token_login">
+        <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin">Sign In</button>
+        <button type="button" data-toggle="modal" data-target="#modal-forgot-password" class="btn btn-success btn-block btn-lg">Forgot password</button>
+    </form>
+</div>
+
         
                 <!-- FORGOT PASSWORD MODAL -->
 <div class="modal fade" id="modal-forgot-password" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
@@ -205,19 +201,44 @@ if (isset($_GET["home"])) { ?>
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+           
             <div class="modal-body">
-                <form action="function/forgot_password.php" method="post">
-                    <div class="form-group has-feedback">
-                        <label for="email">Enter your registered email address:</label>
-                        <input type="email" class="form-control form-control-lg" placeholder="Email" name="email" required autofocus>
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="btn-forgot-password">Submit</button>
-                </form>
-            </div>
+    <form action="function/forgot_password.php" method="post" id="forgot-password-form">
+        <div class="form-group has-feedback">
+            <label for="email">Enter your registered email address:</label>
+            <input type="email" class="form-control form-control-lg" placeholder="Email" name="email" required autofocus>
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         </div>
-    </div>
+        <input type="hidden" name="recaptcha_token" id="recaptcha_token_forgot">
+        <button type="submit" class="btn btn-primary btn-block btn-lg" name="btn-forgot-password">Submit</button>
+    </form>
 </div>
+
+
+<script>
+    grecaptcha.ready(function() {
+        // For login form
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+            grecaptcha.execute('6Lfn3lAqAAAAAIvb5GCgRJBJBRG_5uShpfbGcquW', { action: 'login' }).then(function(token) {
+                // Add token to form and submit
+                document.getElementById('recaptcha_token_login').value = token;
+                document.getElementById('login-form').submit();
+            });
+        });
+
+        // For forgot password form
+        document.getElementById('forgot-password-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+            grecaptcha.execute('6Lfn3lAqAAAAAIvb5GCgRJBJBRG_5uShpfbGcquW', { action: 'forgot_password' }).then(function(token) {
+                // Add token to form and submit
+                document.getElementById('recaptcha_token_forgot').value = token;
+                document.getElementById('forgot-password-form').submit();
+            });
+        });
+    });
+</script>
+
 
 
        <!-- <div class="system-title p-absolute-system-title text-center mt-5">
