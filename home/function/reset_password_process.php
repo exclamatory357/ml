@@ -7,27 +7,35 @@ if (
     isset($_POST['password']) &&
     isset($_POST['password_confirm'])
 ) {
-    $email = trim(strtolower($_POST['email'])); // Ensure email is case-insensitive and sanitized
-    $token = urldecode($_POST['token']); // Decode token from URL
+    $email = $_POST['email'];
+    $token = $_POST['token'];
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
 
-    // Debugging output
-    echo "Debugging: Token from form (raw) - " . htmlspecialchars($token) . "<br>";
-
     // Check if passwords match
     if ($password !== $password_confirm) {
+        // Passwords do not match, display an error message using SweetAlert2
         ?>
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Passwords do not match.',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                window.history.back();
-            });
-        </script>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Passwords Do Not Match</title>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        </head>
+        <body>
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Passwords do not match.',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    window.history.back();
+                });
+            </script>
+        </body>
+        </html>
         <?php
         exit;
     }
@@ -44,23 +52,30 @@ if (
         $hashedToken = $user['reset_token'];
         $tokenExpiry = $user['token_expiry'];
 
-        // Debugging output for token and expiry
-        echo "Debugging: Hashed token from DB - " . htmlspecialchars($hashedToken) . "<br>";
-        echo "Debugging: Token expiry from DB - " . $tokenExpiry . "<br>";
-
         // Check if token has expired
         if (new DateTime() > new DateTime($tokenExpiry)) {
+            // Token has expired
             ?>
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'This password reset link has expired.',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    window.location.href = '../?home';
-                });
-            </script>
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Token Expired</title>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            </head>
+            <body>
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'This password reset link has expired.',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.href = '../?home';
+                    });
+                </script>
+            </body>
+            </html>
             <?php
             exit;
         }
@@ -79,61 +94,100 @@ if (
             if ($stmt->execute()) {
                 // Password reset successful
                 ?>
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Password Reset Successful</title>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                </head>
+                <body>
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Your password has been reset successfully.',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.href = '../?home';
+                        });
+                    </script>
+                </body>
+                </html>
+                <?php
+            } else {
+                // Failed to reset password
+                ?>
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Error</title>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                </head>
+                <body>
+                    <script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to reset your password. Please try again.',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.history.back();
+                        });
+                    </script>
+                </body>
+                </html>
+                <?php
+            }
+        } else {
+            // Invalid token
+            ?>
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Invalid Token</title>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            </head>
+            <body>
                 <script>
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Your password has been reset successfully.',
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Invalid or expired token.',
                         confirmButtonText: 'OK'
                     }).then(() => {
                         window.location.href = '../?home';
                     });
                 </script>
-                <?php
-            } else {
-                // Failed to reset password
-                ?>
-                <script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to reset your password. Please try again.',
-                        confirmButtonText: 'OK'
-                    }).then(() => {
-                        window.history.back();
-                    });
-                </script>
-                <?php
-            }
-        } else {
-            // Invalid token
-            echo "Debugging: Token verification failed.<br>"; // Add this for debugging
-            ?>
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Invalid or expired token.',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    window.location.href = '../?home';
-                });
-            </script>
+            </body>
+            </html>
             <?php
         }
     } else {
         // No user found with that email
         ?>
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'No user found with that email.',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                window.location.href = '../?home';
-            });
-        </script>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>User Not Found</title>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        </head>
+        <body>
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No user found with that email.',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    window.location.href = '../?home';
+                });
+            </script>
+        </body>
+        </html>
         <?php
     }
 
@@ -143,15 +197,26 @@ if (
 } else {
     // Invalid request
     ?>
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Invalid request.',
-            confirmButtonText: 'OK'
-        }).then(() => {
-            window.location.href = '../?home';
-        });
-    </script>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Invalid Request</title>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+    <body>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Invalid request.',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.href = '../?home';
+            });
+        </script>
+    </body>
+    </html>
     <?php
 }
+?>
