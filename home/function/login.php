@@ -23,13 +23,18 @@ header("X-XSS-Protection: 1; mode=block");
 
 include "../../config/db.php";
 
-// Set login attempt limits and timeout
+// Set login attempt limits and progressive timeouts
 $login_attempt_limit = 3;
-$timeout_duration = 300; // 5 minutes (in seconds)
+$timeout_durations = [
+    1 => 300,     // 5 minutes for the first block
+    2 => 3600,    // 1 hour for the second block
+    3 => 18000    // 5 hours for the third block
+];
 
 // Initialize login attempts if not set
 if (!isset($_SESSION['login_attempts'])) {
     $_SESSION['login_attempts'] = 0;
+    $_SESSION['login_block'] = 0; // Tracks how many times user has failed
 }
 
 // Check if timeout is active
@@ -75,8 +80,9 @@ if (isset($_POST["btnlogin"])) {
             // Regenerate session ID to prevent session fixation attacks
             session_regenerate_id(true);
 
-            // Reset login attempts on successful login
+            // Reset login attempts and block count on successful login
             $_SESSION['login_attempts'] = 0;
+            $_SESSION['login_block'] = 0;
             unset($_SESSION['timeout']);
 
             // Set session variables based on user role
@@ -110,10 +116,16 @@ if (isset($_POST["btnlogin"])) {
             // Password is incorrect, increment login attempts
             $_SESSION['login_attempts'] += 1;
 
-            // If login attempts exceed limit, set a timeout
+            // If login attempts exceed limit, increment block count and set a timeout
             if ($_SESSION['login_attempts'] >= $login_attempt_limit) {
-                $_SESSION['timeout'] = time() + $timeout_duration; // Set the timeout
-                $_SESSION["notify"] = "login_disabled"; // Notify the user
+                $_SESSION['login_block'] += 1; // Increase the block count
+
+                // Apply progressive timeout based on the block count (1st, 2nd, 3rd)
+                $block = min($_SESSION['login_block'], count($timeout_durations));
+                $_SESSION['timeout'] = time() + $timeout_durations[$block]; // Set the appropriate timeout
+
+                $_SESSION["notify"] = "login_disabled"; // Notify the user that login is disabled
+                $_SESSION['login_attempts'] = 0; // Reset attempts for the next block
             } else {
                 $_SESSION["notify"] = "invalid"; // Invalid password
             }
@@ -125,10 +137,16 @@ if (isset($_POST["btnlogin"])) {
         // User not found, increment login attempts
         $_SESSION['login_attempts'] += 1;
 
-        // If login attempts exceed limit, set a timeout
+        // If login attempts exceed limit, increment block count and set a timeout
         if ($_SESSION['login_attempts'] >= $login_attempt_limit) {
-            $_SESSION['timeout'] = time() + $timeout_duration;
-            $_SESSION["notify"] = "login_disabled"; // Notify the user
+            $_SESSION['login_block'] += 1; // Increase the block count
+
+            // Apply progressive timeout based on the block count (1st, 2nd, 3rd)
+            $block = min($_SESSION['login_block'], count($timeout_durations));
+            $_SESSION['timeout'] = time() + $timeout_durations[$block]; // Set the appropriate timeout
+
+            $_SESSION["notify"] = "login_disabled"; // Notify the user that login is disabled
+            $_SESSION['login_attempts'] = 0; // Reset attempts for the next block
         } else {
             $_SESSION["notify"] = "invalid"; // Invalid credentials
         }
