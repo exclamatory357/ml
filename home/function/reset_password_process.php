@@ -13,7 +13,7 @@ if (
     $password_confirm = $_POST['password_confirm'];
 
     // Debugging output
-    echo "Debugging: Token from form - " . htmlspecialchars($token) . "<br>";
+    echo "Debugging: Token from form (raw) - " . htmlspecialchars($token) . "<br>";
 
     // Check if passwords match
     if ($password !== $password_confirm) {
