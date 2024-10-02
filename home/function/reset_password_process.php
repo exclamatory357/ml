@@ -13,10 +13,6 @@ if (
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
 
-    // Debugging the email being used
-    echo "Email being used: " . $email;
-    exit;
-
     // Check if passwords match
     if ($password !== $password_confirm) {
         // Passwords do not match, display an error message using SweetAlert2
