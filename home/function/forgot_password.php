@@ -47,7 +47,7 @@ if (isset($_POST['email'])) {
     if ($result->num_rows == 1) {
         // Generate a unique token for password reset
         $rawToken = bin2hex(random_bytes(50));  // The raw token that will be sent to the user
-        $hashedToken = password_hash($rawToken, PASSWORD_DEFAULT);  // Hashed token to store in the database
+        $hashedToken = md5($rawToken);  // MD5 hashed token to store in the database
 
         // Set token expiry time (e.g., 1 hour from now)
         $expiryTime = date("Y-m-d H:i:s", strtotime('+1 hour'));

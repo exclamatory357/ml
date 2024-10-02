@@ -8,7 +8,6 @@ if (
     isset($_POST['password_confirm'])
 ) {
     $email = urldecode($_POST['email']); 
-    //$email = $_POST['email'];
     $token = $_POST['token'];
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
@@ -81,8 +80,8 @@ if (
             exit;
         }
 
-        // Verify the token
-        if (password_verify($token, $hashedToken)) {
+        // Verify the token using md5
+        if (md5($token) === $hashedToken) {
             // Token is valid, proceed with password update
 
             // Hash the new password using bcrypt
