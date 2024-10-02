@@ -7,7 +7,8 @@ if (
     isset($_POST['password']) &&
     isset($_POST['password_confirm'])
 ) {
-    $email = $_POST['email'];
+    $email = urldecode($_POST['email']); 
+    //$email = $_POST['email'];
     $token = $_POST['token'];
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
