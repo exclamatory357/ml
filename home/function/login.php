@@ -23,17 +23,36 @@ header("X-XSS-Protection: 1; mode=block");
 
 include "../../config/db.php";
 
-if (isset($_POST["btnlogin"])) {
-    // Sanitize and validate inputs
-    $username = trim(filter_var($_POST["username"], FILTER_SANITIZE_STRING));
-    $password = $_POST["password"]; // Password entered by the user
+function verify_recaptcha($token) {
+    $secretKey = "6Lfn3lAqAAAAAEmcAC4hsbGLGiNiUP79fHwLmYcM";  // Replace with your actual reCAPTCHA secret key
+    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $secretKey . "&response=" . $token);
+    $responseKeys = json_decode($response, true);
 
-    // Check for empty inputs (basic validation)
-    if (empty($username) || empty($password)) {
-        $_SESSION["notify"] = "invalid"; // Empty credentials
+    return isset($responseKeys['success']) && $responseKeys['success'];
+}
+
+
+
+if (isset($_POST["btnlogin"])) {
+    // First, verify the reCAPTCHA token
+    if (isset($_POST['recaptcha_token'])) {
+        $recaptcha_token = $_POST['recaptcha_token'];
+        $is_recaptcha_valid = verify_recaptcha($recaptcha_token);
+
+        if (!$is_recaptcha_valid) {
+            $_SESSION["notify"] = "recaptcha_failed"; // Optional: Notify user about reCAPTCHA failure
+            header("Location: ../?home");
+            exit(); // Stop the login process
+        }
+    } else {
+        $_SESSION["notify"] = "recaptcha_missing"; // Optional: Notify if recaptcha token is missing
         header("Location: ../?home");
-        exit();
+        exit(); // Stop the login process
     }
+
+    // Proceed with the login logic after recaptcha is validated
+    $username = trim(filter_var($_POST["username"], FILTER_SANITIZE_STRING));
+    $password = $_POST["password"];
 
     // Use prepared statements to prevent SQL injection
     $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id 
