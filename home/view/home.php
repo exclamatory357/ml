@@ -207,11 +207,21 @@ if (isset($_GET["home"])) { ?>
             </div>
             <div class="modal-body">
                 <form action="function/forgot_password.php" method="post">
-                    <div class="form-group has-feedback">
-                        <label for="email">Enter your registered email address:</label>
-                        <input type="email" class="form-control form-control-lg" placeholder="Email" name="email" required autofocus>
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                    </div>
+                <div class="form-group has-feedback">
+                <label for="email">Enter your registered email address:</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    class="form-control form-control-lg" 
+                    placeholder="Email" 
+                    name="email" 
+                    required 
+                    autofocus 
+                    maxlength="254" 
+                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$"
+                >
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
                     <button type="submit" class="btn btn-primary btn-block btn-lg" name="btn-forgot-password">Submit</button>
                 </form>
             </div>
