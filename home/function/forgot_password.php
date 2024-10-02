@@ -83,11 +83,11 @@ if (isset($_POST['email'])) {
 <html>
 <head>
     <style>
-        /* General email styles */
+        /* Basic email styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             color: #333;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
         }
@@ -98,50 +98,51 @@ if (isset($_POST['email'])) {
         }
         .email-content {
             max-width: 600px;
-            background-color: #fff;
-            margin: 0 auto;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .email-header {
             background-color: #007BFF;
-            padding: 20px;
-            color: #fff;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            color: white;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
         }
         .email-header h1 {
             margin: 0;
             font-size: 24px;
         }
         .email-body {
-            margin: 20px 0;
+            padding: 20px;
+            text-align: center;
             font-size: 16px;
-            line-height: 1.6;
+            line-height: 1.5;
         }
-        .button {
-            background-color: #007BFF;
-            color: #ffffff;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 5px;
+        .email-body p {
+            margin: 10px 0;
+        }
+        .reset-button {
             display: inline-block;
+            padding: 15px 25px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
             margin-top: 20px;
-            font-weight: bold;
         }
-        .button:hover {
+        .reset-button:hover {
             background-color: #0056b3;
         }
         .email-footer {
             margin-top: 30px;
+            text-align: center;
             font-size: 12px;
-            color: #888888;
-        }
-        .email-footer a {
-            color: #007BFF;
-            text-decoration: none;
+            color: #888;
         }
     </style>
 </head>
@@ -153,9 +154,9 @@ if (isset($_POST['email'])) {
             </div>
             <div class='email-body'>
                 <p>Hi,</p>
-                <p>We received a request to reset your password. Click the button below to proceed:</p>
-                <a href='" . $resetLink . "' class='button'>Reset Password</a>
-                <p>If you did not request this, please ignore this email or contact our support.</p>
+                <p>We received a request to reset your password. Click the button below to reset it:</p>
+                <a href='https://danrosefishing.com/home/function/reset_password.php?token=" . $rawToken . "&email=" . urlencode($email) . "' class='reset-button'>Reset Password</a>
+                <p>If you did not request this, you can safely ignore this email.</p>
             </div>
             <div class='email-footer'>
                 <p>&copy; " . date('Y') . " DanRose Fishing Management System. All rights reserved.</p>
