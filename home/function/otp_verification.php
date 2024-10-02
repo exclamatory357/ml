@@ -1,38 +1,37 @@
 <?php
 session_start();
+
 if (isset($_POST["verify_otp"])) {
-    $entered_otp = trim($_POST["otp"]);
-    $stored_otp = $_SESSION["otp"];
-    $otp_expiration = $_SESSION["otp_expiration"];
+    $entered_otp = trim($_POST["otp"]); // OTP entered by the user
+    $stored_otp = $_SESSION["otp"]; // OTP stored in session
+    $otp_expiration = $_SESSION["otp_expiration"]; // OTP expiration time
 
     // Check if OTP is correct and not expired
     if ($entered_otp == $stored_otp && time() <= $otp_expiration) {
-        // OTP is valid, proceed with login
-        $user_id = $_SESSION["user_id"];
+        // OTP is correct and not expired, log the user in
         $user_type = $_SESSION["user_type"];
-
-        // Redirect based on user role
-        switch ($user_type) {
-            case "admin":
-            case "staff":
-                header("Location: ../../admin/?dashboard");
-                break;
-            case "agent":
-                header("Location: ../?request");
-                break;
-            default:
-                header("Location: ../?home");
-                break;
+        
+        // Redirect the user based on their role
+        if ($user_type == 'admin') {
+            header("Location: ../../admin/?dashboard");
+            exit();
+        } elseif ($user_type == 'agent') {
+            header("Location: ../agent/?dashboard");
+            exit();
+        } else {
+            header("Location: ../?home");
+            exit();
         }
     } else {
-        $_SESSION["notify"] = "invalid_otp"; // Invalid or expired OTP
+        // OTP is incorrect or expired
+        $_SESSION["notify"] = "otp_invalid"; // Notify that OTP is invalid or expired
         header("Location: otp_verification.php");
         exit();
     }
 }
 ?>
 
-<!-- OTP Verification Form -->
+<!-- HTML form for OTP verification -->
 <form action="otp_verification.php" method="post">
     <input type="text" name="otp" placeholder="Enter OTP" required>
     <button type="submit" name="verify_otp">Verify OTP</button>
