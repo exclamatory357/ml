@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DRMS</title>
-  
+    
+    <script src="https://www.google.com/recaptcha/api.js?render=6Lfn3lAqAAAAAIvb5GCgRJBJBRG_5uShpfbGcquW"></script>
+
+
     <style>
         .carousel-inner img {
             width: 100%;
