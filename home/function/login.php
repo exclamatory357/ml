@@ -87,7 +87,7 @@ if (isset($_POST["btnlogin"])) {
             $mail->Host = 'smtp.gmail.com'; // Use Gmail's SMTP server
             $mail->SMTPAuth = true;
             $mail->Username = 'danrosefishing30@gmail.com'; // Your Gmail address
-            $mail->Password = 'your-app-password'; // Replace with your app-specific password (NOT your Gmail password)
+            $mail->Password = 'meyj axmh socg tivf'; // Replace with your app-specific password (NOT your Gmail password)
             $mail->SMTPSecure = 'tls'; // Enable TLS encryption
             $mail->Port = 587; // Use TLS port 587
             
