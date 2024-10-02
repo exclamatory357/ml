@@ -34,21 +34,29 @@ function verify_recaptcha($token) {
 
 
 if (isset($_POST["btnlogin"])) {
-    // First, verify the reCAPTCHA token
+    echo "Login button clicked";
+    
     if (isset($_POST['recaptcha_token'])) {
+        echo "reCAPTCHA token found";
+        
         $recaptcha_token = $_POST['recaptcha_token'];
         $is_recaptcha_valid = verify_recaptcha($recaptcha_token);
-
+        
         if (!$is_recaptcha_valid) {
-            $_SESSION["notify"] = "recaptcha_failed"; // Optional: Notify user about reCAPTCHA failure
+            echo "reCAPTCHA failed";
+            $_SESSION["notify"] = "recaptcha_failed";
             header("Location: ../?home");
-            exit(); // Stop the login process
+            exit();
         }
     } else {
-        $_SESSION["notify"] = "recaptcha_missing"; // Optional: Notify if recaptcha token is missing
+        echo "No reCAPTCHA token found";
+        $_SESSION["notify"] = "recaptcha_missing";
         header("Location: ../?home");
-        exit(); // Stop the login process
+        exit();
     }
+    
+    // Continue login logic
+    echo "Proceeding with login logic";
 
     // Proceed with the login logic after recaptcha is validated
     $username = trim(filter_var($_POST["username"], FILTER_SANITIZE_STRING));
