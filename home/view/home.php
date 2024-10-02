@@ -123,51 +123,6 @@
     padding: 10px 16px;
 }
 
-/* Modal Body Styling */
-.modal-body {
-    padding: 30px;
-    border-radius: 10px;
-    background-color: #fff;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Modal Title Styling */
-.modal-body h5 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #333;
-}
-
-/* Input Field Styling */
-.form-control {
-    border-radius: 0.5rem;
-    height: 50px;
-    text-align: center;
-    border: 1px solid #ced4da;
-    font-size: 16px;
-}
-
-/* Button Styling */
-.btn-primary {
-    background-color: #28a745;
-    border-color: #28a745;
-    height: 50px;
-    font-size: 18px;
-    border-radius: 0.5rem;
-}
-
-.btn-primary:hover {
-    background-color: #218838;
-}
-
-/* Center Modal */
-.modal-dialog-centered {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
     </style>
 </head>
 <body>
@@ -240,27 +195,34 @@ if (isset($_GET["home"])) { ?>
             </div>
         <?php } ?>
         
-              <!-- FORGOT PASSWORD MODAL -->
+                <!-- FORGOT PASSWORD MODAL -->
 <div class="modal fade" id="modal-forgot-password" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-                <h5 class="mb-4">Forgot Password</h5>
+            <div class="modal-header">
+                <h5 class="modal-title" id="forgotPasswordModalLabel">Forgot Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
                 <form action="function/forgot_password.php" method="post">
-                    <div class="form-group">
-                        <input 
-                            type="email" 
-                            id="email" 
-                            class="form-control form-control-lg text-center" 
-                            placeholder="Enter your email address" 
-                            name="email" 
-                            required 
-                            autofocus 
-                            maxlength="254" 
-                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$"
-                        >
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block btn-lg">Submit</button>
+                <div class="form-group has-feedback">
+                <label for="email">Enter your registered email address:</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    class="form-control form-control-lg" 
+                    placeholder="Email" 
+                    name="email" 
+                    required 
+                    autofocus 
+                    maxlength="254" 
+                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$"
+                >
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="btn-forgot-password">Submit</button>
                 </form>
             </div>
         </div>
