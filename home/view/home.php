@@ -123,68 +123,50 @@
     padding: 10px 16px;
 }
 
-/* Modal Header Style */
-.modal-header {
-    background-color: #007bff; /* Make it blue to match bootstrap primary color */
-    color: white;
-    border-bottom: 1px solid #dee2e6;
+/* Modal Body Styling */
+.modal-body {
+    padding: 30px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-.modal-header h5 {
-    font-weight: bold;
+/* Modal Title Styling */
+.modal-body h5 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
 }
 
-.close {
-    color: white; /* Ensure the close button color matches the header */
+/* Input Field Styling */
+.form-control {
+    border-radius: 0.5rem;
+    height: 50px;
+    text-align: center;
+    border: 1px solid #ced4da;
+    font-size: 16px;
 }
 
 /* Button Styling */
-.btn-success {
+.btn-primary {
     background-color: #28a745;
-    border: none;
+    border-color: #28a745;
+    height: 50px;
+    font-size: 18px;
+    border-radius: 0.5rem;
 }
 
-.btn-success:hover {
+.btn-primary:hover {
     background-color: #218838;
 }
 
-/* Input Field Style */
-.form-control {
-    border-radius: 0.3rem;
-    box-shadow: none;
-    border: 1px solid #ced4da;
+/* Center Modal */
+.modal-dialog-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
-
-.form-control:focus {
-    box-shadow: none;
-    border-color: #80bdff;
-}
-
-/* Enhancing the icon inside the input field */
-.glyphicon-envelope {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6c757d;
-}
-
-.has-feedback {
-    position: relative;
-}
-
-/* Modal Padding Adjustments */
-.modal-content {
-    padding: 20px;
-    border-radius: 0.3rem;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-/* Form Spacing */
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
 
     </style>
 </head>
@@ -260,32 +242,25 @@ if (isset($_GET["home"])) { ?>
         
               <!-- FORGOT PASSWORD MODAL -->
 <div class="modal fade" id="modal-forgot-password" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="forgotPasswordModalLabel">Forgot Password</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+            <div class="modal-body text-center">
+                <h5 class="mb-4">Forgot Password</h5>
                 <form action="function/forgot_password.php" method="post">
-                    <div class="form-group has-feedback">
-                        <label for="email">Enter your registered email address:</label>
+                    <div class="form-group">
                         <input 
                             type="email" 
                             id="email" 
-                            class="form-control form-control-lg" 
-                            placeholder="Email" 
+                            class="form-control form-control-lg text-center" 
+                            placeholder="Enter your email address" 
                             name="email" 
                             required 
                             autofocus 
                             maxlength="254" 
                             pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$"
                         >
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
-                    <button type="submit" class="btn btn-success btn-block btn-lg" name="btn-forgot-password">Submit</button>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">Submit</button>
                 </form>
             </div>
         </div>
