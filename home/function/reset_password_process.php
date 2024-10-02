@@ -7,10 +7,15 @@ if (
     isset($_POST['password']) &&
     isset($_POST['password_confirm'])
 ) {
-    $email = urldecode($_POST['email']); 
+    // Trim and lowercase email to avoid case and space issues
+    $email = trim(strtolower(urldecode($_POST['email'])));
     $token = $_POST['token'];
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
+
+    // Debugging the email being used
+    echo "Email being used: " . $email;
+    exit;
 
     // Check if passwords match
     if ($password !== $password_confirm) {
@@ -43,8 +48,18 @@ if (
     // Fetch the hashed token and expiry time from the database
     $query = "SELECT reset_token, token_expiry FROM user WHERE email = ?";
     $stmt = $con->prepare($query);
+
+    if (!$stmt) {
+        echo "Statement preparation failed: " . $con->error;
+        exit;
+    }
+
     $stmt->bind_param("s", $email);
-    $stmt->execute();
+    if (!$stmt->execute()) {
+        echo "Query execution failed: " . $stmt->error;
+        exit;
+    }
+
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
 
