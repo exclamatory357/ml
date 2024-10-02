@@ -82,7 +82,7 @@ if (isset($_POST["btnlogin"])) {
             $_SESSION["user_type"] = $get_user_type;
 
             // Send OTP via email (using PHPMailer)
-            require 'phpmailer/PHPMailerAutoload.php'; // Make sure PHPMailer is properly configured
+       /*     require 'phpmailer/PHPMailerAutoload.php'; // Make sure PHPMailer is properly configured
             $mail = new PHPMailer;
             $mail->isSMTP();
             $mail->Host = 'smtp.example.com'; // SMTP server
@@ -102,7 +102,7 @@ if (isset($_POST["btnlogin"])) {
                 header("Location: ../?home");
                 exit();
             }
-
+*/
             // Redirect to OTP verification page
             header("Location: otp_verification.php");
             exit();
