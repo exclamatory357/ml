@@ -37,8 +37,8 @@ if (isset($_POST['email'])) {
         exit;
     }
 
-    // Check if the email exists in the database (case-insensitive)
-    $query = "SELECT * FROM user WHERE LOWER(email) = LOWER(?)";
+    // Check if the email exists in the database
+    $query = "SELECT * FROM user WHERE email = ?";
     $stmt = $con->prepare($query);
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -53,7 +53,7 @@ if (isset($_POST['email'])) {
         $expiryTime = date("Y-m-d H:i:s", strtotime('+1 hour'));
 
         // Store hashed token and token expiry in the database
-        $query = "UPDATE user SET reset_token = ?, token_expiry = ? WHERE LOWER(email) = LOWER(?)";
+        $query = "UPDATE user SET reset_token = ?, token_expiry = ? WHERE email = ?";
         $stmt = $con->prepare($query);
         $stmt->bind_param("sss", $hashedToken, $expiryTime, $email);
         $stmt->execute();
@@ -64,32 +64,25 @@ if (isset($_POST['email'])) {
         try {
             //Server settings
             $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
+            $mail->Host       = 'smtp.gmail.com';  // Specify main and backup SMTP servers
             $mail->SMTPAuth   = true;
             $mail->Username   = 'danrosefishing30@gmail.com'; // Your Gmail address
-            $mail->Password   = 'meyj axmh socg tivf';  // Your Gmail app-specific password
-            $mail->SMTPSecure = 'tls';
-            $mail->Port       = 587;
+            $mail->Password   = 'meyj axmh socg tivf';  // Your Gmail password or app password
+            $mail->SMTPSecure = 'tls';  // Encryption: 'tls' or 'ssl'
+            $mail->Port       = 587;    // Port for TLS connection
 
             //Recipients
             $mail->setFrom('danrosefishing30@gmail.com', 'DanRose Fishing Management System');
             $mail->addAddress($email);     // Add a recipient
 
-            // Email Content
+            // Content
             $mail->isHTML(true);
             $mail->Subject = 'Password Reset Request';
-            $mail->Body = "
-            <html>
-            <body>
-                <h1>Password Reset Request</h1>
-                <p>Click the button below to reset your password:</p>
-                <a href='https://danrosefishing.com/home/function/reset_password.php?token=" . urlencode($rawToken) . "&email=" . urlencode($email) . "'>Reset Password</a>
-            </body>
-            </html>
-            ";
+            $mail->Body    = "Hi, click the link below to reset your password:<br><br><a href='https://danrosefishing.com/home/function/reset_password.php?token=" . $rawToken . "&email=" . urlencode($email) . "'>Reset Password</a>";
 
             // Send mail
             if ($mail->send()) {
+                // Email sent successfully
                 ?>
                 <!DOCTYPE html>
                 <html lang="en">
@@ -105,7 +98,7 @@ if (isset($_POST['email'])) {
                             title: 'Success!',
                             text: 'Password reset link has been sent to your email.',
                             confirmButtonText: 'OK'
-                        }).then(() => {
+                        }).then((result) => {
                             window.location.href = '../?home';
                         });
                     </script>
@@ -113,16 +106,59 @@ if (isset($_POST['email'])) {
                 </html>
                 <?php
             } else {
+                // Mailer error
+                $errorInfo = addslashes($mail->ErrorInfo);
                 ?>
-                <script>alert('Mailer Error: <?= $mail->ErrorInfo ?>');</script>
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Mailer Error</title>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                </head>
+                <body>
+                    <script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Mailer Error',
+                            text: '<?php echo $errorInfo; ?>',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            window.location.href = '../?home';
+                        });
+                    </script>
+                </body>
+                </html>
                 <?php
             }
         } catch (Exception $e) {
+            // Exception occurred
+            $errorInfo = addslashes($mail->ErrorInfo);
             ?>
-            <script>alert('Mailer Error: <?= $mail->ErrorInfo ?>');</script>
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Error</title>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            </head>
+            <body>
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to send the password reset email',
+                        text: '<?php echo $errorInfo; ?>',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        window.location.href = '../?home';
+                    });
+                </script>
+            </body>
+            </html>
             <?php
         }
     } else {
+        // No user found with that email
         ?>
         <!DOCTYPE html>
         <html lang="en">
@@ -138,7 +174,7 @@ if (isset($_POST['email'])) {
                     title: 'Error',
                     text: 'No user found with that email.',
                     confirmButtonText: 'OK'
-                }).then(() => {
+                }).then((result) => {
                     window.location.href = '../?home';
                 });
             </script>
@@ -149,5 +185,29 @@ if (isset($_POST['email'])) {
 
     $stmt->close();
     $con->close();
+} else {
+    // Email is required
+    ?>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Error</title>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+    <body>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Email is required.',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                window.location.href = '../?home';
+            });
+        </script>
+    </body>
+    </html>
+    <?php
 }
 ?>
