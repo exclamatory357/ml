@@ -1,6 +1,7 @@
 <?php
 // Start session securely
 session_start();
+ob_start(); // Start output buffering
 
 // Redirect all HTTP requests to HTTPS if not already using HTTPS
 if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
@@ -23,42 +24,46 @@ header("X-XSS-Protection: 1; mode=block");
 
 include "../../config/db.php";
 
+// Verify reCAPTCHA token
 function verify_recaptcha($token) {
     $secretKey = "6Lfn3lAqAAAAAEmcAC4hsbGLGiNiUP79fHwLmYcM";  // Replace with your actual reCAPTCHA secret key
     $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $secretKey . "&response=" . $token);
     $responseKeys = json_decode($response, true);
 
-    return isset($responseKeys['success']) && $responseKeys['success'];
+    if (isset($responseKeys['success']) && $responseKeys['success']) {
+        return true;
+    } else {
+        echo "reCAPTCHA failed: " . json_encode($responseKeys);
+        return false;
+    }
 }
 
-
-
+// Check if login button is pressed
 if (isset($_POST["btnlogin"])) {
-    echo "Login button clicked";
-    
+    echo "Login button clicked<br>";
+
+    // Check for reCAPTCHA token
     if (isset($_POST['recaptcha_token'])) {
-        echo "reCAPTCHA token found";
+        echo "reCAPTCHA token found<br>";
         
         $recaptcha_token = $_POST['recaptcha_token'];
         $is_recaptcha_valid = verify_recaptcha($recaptcha_token);
         
         if (!$is_recaptcha_valid) {
-            echo "reCAPTCHA failed";
+            echo "reCAPTCHA validation failed<br>";
             $_SESSION["notify"] = "recaptcha_failed";
             header("Location: ../?home");
             exit();
         }
     } else {
-        echo "No reCAPTCHA token found";
+        echo "No reCAPTCHA token found<br>";
         $_SESSION["notify"] = "recaptcha_missing";
         header("Location: ../?home");
         exit();
     }
-    
-    // Continue login logic
-    echo "Proceeding with login logic";
 
-    // Proceed with the login logic after recaptcha is validated
+    // Continue with the login logic after reCAPTCHA is validated
+    echo "Proceeding with login logic<br>";
     $username = trim(filter_var($_POST["username"], FILTER_SANITIZE_STRING));
     $password = $_POST["password"];
 
@@ -68,11 +73,18 @@ if (isset($_POST["btnlogin"])) {
             INNER JOIN user_type ON user.user_type_id = user_type.user_type_id 
             WHERE uname = ?";
     $stmt = $con->prepare($sql);
+    
+    if (!$stmt) {
+        echo "SQL Error: " . $con->error;
+        exit();
+    }
+
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
+        echo "User found<br>";
         $res = $result->fetch_assoc();
         $get_user_id = $res["user_id"];
         $get_username = $res["uname"];
@@ -82,7 +94,7 @@ if (isset($_POST["btnlogin"])) {
 
         // Verify the password using password_verify()
         if (password_verify($password, $get_password_hash)) {
-
+            echo "Password verified<br>";
             // Regenerate session ID to prevent session fixation attacks
             session_regenerate_id(true);
 
@@ -97,31 +109,35 @@ if (isset($_POST["btnlogin"])) {
                 case "admin":
                 case "staff":
                     $_SESSION["admin_uname"] = $get_username; // For backward compatibility
-                    header("Location: ../../admin/?dashboard"); // Redirect to admin side
+                    header("Location: ../../admin/?dashboard");
                     break;
 
                 case "superadmin":
-                    echo "Welcome superadmin";
+                    echo "Welcome superadmin<br>";
                     break;
 
                 case "agent":
                     $_SESSION["trans_no"] = rand(); // Example of agent-specific data
-                    header("Location: ../?request"); // Redirect to agent reservation page
+                    header("Location: ../?request");
                     break;
 
                 default:
-                    header("Location: ../?home"); // Default fallback if role is not recognized
+                    header("Location: ../?home");
                     break;
             }
         } else {
-            $_SESSION["notify"] = "invalid"; // Invalid password
+            echo "Invalid password<br>";
+            $_SESSION["notify"] = "invalid";
             header("Location: ../?home");
-            exit(); // Prevent further code execution
+            exit();
         }
     } else {
-        $_SESSION["notify"] = "invalid"; // User not found
+        echo "User not found<br>";
+        $_SESSION["notify"] = "invalid";
         header("Location: ../?home");
-        exit(); // Prevent further code execution
+        exit();
     }
 }
+
+ob_end_flush();
 ?>
