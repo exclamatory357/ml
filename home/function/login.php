@@ -81,28 +81,28 @@ if (isset($_POST["btnlogin"])) {
             $_SESSION["user_id"] = $get_user_id; // Temporarily store user ID
             $_SESSION["user_type"] = $get_user_type;
 
-            // Send OTP via email (using PHPMailer)
-       /*     require 'phpmailer/PHPMailerAutoload.php'; // Make sure PHPMailer is properly configured
+            require 'phpmailer/PHPMailerAutoload.php'; // Make sure PHPMailer is properly configured
             $mail = new PHPMailer;
             $mail->isSMTP();
-            $mail->Host = 'smtp.example.com'; // SMTP server
+            $mail->Host = 'smtp.gmail.com'; // Use Gmail's SMTP server
             $mail->SMTPAuth = true;
-            $mail->Username = 'danrosefishing30@gmail.com'; // Your email address
-            $mail->Password = 'meyj axmh socg tivf'; // Your email password
-            $mail->SMTPSecure = 'tls';
-            $mail->Port = 587;
-
+            $mail->Username = 'danrosefishing30@gmail.com'; // Your Gmail address
+            $mail->Password = 'your-app-password'; // Replace with your app-specific password (NOT your Gmail password)
+            $mail->SMTPSecure = 'tls'; // Enable TLS encryption
+            $mail->Port = 587; // Use TLS port 587
+            
             $mail->setFrom('danrosefishing30@gmail.com', 'DanRose Fishing Management System');
-            $mail->addAddress($email); // User's email
+            $mail->addAddress($email); // Send OTP to the user's email
             $mail->Subject = 'Your OTP for Login';
             $mail->Body = "Your OTP code is: $otp";
-
+            
             if (!$mail->send()) {
+                error_log("Mailer Error: " . $mail->ErrorInfo); // Log error to troubleshoot
                 $_SESSION["notify"] = "otp_failed"; // Notify OTP email send failure
                 header("Location: ../?home");
                 exit();
             }
-*/
+            
             // Redirect to OTP verification page
             header("Location: otp_verification.php");
             exit();
