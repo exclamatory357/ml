@@ -5,7 +5,11 @@ checkAdmin();
 
 
 include 'admin_check.php'; // Include the admin check
-
+// Check if the user is logged in
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
+    header("Location: ../?home"); // Redirect to login if session is not set
+    exit();
+}
 
 
 if (isset($_GET["dashboard"])) {
