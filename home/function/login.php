@@ -104,7 +104,7 @@ if (isset($_POST["btnlogin"])) {
             }
 
             // Redirect to OTP verification page
-            header("Location: ../otp_verification.php");
+            header("Location: otp_verification.php");
             exit();
         } else {
             // Password is incorrect, increment login attempts
