@@ -123,6 +123,69 @@
     padding: 10px 16px;
 }
 
+/* Modal Header Style */
+.modal-header {
+    background-color: #007bff; /* Make it blue to match bootstrap primary color */
+    color: white;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-header h5 {
+    font-weight: bold;
+}
+
+.close {
+    color: white; /* Ensure the close button color matches the header */
+}
+
+/* Button Styling */
+.btn-success {
+    background-color: #28a745;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+/* Input Field Style */
+.form-control {
+    border-radius: 0.3rem;
+    box-shadow: none;
+    border: 1px solid #ced4da;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #80bdff;
+}
+
+/* Enhancing the icon inside the input field */
+.glyphicon-envelope {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+
+.has-feedback {
+    position: relative;
+}
+
+/* Modal Padding Adjustments */
+.modal-content {
+    padding: 20px;
+    border-radius: 0.3rem;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* Form Spacing */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+
     </style>
 </head>
 <body>
@@ -195,34 +258,34 @@ if (isset($_GET["home"])) { ?>
             </div>
         <?php } ?>
         
-                <!-- FORGOT PASSWORD MODAL -->
+              <!-- FORGOT PASSWORD MODAL -->
 <div class="modal fade" id="modal-forgot-password" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="forgotPasswordModalLabel">Forgot Password</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form action="function/forgot_password.php" method="post">
-                <div class="form-group has-feedback">
-                <label for="email">Enter your registered email address:</label>
-                <input 
-                    type="email" 
-                    id="email" 
-                    class="form-control form-control-lg" 
-                    placeholder="Email" 
-                    name="email" 
-                    required 
-                    autofocus 
-                    maxlength="254" 
-                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$"
-                >
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-            </div>
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="btn-forgot-password">Submit</button>
+                    <div class="form-group has-feedback">
+                        <label for="email">Enter your registered email address:</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            class="form-control form-control-lg" 
+                            placeholder="Email" 
+                            name="email" 
+                            required 
+                            autofocus 
+                            maxlength="254" 
+                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$"
+                        >
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block btn-lg" name="btn-forgot-password">Submit</button>
                 </form>
             </div>
         </div>
