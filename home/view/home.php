@@ -173,27 +173,95 @@ if (isset($_GET["home"])) { ?>
             </a> -->
         </div>
 
-        <!-- LOGIN PAGE -->
-        <?php if (!isset($_SESSION["username"])) { ?>
-            <!-- LOGIN FORM, show if session is not set -->
-            <div class="login-box-body p-absolute-login container mt-5">
-                <p class="login-box-msg text-center">Welcome back!</p>
-                <form action="function/login.php" method="post">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control form-control-lg" placeholder="Enter Username" name="username" required autofocus>
-                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                    </div>
-                    <div class="form-group has-feedback">
-                       <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required> 
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin">Sign In</button>
-                    
-                     <button type="button" data-toggle="modal" data-target="#modal-forgot-password" class="btn btn-success btn-block btn-lg">Forgot password</button> 
-                     
-                </form>
+        <?php
+session_start();
+
+// Initialize failed login attempts if not set
+if (!isset($_SESSION['failed_attempts'])) {
+    $_SESSION['failed_attempts'] = 0;
+}
+
+// Check if the login form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Assume function 'login_user' processes the login and returns true on success, false on failure
+    $login_success = login_user($_POST['username'], $_POST['password']);
+
+    if ($login_success) {
+        // Reset failed attempts on successful login
+        $_SESSION['failed_attempts'] = 0;
+    } else {
+        // Increment failed attempts on failure
+        $_SESSION['failed_attempts']++;
+    }
+}
+
+// If failed attempts reach 3 or more, start a timeout
+$lockout_time = 30; // 30 seconds timeout
+if ($_SESSION['failed_attempts'] >= 3) {
+    if (!isset($_SESSION['lockout_start'])) {
+        $_SESSION['lockout_start'] = time();
+    } else {
+        // Calculate the time since the lockout started
+        $time_elapsed = time() - $_SESSION['lockout_start'];
+        if ($time_elapsed >= $lockout_time) {
+            // Reset attempts and lockout timer after timeout
+            $_SESSION['failed_attempts'] = 0;
+            unset($_SESSION['lockout_start']);
+        }
+    }
+}
+?>
+
+<!-- LOGIN PAGE -->
+<?php if (!isset($_SESSION["username"])) { ?>
+    <div class="login-box-body p-absolute-login container mt-5">
+        <p class="login-box-msg text-center">Welcome back!</p>
+        <form action="function/login.php" method="post">
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control form-control-lg" placeholder="Enter Username" name="username" required autofocus>
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
-        <?php } ?>
+            <div class="form-group has-feedback">
+               <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required> 
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+
+            <button type="submit" id="loginButton" class="btn btn-primary btn-block btn-lg" name="btnlogin">Sign In</button>
+            <button type="button" data-toggle="modal" data-target="#modal-forgot-password" class="btn btn-success btn-block btn-lg">Forgot password</button> 
+        </form>
+    </div>
+<?php } ?>
+
+
+
+
+
+        <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if failed attempts session variable is set
+        var failedAttempts = <?php echo isset($_SESSION['failed_attempts']) ? $_SESSION['failed_attempts'] : 0; ?>;
+        var lockoutTime = <?php echo isset($time_elapsed) ? ($lockout_time - $time_elapsed) : 0; ?>;
+
+        // If there are 3 or more failed attempts, disable the button
+        if (failedAttempts >= 3 && lockoutTime > 0) {
+            var loginButton = document.getElementById('loginButton');
+            loginButton.disabled = true;
+
+            // Show a countdown timer for the user
+            var countdown = lockoutTime;
+            var interval = setInterval(function() {
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    loginButton.disabled = false;
+                } else {
+                    loginButton.textContent = 'Sign In (Wait ' + countdown + ' seconds)';
+                    countdown--;
+                }
+            }, 1000);
+        }
+    });
+</script>
+
         
                 <!-- FORGOT PASSWORD MODAL -->
 <div class="modal fade" id="modal-forgot-password" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
