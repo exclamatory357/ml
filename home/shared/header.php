@@ -4,6 +4,24 @@ header("X-Frame-Options: DENY");
 header("Content-Security-Policy: frame-ancestors 'none';");
 header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
 
+
+// Redirect all HTTP requests to HTTPS if not already using HTTPS
+if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
+  header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+  exit();
+}
+
+
+
+// Secure session cookie settings
+ini_set('session.cookie_secure', '1');    // Enforces HTTPS-only session cookies
+ini_set('session.cookie_httponly', '1');  // Prevents JavaScript from accessing session cookies
+ini_set('session.cookie_samesite', 'Strict'); // Prevents CSRF by limiting cross-site cookie usage
+
+// Additional security headers
+header("X-Content-Type-Options: nosniff");
+header("X-Frame-Options: DENY");
+header("X-XSS-Protection: 1; mode=block");
 ?>
 <header class="main-header">
     <nav class="navbar navbar-static-top">
