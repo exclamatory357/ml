@@ -7,14 +7,16 @@ if (
     isset($_POST['password']) &&
     isset($_POST['password_confirm'])
 ) {
-    $email = strtolower($_POST['email']); // Ensure case-insensitive email comparison
+    $email = trim(strtolower($_POST['email'])); // Ensure case-insensitive and remove any spaces
     $token = urldecode($_POST['token']); // Decode the token from the URL
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
 
+    // Debugging: Output email before running the query
+    echo "Debugging: Email entered - " . htmlspecialchars($email) . "<br>";
+
     // Check if passwords match
     if ($password !== $password_confirm) {
-        // Passwords do not match, display an error message using SweetAlert2
         ?>
         <script>
             Swal.fire({
@@ -30,8 +32,8 @@ if (
         exit;
     }
 
-    // Fetch the hashed token and expiry time from the database (case-insensitive email)
-    $query = "SELECT reset_token, token_expiry FROM user WHERE LOWER(email) = ?";
+    // Fetch the hashed token and expiry time from the database (Try without LOWER first)
+    $query = "SELECT reset_token, token_expiry FROM user WHERE email = ?";
     $stmt = $con->prepare($query);
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -49,7 +51,6 @@ if (
 
         // Check if token has expired
         if (new DateTime() > new DateTime($tokenExpiry)) {
-            // Token has expired
             ?>
             <script>
                 Swal.fire({
@@ -68,16 +69,13 @@ if (
         // Verify the token
         if (password_verify($token, $hashedToken)) {
             // Token is valid, proceed with password update
-
-            // Hash the new password using bcrypt
             $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
             // Update the password in the database
-            $query = "UPDATE user SET pass = ?, reset_token = NULL, token_expiry = NULL WHERE LOWER(email) = ?";
+            $query = "UPDATE user SET pass = ?, reset_token = NULL, token_expiry = NULL WHERE email = ?";
             $stmt = $con->prepare($query);
             $stmt->bind_param("ss", $newHashedPassword, $email);
             if ($stmt->execute()) {
-                // Password reset successful
                 ?>
                 <script>
                     Swal.fire({
@@ -91,7 +89,6 @@ if (
                 </script>
                 <?php
             } else {
-                // Failed to reset password
                 ?>
                 <script>
                     Swal.fire({
@@ -106,7 +103,6 @@ if (
                 <?php
             }
         } else {
-            // Invalid token
             ?>
             <script>
                 Swal.fire({
@@ -121,7 +117,6 @@ if (
             <?php
         }
     } else {
-        // No user found with that email
         ?>
         <script>
             Swal.fire({
@@ -140,7 +135,6 @@ if (
     $stmt->close();
     $con->close();
 } else {
-    // Invalid request
     ?>
     <script>
         Swal.fire({
