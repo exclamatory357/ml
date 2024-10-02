@@ -123,33 +123,6 @@
     padding: 10px 16px;
 }
 
-
-/* Center the modal header icon and text */
-.modal-header .fa-unlock-alt {
-  margin-right: 10px;
-}
-
-/* Adjust the input group styles */
-.input-group-text {
-  background-color: #e9ecef;
-  border: none;
-}
-
-.form-control:focus {
-  box-shadow: none;
-}
-
-/* Style the submit button */
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
-}
-
-.btn-primary:hover {
-  background-color: #0069d9;
-  border-color: #0062cc;
-}
-
     </style>
 </head>
 <body>
@@ -222,47 +195,39 @@ if (isset($_GET["home"])) { ?>
             </div>
         <?php } ?>
         
-               <!-- FORGOT PASSWORD MODAL -->
+                <!-- FORGOT PASSWORD MODAL -->
 <div class="modal fade" id="modal-forgot-password" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-md modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <!-- Modal Header -->
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title" id="forgotPasswordModalLabel"><i class="fa fa-unlock-alt"></i> Forgot Password</h5>
-        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <!-- Modal Body -->
-      <div class="modal-body">
-        <p>Please enter your registered email address to reset your password.</p>
-        <form action="function/forgot_password.php" method="post">
-          <div class="form-group">
-            <label for="email" class="control-label sr-only">Email Address</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="email-addon"><i class="fa fa-envelope"></i></span>
-              </div>
-              <input 
-                type="email" 
-                id="email" 
-                class="form-control" 
-                placeholder="Email Address" 
-                name="email" 
-                required 
-                autofocus 
-                maxlength="254" 
-                aria-describedby="email-addon"
-              >
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forgotPasswordModalLabel">Forgot Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-          </div>
-          <button type="submit" class="btn btn-primary btn-block" name="btn-forgot-password">Submit</button>
-        </form>
-      </div>
+            <div class="modal-body">
+                <form action="function/forgot_password.php" method="post">
+                <div class="form-group has-feedback">
+                <label for="email">Enter your registered email address:</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    class="form-control form-control-lg" 
+                    placeholder="Email" 
+                    name="email" 
+                    required 
+                    autofocus 
+                    maxlength="254" 
+                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$"
+                >
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="btn-forgot-password">Submit</button>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-
 
 
        <!-- <div class="system-title p-absolute-system-title text-center mt-5">
