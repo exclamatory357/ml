@@ -2,13 +2,12 @@
 session_start(); // Always start session at the top of the file
 
 if (isset($_POST["verify_otp"])) {
-    // Sanitize the OTP input to remove any malicious code
-    $entered_otp = trim(filter_var($_POST["otp"], FILTER_SANITIZE_NUMBER_INT));
+    $entered_otp = trim($_POST["otp"]);
     $stored_otp = $_SESSION["otp"] ?? null; // OTP stored in session, default to null if not set
     $otp_expiration = $_SESSION["otp_expiration"] ?? 0; // OTP expiration time, default to 0
 
     // Verify if the OTP is correct and not expired
-    if ($entered_otp === $stored_otp && time() <= $otp_expiration) {
+    if ($entered_otp == $stored_otp && time() <= $otp_expiration) {
         // OTP is correct, mark the user as authenticated
         $_SESSION["authenticated"] = true;
 
@@ -34,7 +33,7 @@ if (isset($_POST["verify_otp"])) {
 }
 ?>
 
-<!-- HTML form for OTP verification -->
+<!-- HTML for OTP Verification Form with Latest UI Design -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -68,7 +67,7 @@ if (isset($_POST["verify_otp"])) {
 
     <!-- Bootstrap 5 JavaScript Bundle (including Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Client-side form validation -->
     <script>
         function validateForm() {
