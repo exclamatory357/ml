@@ -188,7 +188,7 @@ if (isset($_GET["transnodelete"])) {
 
 
 
-
+/*
 
 if (isset($_POST["btn-reg"])) {
 
@@ -226,7 +226,7 @@ if (isset($_POST["btn-reg"])) {
 
     }
 
-}
+}  */
 
 
 
