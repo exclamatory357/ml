@@ -1,5 +1,5 @@
 <?php
-session_start(); // Always start the session at the beginning of the script
+session_start(); // Always start session at the very top of the page
 
 if (isset($_POST["verify_otp"])) {
     $entered_otp = trim($_POST["otp"]);
@@ -8,11 +8,13 @@ if (isset($_POST["verify_otp"])) {
 
     // Verify if the OTP is correct and not expired
     if ($entered_otp == $stored_otp && time() <= $otp_expiration) {
-        // OTP is correct, the user can be considered verified
-        
-        // Set the user session variables properly
-        // These should already have been set in the login process, so we just ensure they remain intact
-        $_SESSION["authenticated"] = true; // Mark the user as authenticated after OTP
+        // OTP is correct, mark the user as authenticated
+        $_SESSION["authenticated"] = true;
+
+        // Ensure all user session variables remain intact
+        $_SESSION["user_id"] = $_SESSION["user_id"];
+        $_SESSION["username"] = $_SESSION["username"];
+        $_SESSION["role"] = $_SESSION["role"];
 
         // Redirect based on user role
         $user_type = $_SESSION["role"] ?? '';
@@ -35,9 +37,3 @@ if (isset($_POST["verify_otp"])) {
     }
 }
 ?>
-
-<!-- HTML form for OTP verification -->
-<form action="otp_verification.php" method="post">
-    <input type="text" name="otp" placeholder="Enter OTP" required>
-    <button type="submit" name="verify_otp">Verify OTP</button>
-</form>
