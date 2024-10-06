@@ -33,40 +33,113 @@ if (isset($_POST["verify_otp"])) {
 }
 ?>
 
-<!-- HTML for OTP Verification Form with Latest UI Design -->
+<!-- HTML for OTP Verification Form with Enhanced UI Design -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OTP Verification</title>
-    <!-- Bootstrap 5 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>DRFAMS - OTP Verification</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url('danrose_house2.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .otp-container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 2.5em;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 320px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+        .otp-container:hover {
+            transform: translateY(-5px);
+        }
+        .otp-container h2 {
+            color: #333;
+            margin-bottom: 1.2em;
+            font-size: 1.5em;
+        }
+        .otp-container p {
+            font-size: 0.95em;
+            margin-bottom: 1.8em;
+            color: #555;
+        }
+        .otp-container form {
+            display: flex;
+            flex-direction: column;
+        }
+        .otp-container label {
+            margin-bottom: 0.5em;
+            font-weight: 600;
+            text-align: left;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .otp-container input[type="text"],
+        .otp-container button {
+            padding: 0.85em;
+            border-radius: 6px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 1.2em;
+        }
+        .otp-container input[type="text"] {
+            border: 1px solid #ddd;
+            font-size: 0.95em;
+            transition: border-color 0.3s;
+        }
+        .otp-container input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .otp-container button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .otp-container button:hover {
+            background-color: #0056b3;
+        }
+        .otp-container .resend-link {
+            font-size: 0.9em;
+            text-decoration: none;
+            color: #007bff;
+            transition: color 0.3s;
+        }
+        .otp-container .resend-link:hover {
+            color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="card p-4 shadow-lg" style="width: 24rem;">
-            <div class="card-body">
-                <h3 class="card-title text-center mb-4">OTP Verification</h3>
-                <p class="text-muted text-center mb-4">Enter the OTP code sent to your email to proceed.</p>
-                <form action="otp_verification.php" method="post" onsubmit="return validateForm()">
-                    <div class="mb-3">
-                        <label for="otp" class="form-label">One-Time Password (OTP)</label>
-                        <input type="text" name="otp" id="otp" class="form-control" placeholder="Enter OTP" required autofocus minlength="6" maxlength="6" pattern="\d{6}" title="Please enter a 6-digit OTP code">
-                    </div>
-                    <button type="submit" name="verify_otp" class="btn btn-primary w-100">Verify OTP</button>
-                    <div class="text-center mt-3">
-                        <a href="resend_otp.php" class="text-decoration-none">Resend OTP</a>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <div class="otp-container">
+        <h2>OTP Verification</h2>
+        <p>DanRose Fishing Management System</p>
+        <form action="otp_verification.php" method="post" onsubmit="return validateForm()">
+            <label for="otp">One-Time Password (OTP):</label>
+            <input type="text" name="otp" id="otp" placeholder="Enter OTP" required minlength="6" maxlength="6" pattern="\d{6}" title="Please enter a 6-digit OTP code">
+            <button type="submit" name="verify_otp">Verify OTP</button>
+            <a href="resend_otp.php" class="resend-link">Resend OTP</a>
+        </form>
     </div>
-
-    <!-- Bootstrap 5 JavaScript Bundle (including Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Client-side form validation -->
     <script>
