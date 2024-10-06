@@ -232,7 +232,7 @@ if (isset($_POST["btn-reg"])) {
 
 
 
-
+/*
 
 if (isset($_POST["btnFeedback"])) {
 
@@ -285,7 +285,7 @@ if (isset($_POST["btnFeedback"])) {
 }
 
 
-
+*/
 
 
 
