@@ -124,9 +124,11 @@ if (isset($_POST["verify_otp"])) {
             text-decoration: none;
             color: #007bff;
             transition: color 0.3s;
+            cursor: pointer;
         }
-        .otp-container .resend-link:hover {
-            color: #0056b3;
+        .otp-container .resend-link.disabled {
+            color: #999;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -139,7 +141,7 @@ if (isset($_POST["verify_otp"])) {
             <label for="otp">One-Time Password (OTP):</label>
             <input type="text" name="otp" id="otp" placeholder="Enter OTP" required minlength="6" maxlength="6" pattern="\d{6}" title="Please enter a 6-digit OTP code">
             <button type="submit" name="verify_otp">Verify OTP</button>
-            <a href="resend_otp.php" class="resend-link">Resend OTP</a>
+            <a id="resendLink" href="resend_otp.php" class="resend-link disabled">Resend OTP (Wait 60s)</a>
         </form>
     </div>
 
@@ -171,6 +173,22 @@ if (isset($_POST["verify_otp"])) {
                 <?php endif; ?>
                 <?php unset($_SESSION["notify"]); ?>
             <?php endif; ?>
+
+            // Timer for Resend OTP link
+            let resendLink = document.getElementById("resendLink");
+            let countdown = 60;
+
+            const timer = setInterval(function () {
+                countdown--;
+                resendLink.innerText = `Resend OTP (Wait ${countdown}s)`;
+
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                    resendLink.classList.remove("disabled");
+                    resendLink.innerText = "Resend OTP";
+                    resendLink.style.pointerEvents = "auto";
+                }
+            }, 1000);
         });
 
         function validateForm() {
