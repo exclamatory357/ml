@@ -3,7 +3,12 @@ header("Content-Security-Policy: default-src 'self'; script-src 'self' https://t
 header("X-Frame-Options: DENY");
 header("Content-Security-Policy: frame-ancestors 'none';");
 header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+header("X-Content-Type-Options: nosniff");
+header("X-XSS-Protection: 1; mode=block");
+header("Referrer-Policy: no-referrer"); // Prevent referrer leakage
 
+// Prevent XML External Entity (XXE) attacks
+libxml_disable_entity_loader(true);
 
 // Redirect all HTTP requests to HTTPS if not already using HTTPS
 if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
@@ -11,17 +16,37 @@ if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
   exit();
 }
 
-
-
 // Secure session cookie settings
 ini_set('session.cookie_secure', '1');    // Enforces HTTPS-only session cookies
 ini_set('session.cookie_httponly', '1');  // Prevents JavaScript from accessing session cookies
 ini_set('session.cookie_samesite', 'Strict'); // Prevents CSRF by limiting cross-site cookie usage
 
-// Additional security headers
-header("X-Content-Type-Options: nosniff");
-header("X-Frame-Options: DENY");
-header("X-XSS-Protection: 1; mode=block");
+session_start();
+
+// Retrieve and store user location in the database if available
+$latitude = isset($_COOKIE['latitude']) ? $_COOKIE['latitude'] : 'Not available';
+$longitude = isset($_COOKIE['longitude']) ? $_COOKIE['longitude'] : 'Not available';
+
+// Example: Store location in a database
+if ($latitude !== 'Not available' && $longitude !== 'Not available') {
+    // Assuming you have a database connection established as $con
+    $user_id = $_SESSION['user_id'] ?? null;
+    if ($user_id) {
+        $stmt = $con->prepare("UPDATE users SET latitude = ?, longitude = ? WHERE user_id = ?");
+        $stmt->bind_param("ddi", $latitude, $longitude, $user_id);
+        $stmt->execute();
+    }
+}
+
+// Automatically get user location and store in cookies
+if (empty($_COOKIE['latitude']) || empty($_COOKIE['longitude'])) {
+    echo "<script>
+        navigator.geolocation.getCurrentPosition(function (position) {
+            document.cookie = `latitude=${position.coords.latitude}; path=/`;
+            document.cookie = `longitude=${position.coords.longitude}; path=/`;
+        });
+    </script>";
+}
 ?>
 <header class="main-header">
     <nav class="navbar navbar-static-top">
