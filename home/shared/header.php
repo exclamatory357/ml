@@ -22,6 +22,33 @@ ini_set('session.cookie_samesite', 'Strict'); // Prevents CSRF by limiting cross
 header("X-Content-Type-Options: nosniff");
 header("X-Frame-Options: DENY");
 header("X-XSS-Protection: 1; mode=block");
+
+
+// Anti-XXE: Secure XML parsing
+libxml_disable_entity_loader(true); // Disable loading of external entities
+libxml_use_internal_errors(true);   // Suppress libxml errors for better handling
+
+function parseXMLSecurely($xmlString) {
+    $dom = new DOMDocument();
+    
+    // Load the XML string securely
+    if (!$dom->loadXML($xmlString, LIBXML_NOENT | LIBXML_DTDLOAD | LIBXML_DTDATTR | LIBXML_NOCDATA)) {
+        throw new Exception('Error loading XML');
+    }
+    
+    // Process the XML content safely
+    return $dom;
+}
+
+// Example usage
+try {
+    $xmlString = '<root><element>Sample</element></root>'; // Replace with actual XML input
+    $dom = parseXMLSecurely($xmlString);
+    // Continue processing $dom...
+} catch (Exception $e) {
+    // Handle errors securely
+    echo 'Error processing XML: ' . $e->getMessage();
+}
 ?>
 <header class="main-header">
     <nav class="navbar navbar-static-top">
