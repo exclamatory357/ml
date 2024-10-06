@@ -2,7 +2,7 @@
 // Start session securely
 session_start();
 
-// Ensure all HTTP requests are redirected to HTTPS
+// Redirect all HTTP requests to HTTPS if not already using HTTPS
 if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
     header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
     exit();
@@ -22,22 +22,6 @@ header("X-Frame-Options: DENY");
 header("X-XSS-Protection: 1; mode=block");
 
 include "../../config/db.php";
-
-// Set login attempt limits and timeout duration
-$login_attempt_limit = 3;
-$timeout_duration = 900; // 15 minutes (in seconds)
-
-// Initialize login attempts if not set
-if (!isset($_SESSION['login_attempts'])) {
-    $_SESSION['login_attempts'] = 0;
-}
-
-// Check if timeout is active due to failed login attempts
-if (isset($_SESSION['timeout']) && time() < $_SESSION['timeout']) {
-    $_SESSION['notify'] = "login_disabled"; // Notify that the login is disabled
-    header("Location: ../?home");
-    exit();
-}
 
 if (isset($_POST["btnlogin"])) {
     // Sanitize and validate inputs
@@ -72,67 +56,53 @@ if (isset($_POST["btnlogin"])) {
 
         // Verify the password using password_verify()
         if (password_verify($password, $get_password_hash)) {
-            // Password is correct, now generate and send OTP
+
+            // Regenerate session ID to prevent session fixation attacks
+            session_regenerate_id(true);
 
             // Generate OTP and store it in session
             $otp = rand(100000, 999999); // Generate a 6-digit OTP
             $_SESSION["otp"] = $otp; // Store OTP in session
             $_SESSION["otp_expiration"] = time() + 300; // Set OTP expiration (5 minutes)
-            $_SESSION["user_id"] = $get_user_id; // Temporarily store user ID
-            $_SESSION["user_type"] = $get_user_type;
 
+            // Store user data for later use
+            $_SESSION["user_id"] = $get_user_id;
+            $_SESSION["username"] = $get_username;
+            $_SESSION["role"] = $get_user_type;
+            $_SESSION["type_id"] = $type_id;
+
+            // Send OTP via email (using PHPMailer)
             require 'phpmailer/PHPMailerAutoload.php'; // Make sure PHPMailer is properly configured
             $mail = new PHPMailer;
             $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com'; // Use Gmail's SMTP server
+            $mail->Host = 'smtp.gmail.com'; // SMTP server
             $mail->SMTPAuth = true;
-            $mail->Username = 'danrosefishing30@gmail.com'; // Your Gmail address
-            $mail->Password = 'meyj axmh socg tivf'; // Replace with your app-specific password (NOT your Gmail password)
-            $mail->SMTPSecure = 'tls'; // Enable TLS encryption
-            $mail->Port = 587; // Use TLS port 587
-            
-            $mail->setFrom('danrosefishing30@gmail.com', 'DanRose Fishing Management System');
-            $mail->addAddress($email); // Send OTP to the user's email
+            $mail->Username = 'danrosefishing30@gmail.com'; // Your email address
+            $mail->Password = 'meyj axmh socg tivf'; // App-specific password
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+
+            $mail->setFrom('noreply-danrosefishing30@gmail.com', 'Danrose Fishing Management System');
+            $mail->addAddress($email); // User's email
             $mail->Subject = 'Your OTP for Login';
             $mail->Body = "Your OTP code is: $otp";
-            
+
             if (!$mail->send()) {
-                error_log("Mailer Error: " . $mail->ErrorInfo); // Log error to troubleshoot
                 $_SESSION["notify"] = "otp_failed"; // Notify OTP email send failure
                 header("Location: ../?home");
                 exit();
             }
-            
+
             // Redirect to OTP verification page
             header("Location: otp_verification.php");
             exit();
         } else {
-            // Password is incorrect, increment login attempts
-            $_SESSION['login_attempts'] += 1;
-
-            // If login attempts exceed limit, set a timeout
-            if ($_SESSION['login_attempts'] >= $login_attempt_limit) {
-                $_SESSION['timeout'] = time() + $timeout_duration; // Set the timeout
-                $_SESSION["notify"] = "login_disabled"; // Notify the user
-            } else {
-                $_SESSION["notify"] = "invalid"; // Invalid password
-            }
-
+            $_SESSION["notify"] = "invalid"; // Invalid password
             header("Location: ../?home");
             exit();
         }
     } else {
-        // User not found, increment login attempts
-        $_SESSION['login_attempts'] += 1;
-
-        // If login attempts exceed limit, set a timeout
-        if ($_SESSION['login_attempts'] >= $login_attempt_limit) {
-            $_SESSION['timeout'] = time() + $timeout_duration;
-            $_SESSION["notify"] = "login_disabled"; // Notify the user
-        } else {
-            $_SESSION["notify"] = "invalid"; // Invalid credentials
-        }
-
+        $_SESSION["notify"] = "invalid"; // User not found
         header("Location: ../?home");
         exit();
     }

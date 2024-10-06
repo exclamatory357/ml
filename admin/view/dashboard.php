@@ -1,4 +1,20 @@
 <?php
+session_start(); // Start session
+
+// Check if the user is authenticated
+if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
+    header("Location: ../?home"); // Redirect to login page if not authenticated
+    exit();
+}
+
+// Proceed to load the admin dashboard
+?>
+
+<!-- Admin dashboard content -->
+<h1>Welcome to Admin Dashboard</h1>
+<p>Hello, <?php echo $_SESSION['username']; ?>! You are now logged in as <?php echo $_SESSION['role']; ?>.</p>
+
+<?php
 session_start();
 include 'auth.php';
 checkAdmin();
