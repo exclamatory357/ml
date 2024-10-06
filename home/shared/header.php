@@ -11,16 +11,6 @@ if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
   exit();
 }
 
-//Anti XXE Attacks
-libxml_disable_entity_loader(true);
-
-$xml = new DOMDocument();
-
-// Make sure you disable external entity loading
-libxml_use_internal_errors(true);
-$xml->loadXML($userSuppliedXml, LIBXML_NOENT | LIBXML_DTDLOAD);
-
-libxml_clear_errors();
 
 
 // Secure session cookie settings
