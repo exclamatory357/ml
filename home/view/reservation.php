@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "../../config/db.php"; // Including the external database connection file
+include "../../config/db.php"; 
 
 if (isset($_GET["request"])) {
     if (isset($_SESSION["username"])) {
@@ -107,18 +107,21 @@ if (isset($_GET["request"])) {
             <tbody>
                 <?php
                 // Fetch maintenance requests for the logged-in user
-                $sql = "SELECT * FROM maintenance_requests WHERE user_id = $user_id";
-                $result = $con->query($sql);
+                $sql = "SELECT * FROM maintenance_requests WHERE user_id = ?";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("i", $user_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
                         echo "<tr>";
-                        echo "<td>" . $row["id"] . "</td>";
-                        echo "<td>" . $row["item_name"] . "</td>";
-                        echo "<td>" . $row["description"] . "</td>";
-                        echo "<td>" . $row["request_date"] . "</td>";
-                        echo "<td>" . $row["admin_comment"] . "</td>";
-                        echo "<td>" . $row["admin_approval"] . "</td>";
+                        echo "<td>" . htmlspecialchars($row["id"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["item_name"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["description"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["request_date"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["admin_comment"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["admin_approval"]) . "</td>";
                         echo "</tr>";
                     }
                 } else {
@@ -145,17 +148,20 @@ if (isset($_GET["request"])) {
             <tbody>
                 <?php
                 // Fetch cash advances for the logged-in user
-                $sql = "SELECT * FROM cash_advances WHERE user_id = $user_id";
-                $result = $con->query($sql);
+                $sql = "SELECT * FROM cash_advances WHERE user_id = ?";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("i", $user_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
                         echo "<tr>";
-                        echo "<td>" . $row["id"] . "</td>";
-                        echo "<td>" . $row["name"] . "</td>";
-                        echo "<td>₱" . $row["amount"] . "</td>";
-                        echo "<td>" . $row["date"] . "</td>";
-                        echo "<td>" . $row["status"] . "</td>";
+                        echo "<td>" . htmlspecialchars($row["id"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["name"]) . "</td>";
+                        echo "<td>₱" . htmlspecialchars($row["amount"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["date"]) . "</td>";
+                        echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
                         echo "</tr>";
                     }
                 } else {
@@ -185,6 +191,39 @@ if (isset($_GET["request"])) {
             <?php } ?>
             <?php unset($_SESSION["notify"]); ?>
         <?php } ?>
+    });
+</script>
+<script>
+    // Maintenance Request Form Validation
+    document.querySelector('form[action="function/function_crud.php"]').addEventListener('submit', function(e) {
+        const itemName = document.getElementById('item_name').value.trim();
+        const description = document.getElementById('description').value.trim();
+
+        if (itemName === "" || itemName.length > 50) {
+            e.preventDefault();
+            alert("Please provide a valid item name (max length 50 characters).");
+        }
+
+        if (description === "" || description.length > 150) {
+            e.preventDefault();
+            alert("Please provide a valid description (max length 150 characters).");
+        }
+    });
+
+    // Cash Advance Request Form Validation
+    document.querySelector('form[action="function/function_crud.php"]').addEventListener('submit', function(e) {
+        const employeeName = document.getElementById('employee_name').value.trim();
+        const amount = parseFloat(document.getElementById('amount').value);
+
+        if (employeeName === "" || employeeName.length > 40) {
+            e.preventDefault();
+            alert("Please provide a valid employee name (max length 40 characters).");
+        }
+
+        if (isNaN(amount) || amount <= 0) {
+            e.preventDefault();
+            alert("Please provide a valid amount greater than 0.");
+        }
     });
 </script>
 </body>
