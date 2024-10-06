@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_GET["abc/123/gallery"])) {?>
+if (isset($_GET["gallery"])) {?>
     <!-- Main content -->
     <section class="content">
     <div class="container">
@@ -35,27 +35,7 @@ if (isset($_GET["abc/123/gallery"])) {?>
         </div>
 	</div>
 </div>
-   <!-- LOGIN PAGE -->
-   <?php if (!isset($_SESSION["username"])) { ?>
-             LOGIN FORM, show if session is not set 
-            <div class="login-box-body p-absolute-login container mt-5">
-                <p class="login-box-msg text-center">Welcome back!</p>
-                <form action="function/login.php" method="post">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control form-control-lg" placeholder="Enter Username" name="username" required autofocus>
-                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                    </div>
-                    <div class="form-group has-feedback">
-                        <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required>
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin">Sign In</button>
-                    <button type="button" data-toggle="modal" data-target="#modal-registration" class="btn btn-success btn-block btn-lg">Create Account</button> 
-                </form>
-            </div>
-        <?php } ?>
-    </section>
-<?php }?>
+
 <script type="text/javascript">
     // Disable right-click
     document.addEventListener('contextmenu', event => event.preventDefault());
@@ -67,3 +47,4 @@ if (isset($_GET["abc/123/gallery"])) {?>
         }
     };
 </script>
+<?php } ?>
