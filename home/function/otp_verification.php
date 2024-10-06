@@ -33,7 +33,7 @@ if (isset($_POST["verify_otp"])) {
 }
 ?>
 
-<!-- HTML for OTP Verification Form with Enhanced UI Design -->
+<!-- HTML for OTP Verification Form with Enhanced UI Design and SweetAlert2 -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,6 +41,8 @@ if (isset($_POST["verify_otp"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DRFAMS - OTP Verification</title>
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -141,15 +143,48 @@ if (isset($_POST["verify_otp"])) {
         </form>
     </div>
 
-    <!-- Client-side form validation -->
+    <!-- SweetAlert2 Notifications -->
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            <?php if (isset($_SESSION["notify"])): ?>
+                <?php if ($_SESSION["notify"] == "otp_resend_success"): ?>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OTP Sent',
+                        text: 'A new OTP has been sent to your email.',
+                        confirmButtonColor: '#007bff'
+                    });
+                <?php elseif ($_SESSION["notify"] == "otp_resend_failed"): ?>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to Send OTP',
+                        text: 'Unable to send OTP. Please try again later.',
+                        confirmButtonColor: '#007bff'
+                    });
+                <?php elseif ($_SESSION["notify"] == "otp_invalid"): ?>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid OTP',
+                        text: 'The OTP you entered is invalid or has expired.',
+                        confirmButtonColor: '#007bff'
+                    });
+                <?php endif; ?>
+                <?php unset($_SESSION["notify"]); ?>
+            <?php endif; ?>
+        });
+
         function validateForm() {
             const otpInput = document.getElementById("otp");
             const otpValue = otpInput.value;
 
             // Ensure OTP is a 6-digit number
             if (!/^\d{6}$/.test(otpValue)) {
-                alert("Please enter a valid 6-digit OTP.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid OTP',
+                    text: 'Please enter a valid 6-digit OTP.',
+                    confirmButtonColor: '#007bff'
+                });
                 return false;
             }
             return true;
