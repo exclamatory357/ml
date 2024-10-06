@@ -10,10 +10,10 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
 // Proceed to load the admin dashboard
 ?>
 
-<!-- Admin dashboard content -->
+<!-- Admin dashboard content 
 <h1>Welcome to Admin Dashboard</h1>
 <p>Hello, <?php echo $_SESSION['username']; ?>! You are now logged in as <?php echo $_SESSION['role']; ?>.</p>
-
+-->
 <?php
 session_start();
 include 'auth.php';
