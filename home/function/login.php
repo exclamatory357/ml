@@ -1,7 +1,7 @@
 <?php
 // Start session securely
 session_start();
-
+/*
 // Redirect all HTTP requests to HTTPS if not already using HTTPS
 if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
     header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
@@ -20,7 +20,7 @@ ini_set('session.cookie_samesite', 'Strict'); // Prevents CSRF by limiting cross
 header("X-Content-Type-Options: nosniff");
 header("X-Frame-Options: DENY");
 header("X-XSS-Protection: 1; mode=block");
-
+*/
 include "../../config/db.php";
 
 if (isset($_POST["btnlogin"])) {

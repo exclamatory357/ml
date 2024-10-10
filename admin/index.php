@@ -105,6 +105,39 @@ $(function () {
 });
 
 
+$(function () {
+    $('#archieves').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,  // Ensure the table adapts its width
+        "responsive": true,  // Make the table responsive
+        "columnDefs": [
+            { "width": "10%", "targets": 0 },  // Adjust width as necessary for specific columns
+            { "width": "20%", "targets": 9 },  // Password and Username might need specific widths
+            { "orderable": false, "targets": 10 }  // Disable ordering on action column (edit/delete)
+        ]
+    });
+});
+
+$(function () {
+    $('#boang').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,  // Ensure the table adapts its width
+        "responsive": true,  // Make the table responsive
+        "columnDefs": [
+            { "width": "10%", "targets": 0 },  // Adjust width as necessary for specific columns
+            { "width": "20%", "targets": 9 },  // Password and Username might need specific widths
+            { "orderable": false, "targets": 10 }  // Disable ordering on action column (edit/delete)
+        ]
+    });
+});
 
 
   // SWEETALERT NOTIFICATION

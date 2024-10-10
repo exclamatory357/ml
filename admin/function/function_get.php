@@ -93,7 +93,7 @@ function get_maintenance_requests($con) {
 
 
 function get_cash_advances($con) {
-    $sql = "SELECT * FROM cash_advances";
+    $sql = "SELECT * FROM cash_advances WHERE archived = 0";
     $query = mysqli_query($con, $sql);
     $i = 1;
 
@@ -112,8 +112,17 @@ function get_cash_advances($con) {
                     </button>
                     <button type='button' data-toggle='modal' data-target='#modal-delete-cash-".$fetch['id']."' class='btn btn-danger delete' id='".$fetch['id']."'>
                         <i class='fa fa-trash'></i>
-                    </button>
-                </td>
+                    </button>";
+            
+            // Only show archive button if status is not Approved
+            if ($fetch['status'] !== 'Approved') {
+                echo "
+                    <button type='button' data-toggle='modal' data-target='#modal-archive-cash-".$fetch['id']."' class='btn btn-secondary archive' id='".$fetch['id']."'>
+                        <i class='fa fa-archive'></i>
+                    </button>";
+            }
+
+            echo "</td>
             </tr>";
 
             // Edit Modal
@@ -123,20 +132,19 @@ function get_cash_advances($con) {
                         <div class='modal-header bg-primary'>
                             <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
                                 <span aria-hidden='true'>×</span></button>
-                            <h4 class='modal-title'>Edit Cash Advance ID: ".$fetch['id']."</h4>
+                            <h4 class='modal-title'>Edit Cash Advance ID: " . $fetch['id'] . "</h4>
                         </div>
                         <div class='modal-body'>
                             <form method='post' action='function/function_crud.php'>
                                 <input type='hidden' name='update_cash_advance' value='1'>
-                                <input type='hidden' name='id' value='".$fetch['id']."'>
-                                <label>Name: </label> <input type='text' name='name' value='".$fetch["name"]."' class='form-control' readonly><br>
-                                <label>Amount: </label> <input type='text' name='amount' value='".$fetch["amount"]."' class='form-control' readonly><br>
-                                <label>Date: </label> <input type='date' name='date' value='".$fetch["date"]."' class='form-control' readonly><br>
+                                <input type='hidden' name='id' value='" . $fetch['id'] . "'>
+                                <label>Name: </label> <input type='text' name='name' value='" . $fetch["name"] . "' class='form-control' readonly><br>
+                                <label>Amount: </label> <input type='text' name='amount' value='" . $fetch["amount"] . "' class='form-control' readonly><br>
+                                <label>Date: </label> <input type='date' name='date' value='" . $fetch["date"] . "' class='form-control' readonly><br>
                                 <label>Status: </label>
                                 <select name='status' class='form-control'>
-                                    <option value='Pending'".($fetch["status"] == 'Pending' ? ' selected' : '').">Pending</option>
-                                    <option value='Approved'".($fetch["status"] == 'Approved' ? ' selected' : '').">Approved</option>
-                                    <!-- <option value='Disapproved'".($fetch["status"] == 'Disapproved' ? ' selected' : '').">Disapproved</option> !-->
+                                    <option value='Pending'" . ($fetch["status"] == 'Pending' ? ' selected' : '') . ">Pending</option>
+                                    <option value='Approved'" . ($fetch["status"] == 'Approved' ? ' selected' : '') . ">Approved</option>
                                 </select>
                                 <br><br>
                         </div>
@@ -172,13 +180,83 @@ function get_cash_advances($con) {
                 </div>
             </div>";
 
+            // Archive Modal
+            echo "<div class='modal fade' id='modal-archive-cash-".$fetch['id']."'>
+                <div class='modal-dialog modal-sm'>
+                    <div class='modal-content'>
+                        <div class='modal-header bg-secondary'>
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>×</span></button>
+                            <h4 class='modal-title'>Archive Confirmation</h4>
+                        </div>
+                        <div class='modal-body'>
+                            <center><h3>Are you sure you want to archive this cash advance?</h3></center>
+                        </div>
+                        <div class='modal-footer'>
+                            <form method='post' action='function/function_crud.php'>
+                                <input type='hidden' name='archive_cash_advance' value='1'>
+                                <input type='hidden' name='id' value='".$fetch['id']."'>
+                                <button type='submit' class='btn btn-secondary'>Archive</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>";
+
             $i++;
         }
     }
 }
 
 
+function get_cash_advances_archive($con) {
+    $sql = "SELECT * FROM cash_advances WHERE archived = 1";
+    $query = mysqli_query($con, $sql);
+    $i = 1;
 
+    if (mysqli_num_rows($query) > 0) {
+        while ($fetch = mysqli_fetch_assoc($query)) {
+            echo "
+            <tr>
+                <td>".$i."</td>
+                <td>".$fetch["name"]."</td>
+                <td>".$fetch["amount"]."</td>
+                <td>".$fetch["date"]."</td>
+                <td>".$fetch["status"]."</td>
+                <td>
+                    <button type='button' data-toggle='modal' data-target='#modal-restore-cash-".$fetch['id']."' class='btn btn-success restore' id='".$fetch['id']."'>
+                        <i class='fa fa-undo'></i>
+                    </button>
+                </td>
+            </tr>";
+
+            // Restore Modal
+            echo "<div class='modal fade' id='modal-restore-cash-".$fetch['id']."'>
+                <div class='modal-dialog modal-sm'>
+                    <div class='modal-content'>
+                        <div class='modal-header bg-success'>
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>×</span></button>
+                            <h4 class='modal-title'>Restore Confirmation</h4>
+                        </div>
+                        <div class='modal-body'>
+                            <center><h3>Are you sure you want to restore this cash advance?</h3></center>
+                        </div>
+                        <div class='modal-footer'>
+                            <form method='post' action='function/function_crud.php'>
+                                <input type='hidden' name='restore_cash_advance' value='1'>
+                                <input type='hidden' name='id' value='".$fetch['id']."'>
+                                <button type='submit' class='btn btn-success'>Restore</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>";
+
+            $i++;
+        }
+    }
+}
 
 
 
@@ -1446,6 +1524,31 @@ function count_me0($con){
     $result = mysqli_fetch_assoc($query);
     $user_count = $result['user_count'];
     echo $user_count;
+}
+
+function total_teams($con) {
+    $sql = "SELECT COUNT(*) AS total FROM pumpboats WHERE team IS NOT NULL";
+    $query = mysqli_query($con, $sql);
+    
+    if ($query) {
+        $result = mysqli_fetch_assoc($query);
+        $total_teams = $result['total'];
+        echo $total_teams;
+    } else {
+        echo "Error: " . mysqli_error($con);
+    }
+}
+
+function unpaid_total($con) {
+    $sql = "SELECT SUM(amount) AS total FROM cash_advances WHERE amount IS NOT NULL";
+    $query = mysqli_query($con, $sql);
+    if ($query) {
+        $result = mysqli_fetch_assoc($query);
+        $unpaid_total = $result['total'];
+        echo '₱' . number_format($unpaid_total, 2);
+    } else {
+        echo "Error: " . mysqli_error($con);
+    }
 }
 
 function count_totalagents($con) {

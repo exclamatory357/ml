@@ -1,0 +1,78 @@
+Options -Indexes
+
+# Protect .htaccess File
+<Files .htaccess>
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Disable PHP Execution in Uploads
+<Directory "../admin/function/uploads">
+    <Files *.php>
+        Order Deny,Allow
+        Deny from all
+    </Files>
+</Directory>
+
+# Prevent Access to Sensitive Files
+<FilesMatch "\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist|xml|yml)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Prevent Clickjacking
+Header always append X-Frame-Options SAMEORIGIN
+
+# Protect Against XSS
+Header set X-XSS-Protection "1; mode=block"
+
+# Disable Server Signature
+ServerSignature Off
+
+# Prevent MIME Sniffing
+Header set X-Content-Type-Options nosniff
+
+# Enable HSTS (Force HTTPS)
+Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+
+# Block Access to Hidden Files
+<FilesMatch "^\.">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Content Security Policy (CSP)
+Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://trusted-scripts.com; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+
+# Set HttpOnly and Secure flag for cookies
+<IfModule mod_headers.c>
+    Header edit Set-Cookie ^(.*)$ "$1; HttpOnly; Secure; SameSite=Strict"
+</IfModule>
+
+# Prevent Hotlinking
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^https?://(www\.)?danrosefishing\.com [NC]
+RewriteRule \.(jpg|jpeg|png|gif)$ - [F]
+
+# Prevent Unwanted Redirects (Anti-Re-Routing)
+RewriteCond %{HTTP_HOST} !^danrosefishing\.com$ [NC]
+RewriteRule ^ - [F]
+
+# Rate Limiting (Basic Protection)
+<Limit GET POST>
+    Order Allow,Deny
+    Allow from all
+    Deny from env=bad_bot
+</Limit>
+
+# Protect Against SQL Injection
+RewriteCond %{QUERY_STRING} (\<|>|\'|\"|\)|\(|\.\.\/|\/|%0A|%0D|%22|%27|%3C|%3E|%00) [NC,OR]
+RewriteCond %{QUERY_STRING} (\.\.\/|\.\.) [NC,OR]
+RewriteCond %{QUERY_STRING} (\*|union|select|insert|cast|set|declare|drop) [NC]
+RewriteRule .* - [F]
+
+# Block Bad Bots
+SetEnvIfNoCase User-Agent "libwww-perl" bad_bot
+SetEnvIfNoCase User-Agent "MJ12bot" bad_bot
+SetEnvIfNoCase User-Agent "AhrefsBot" bad_bot

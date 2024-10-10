@@ -10,28 +10,39 @@ include "../../config/db.php";
 // Process Payment
 // Process Payment
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['process_payment'])) {
+    // Input variables
     $advance_id = $_POST['advance_id'];
     $payment_amount = $_POST['payment_amount'];
     $user_id = $_POST['user_id'];
 
-    // Input validation
+    // Input validation - Check if all inputs are numeric
     if (!is_numeric($advance_id) || !is_numeric($payment_amount) || !is_numeric($user_id)) {
         $_SESSION["notify"] = "invalid-input";
         header("location: ../?manage_payment");
         exit;
     }
 
+    // Typecasting after validation
     $advance_id = intval($advance_id);
     $payment_amount = floatval($payment_amount);
     $user_id = intval($user_id);
 
-    // Get the current amount and original amount from cash_advances table
-    $sql_get_amount = "SELECT amount, original_amount FROM cash_advances WHERE id = '$advance_id'";
-    $result_get_amount = mysqli_query($con, $sql_get_amount);
+    // Prepared statement to get the current amount and original amount from cash_advances table
+    $sql_get_amount = "SELECT amount, original_amount, total_paid FROM cash_advances WHERE id = ?";
+    $stmt = mysqli_prepare($con, $sql_get_amount);
+    mysqli_stmt_bind_param($stmt, "i", $advance_id);
+    mysqli_stmt_execute($stmt);
+    $result_get_amount = mysqli_stmt_get_result($stmt);
+
+    if (!$result_get_amount) {
+        die('Error fetching cash advances data: ' . mysqli_error($con));
+    }
+
     if ($result_get_amount && mysqli_num_rows($result_get_amount) > 0) {
         $row = mysqli_fetch_assoc($result_get_amount);
         $current_amount = $row['amount'];
         $original_amount = $row['original_amount'];
+        $total_paid = $row['total_paid'];
 
         // Ensure the payment amount is valid
         if ($payment_amount > $current_amount) {
@@ -43,33 +54,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['process_payment'])) {
         // Ensure original_amount is set if it's not already
         if (is_null($original_amount) || $original_amount == 0) {
             $original_amount = $current_amount;
-            $sql_set_original = "UPDATE cash_advances SET original_amount = $original_amount WHERE id = '$advance_id'";
-            mysqli_query($con, $sql_set_original);
+            $sql_set_original = "UPDATE cash_advances SET original_amount = ? WHERE id = ?";
+            $stmt_update = mysqli_prepare($con, $sql_set_original);
+            mysqli_stmt_bind_param($stmt_update, "di", $original_amount, $advance_id);
+            if (!mysqli_stmt_execute($stmt_update)) {
+                die('Error updating original amount: ' . mysqli_error($con));
+            }
         }
 
-        // Update cash_advances table by deducting the payment amount (SQL1)
-        $sql1 = "UPDATE cash_advances SET amount = amount - $payment_amount WHERE id = '$advance_id'";
-        if (mysqli_query($con, $sql1)) {
-            // Insert the payment in invoices table (SQL2)
-            $remaining_amount = $current_amount - $payment_amount;
-            $sql2 = "INSERT INTO invoices (user_id, date_issued, amount, original_amount, remaining_amount, status, description) 
-                     VALUES ('$user_id', NOW(), '$payment_amount', '$original_amount', '$remaining_amount', 'Paid', 'Payment Processed')";
-            if (mysqli_query($con, $sql2)) {
-                $_SESSION["notify"] = "success-payment";
-                header("location: ../?manage_payment");
-                exit;
-            } else {
-                $_SESSION["notify"] = "failed-insert-invoices";
-                error_log("Failed to insert into invoices: " . mysqli_error($con));
-                header("location: ../?manage_payment");
-                exit;
-            }
-        } else {
-            $_SESSION["notify"] = "failed-update-cash-advances";
-            error_log("Failed to update cash advances: " . mysqli_error($con));
-            header("location: ../?manage_payment");
-            exit;
+        // Update cash_advances table by deducting the payment amount and adding to total paid
+        $sql1 = "UPDATE cash_advances SET amount = amount - ?, total_paid = total_paid + ? WHERE id = ?";
+        $stmt_update_amount = mysqli_prepare($con, $sql1);
+        mysqli_stmt_bind_param($stmt_update_amount, "ddi", $payment_amount, $payment_amount, $advance_id);
+        if (!mysqli_stmt_execute($stmt_update_amount)) {
+            die('Error updating cash advances: ' . mysqli_error($con));
         }
+
+        // Insert the payment into invoices table
+        $remaining_amount = $current_amount - $payment_amount;
+        $description = 'Payment Processed';
+        $status = 'Paid';
+
+        $sql2 = "INSERT INTO invoices (user_id, date_issued, amount, original_amount, remaining_amount, status, description) 
+                 VALUES (?, NOW(), ?, ?, ?, ?, ?)";
+        $stmt_insert_invoice = mysqli_prepare($con, $sql2);
+        mysqli_stmt_bind_param($stmt_insert_invoice, "idddss", $user_id, $payment_amount, $original_amount, $remaining_amount, $status, $description);
+        if (!mysqli_stmt_execute($stmt_insert_invoice)) {
+            die('Error inserting into invoices: ' . mysqli_error($con));
+        }
+
+        // Generate receipt PDF and prompt user to print
+        generateReceiptPDFFunction($advance_id, $user_id);
+
+        $_SESSION["notify"] = "success-payment";
+        header("location: ../?manage_payment");
+        exit;
     } else {
         $_SESSION["notify"] = "no-record-found";
         header("location: ../?manage_payment");
@@ -77,6 +96,140 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['process_payment'])) {
     }
 }
 
+// Function to generate receipt PDF
+function generateReceiptPDFFunction($advance_id, $user_id) {
+    global $con;
+    require('../../plugins/fpdf/fpdf.php');
+
+    // Fetch payment details
+    $sql = "SELECT cash_advances.*, user.fname, user.lname FROM cash_advances 
+            INNER JOIN user ON cash_advances.user_id = user.user_id WHERE cash_advances.id = ?";
+    $stmt = mysqli_prepare($con, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $advance_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if (!$result) {
+        die('Error fetching payment details: ' . mysqli_error($con));
+    }
+    $row = mysqli_fetch_assoc($result);
+
+    $user_name = $row['fname'] . ' ' . $row['lname'];
+
+    // Fetch the most recent payment
+    $sql_recent_payment = "SELECT invoice_id, amount AS payment_amount, date_issued AS payment_date, original_amount, remaining_amount FROM invoices WHERE user_id = ? ORDER BY date_issued DESC LIMIT 1";
+    $stmt_recent_payment = mysqli_prepare($con, $sql_recent_payment);
+    mysqli_stmt_bind_param($stmt_recent_payment, "i", $user_id);
+    mysqli_stmt_execute($stmt_recent_payment);
+    $result_recent_payment = mysqli_stmt_get_result($stmt_recent_payment);
+    if (!$result_recent_payment) {
+        die('Error fetching recent payment: ' . mysqli_error($con));
+    }
+    $recent_payment = mysqli_fetch_assoc($result_recent_payment);
+    $invoice_id = $recent_payment['invoice_id'];
+    $paid_amount = $recent_payment['payment_amount'];
+    $original_amount = $recent_payment['original_amount'];
+    $remaining_amount = $recent_payment['remaining_amount'];
+
+    $pdf = new FPDF('P', 'mm', 'LETTER');
+    $pdf->SetTitle('Fully Paid Receipt', true);
+    $pdf->AddPage();
+
+    // Title header
+    $pdf->SetFont('Arial', 'B', 16);
+    $pdf->SetX(60);
+    $pdf->Cell(90, 13, 'Fully Paid Receipt', '', 0, 'C');
+    $pdf->Ln();
+    $pdf->SetFont('Arial', '', 9);
+    $pdf->Ln();
+
+    // Style the receipt
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->SetFillColor(0, 51, 102);
+    $pdf->SetTextColor(255, 255, 255);
+    $pdf->Cell(190, 10, 'DanRose Fishing Management System', 0, 1, 'C', true);
+    $pdf->SetFont('Arial', '', 10);
+    $pdf->SetTextColor(0, 0, 0);
+    $pdf->Cell(190, 5, 'Receipt for Cash Advance', 0, 1, 'C');
+    $pdf->Cell(190, 5, 'FROM: ' . date('Y-m-d') . ' TO: ' . date('Y-m-d'), 0, 1, 'C');
+    $pdf->Ln();
+
+    // Add user name
+    $pdf->SetFont('Arial', '', 12);
+    $pdf->Cell(190, 10, 'Agent Name: ' . $user_name, 0, 1, 'C');
+    $pdf->Ln();
+
+    // Set colors for the table headers
+    $pdf->SetFillColor(100, 100, 255); // Light blue
+    $pdf->SetTextColor(255, 255, 255); // White text
+    $pdf->SetDrawColor(0, 0, 0); // Black border
+    $pdf->SetLineWidth(0.5); // Line width
+
+    // Receipt details with table headers
+    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->Cell(40, 10, 'Transaction ID', 1, 0, 'C', true);
+    $pdf->Cell(40, 10, 'Original Amount', 1, 0, 'C', true);
+    $pdf->Cell(40, 10, 'Pay', 1, 0, 'C', true);
+    $pdf->Cell(40, 10, 'Remaining Amount', 1, 0, 'C', true);
+    $pdf->Cell(30, 10, 'Status', 1, 1, 'C', true);
+
+    // Add data to the table
+    $pdf->SetFont('Arial', '', 10);
+    $pdf->SetFillColor(245, 245, 245); // Light gray for rows
+    $pdf->SetTextColor(0, 0, 0); // Black text
+    $pdf->Cell(40, 10, $invoice_id, 1, 0, 'C', true);
+    $pdf->Cell(40, 10, 'Pesos ' . number_format($original_amount, 2), 1, 0, 'C', true);
+    $pdf->Cell(40, 10, 'Pesos ' . number_format($paid_amount, 2), 1, 0, 'C', true);
+    $pdf->Cell(40, 10, 'Pesos ' . number_format($remaining_amount, 2), 1, 0, 'C', true);
+    $pdf->Cell(30, 10, 'Paid', 1, 1, 'C', true);
+    $pdf->Ln();
+
+    // Output the PDF to browser for print
+    $pdf->Output('I', 'Fully_Paid_Receipt.pdf');
+    exit;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////OPSSSSSS SAKTO/////////////////////////
+// Archive Cash Advance
+if (isset($_POST['archive_cash_advance'])) {
+    $id = $_POST['id'];
+    $sql = "UPDATE cash_advances SET archived = 1 WHERE id = $id";
+    if (mysqli_query($con, $sql)) {
+        // Redirect or display success message
+        header('Location: ../?reserved2'); // Update with your actual redirect page
+        exit();
+    } else {
+        echo "Error: " . mysqli_error($con);
+    }
+}
+
+// Restore Cash Advance
+if (isset($_POST['restore_cash_advance'])) {
+    $id = $_POST['id'];
+    $sql = "UPDATE cash_advances SET archived = 0 WHERE id = $id";
+    if (mysqli_query($con, $sql)) {
+        // Redirect or display success message
+        header('Location: ../?reserved2'); // Update with your actual redirect page
+        exit();
+    } else {
+        echo "Error: " . mysqli_error($con);
+    }
+}
 
 // Update Maintenance Request
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_maintenance_request'])) {

@@ -10,7 +10,7 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
 // Proceed to load the admin dashboard
 ?>
 
-<!-- Admin dashboard content 
+<!-- Admin dashboard content
 <h1>Welcome to Admin Dashboard</h1>
 <p>Hello, <?php echo $_SESSION['username']; ?>! You are now logged in as <?php echo $_SESSION['role']; ?>.</p>
 -->
@@ -157,60 +157,188 @@ if (isset($_GET["dashboard"])) {
                 flex: 1 1 100%; /* Stack columns on smaller screens */
             }
         }
+/* General Styles */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #343a40;
+    transition: background-color 0.5s ease;
+    line-height: 1.6;
+}
 
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+.container-fluid {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
-        .container-fluid {
-            padding: 20px;
-        }
+/* Enhanced Table Styles */
+.table {
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border-collapse: collapse;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-        h1 {
-            font-size: 28px;
-            font-weight: bold;
-            color: #343a40;
-            margin-bottom: 20px;
-        }
+.table:hover {
+    transform: scale(1.01);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
 
-        .table {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
+.table th, .table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
 
-        .table th {
-            background-color: #007bff;
-            color: #ffffff;
-            text-align: center;
-            vertical-align: middle;
-        }
+.table th {
+    background-color: #343a40;
+    color: #ffffff;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
 
-        .table td {
-            text-align: center;
-            vertical-align: middle;
-        }
+.table td {
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
+}
 
-        .table-icon {
-            font-size: 18px;
-            margin-right: 5px;
-        }
+.table tr:hover td {
+    background-color: #e9ecef;
+}
 
-        .table-row {
-            transition: background-color 0.2s;
-        }
+/* Chart Container */
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #ffffff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease;
+}
 
-        .table-row:hover {
-            background-color: #f1f5f9;
-        }
+.chart-container:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+}
 
-        .api-request {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #6c757d;
-        }
+/* Buttons - Enhanced Styles */
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 12px;
+    background-color: #007bff;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Cards - New Component */
+.card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+}
+
+.card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-content {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 1024px) {
+    .chart-container {
+        max-width: 90%;
+        height: 350px;
+    }
+
+    .table th, .table td {
+        padding: 10px;
+    }
+
+    .card {
+        margin: 15px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .chart-container {
+        max-width: 95%;
+        height: 300px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+    }
+
+    .card {
+        margin: 10px;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .chart-container {
+        max-width: 100%;
+        height: 250px;
+        padding: 10px;
+    }
+
+    .table th, .table td {
+        padding: 8px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .card {
+        margin: 8px;
+        padding: 10px;
+    }
+}
     </style>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -286,35 +414,40 @@ if (isset($_GET["dashboard"])) {
         </div>
         <!-- ./col -->
 
-        <!-- Uncomment and use these sections if needed
+        <!-- Unpaid Total Box -->
         <div class="dashboard-col">
+            <!-- small box -->
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3><?= htmlspecialchars(count_me2($con, 'SupplierSales')) ?></h3>
-                    <p>Supplier Sales</p>
+                    <h3><?= htmlspecialchars(unpaid_total($con)) ?></h3>
+                    <p>Total Unpaid Cash Advances</p>
                 </div>
                 <div class="icon">
-                    <i class="fa fa-truck"></i>
+                    <i class="fas fa-exclamation-circle"></i>
                 </div>
             </div>
         </div>
+        <!-- ./col -->
+
+        <!-- Total Teams Box -->
         <div class="dashboard-col">
+            <!-- small box -->
             <div class="small-box bg-secondary">
                 <div class="inner">
-                    <h3><?= htmlspecialchars(count_me2($con, 'AgentSales')) ?></h3>
-                    <p>Agent Sales</p>
+                    <h3><?= htmlspecialchars(total_teams($con)) ?></h3>
+                    <p>Total Teams</p>
                 </div>
                 <div class="icon">
-                    <i class="fa fa-user-tie"></i>
+                    <i class="fas fa-users"></i>
                 </div>
             </div>
         </div>
-        -->
+        <!-- ./col -->
     </div>
 
     <!-- Cash Advances Chart -->
     <div class="dashboard-row">
-        <div class="dashboard-col" style="flex: 1 1 40%;">
+        <div class="dashboard-col chart-container">
             <canvas id="cashAdvancesChart"></canvas>
         </div>
     </div>
@@ -340,6 +473,7 @@ if (isset($_GET["dashboard"])) {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     x: {
                         type: 'time',
@@ -365,12 +499,18 @@ if (isset($_GET["dashboard"])) {
                 }
             }
         });
+
+        // Resize listener to make chart re-render when screen size changes
+        window.addEventListener('resize', function() {
+            cashAdvancesChart.resize();
+        });
     });
 </script>
 
-<!-- Weather Forcast !-->
+<!-- Weather Forecast -->
 <section class="container-fluid">
-        <h1>Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?></h1>
+    <h1>Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?></h1>
+    <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -397,19 +537,9 @@ if (isset($_GET["dashboard"])) {
                 <?php } ?>
             </tbody>
         </table>
+    </div>
+</section>
 
-     <!--   <div class="api-request">
-            <h4>API request</h4>
-            <p><?php echo htmlspecialchars($api_url); ?></p>
-        </div> !-->
-
-        <div class="dashboard-row">
-            <!-- Add your other dashboard boxes here -->
-        </div>
-    </section>
-</body>
-</html>
-<?php } ?>
 <script type="text/javascript">
     // Disable right-click with an alert
     document.addEventListener('contextmenu', function(event) {
@@ -433,3 +563,6 @@ if (isset($_GET["dashboard"])) {
         }
     };
 </script>
+</body>
+</html>
+<?php } ?>
