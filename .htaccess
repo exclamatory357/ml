@@ -1,10 +1,11 @@
 Options -Indexes
 
 # Protect .htaccess File
-<Files .htaccess>
-    Order Allow,Deny
-    Deny from all
-</Files>
+
+#<Files .htaccess>
+ #   Order Allow,Deny
+  #  Deny from all
+#</Files>
 
 # Disable PHP Execution in Uploads
 <Directory "../admin/function/uploads">
