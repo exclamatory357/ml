@@ -4,7 +4,98 @@ session_start();
 
 include "../../config/db.php";
 
+// SALE PRODUCT
 
+// Handle Checkout Request
+if (isset($_POST['checkout'])) {
+    // Retrieve and sanitize form data
+    $full_name = mysqli_real_escape_string($con, trim($_POST['full_name']));
+    $address = mysqli_real_escape_string($con, trim($_POST['address']));
+    $phone_number = mysqli_real_escape_string($con, trim($_POST['phone_number']));
+    $amount = mysqli_real_escape_string($con, trim($_POST['amount'])); // Retrieve the amount field
+
+    // Validate the amount to ensure it's numeric and greater than zero
+    if (!is_numeric($amount) || $amount <= 0) {
+        echo "Invalid amount. Please enter a valid number.";
+        exit();
+    }
+
+    // Check if the cart is not empty
+    if (!empty($_SESSION['cart'])) {
+        // Calculate total price from cart items
+        $total_price = array_reduce($_SESSION['cart'], function ($total, $item) {
+            return $total + ($item['quantity'] * $item['price']);
+        }, 0);
+
+        // Calculate the change
+        $change = $amount - $total_price;
+        if ($change < 0) {
+            echo "The amount given is less than the total amount due.";
+            exit();
+        }
+
+        // Insert the sale record into sales_records
+        $sql_sales = "INSERT INTO sales_records (buyer_name, sale_amount, sale_date) VALUES ('$full_name', '$total_price', NOW())";
+        if (mysqli_query($con, $sql_sales)) {
+            // Get the last inserted sale ID
+            $sale_id = mysqli_insert_id($con);
+
+            // Process each item in the cart
+            foreach ($_SESSION['cart'] as $item) {
+                $catch_item = mysqli_real_escape_string($con, $item['catch_item']);
+                $quantity = (int) $item['quantity'];
+                $price = (float) $item['price'];
+                $total_amount = $quantity * $price;
+
+                // Generate a unique receipt number
+                $receipt_number = "RECEIPT-" . time() . rand(1000, 9999);
+
+                // Insert receipt record including buyer details, item info, total amount, and the amount given
+                $sql_receipt = "INSERT INTO receipt_records (sale_id, buyer_name, address, phone_number, receipt_number, amount, total_amount, payment_method, payment_date, remarks)
+                                VALUES ('$sale_id', '$full_name', '$address', '$phone_number', '$receipt_number', '$amount', '$total_amount', 'Cash', NOW(), 'Purchase of $quantity kg of $catch_item')";
+                if (!mysqli_query($con, $sql_receipt)) {
+                    // Log error and terminate on failure
+                    error_log("Failed to insert into receipt_records: " . mysqli_error($con));
+                    echo "Failed to insert receipt: " . mysqli_error($con);
+                    exit();
+                }
+
+                // Deduct the purchased quantity from catch_records_sell
+                $sql_deduction = "UPDATE catch_records_sell 
+                                  SET catch_kilo = catch_kilo - $quantity
+                                  WHERE catch_item = '$catch_item' AND catch_kilo >= $quantity";
+                if (!mysqli_query($con, $sql_deduction) || mysqli_affected_rows($con) == 0) {
+                    // Log error if deduction fails due to insufficient stock or other issues
+                    error_log("Failed to update catch_records_sell or insufficient stock for item $catch_item: " . mysqli_error($con));
+                    echo "Failed to deduct catch quantity or insufficient stock: " . mysqli_error($con);
+                    exit();
+                }
+            }
+
+            // Clear the cart after successful checkout
+            $_SESSION['cart'] = [];
+
+            // Redirect to print_receipt.php with the sale_id and amount for automatic printing
+            header("Location: ../view/print_receipt.php?sale_id=$sale_id&amount=$amount");
+            exit();
+        } else {
+            // Log error if inserting the sales record fails
+            $_SESSION['notify'] = "failed-checkout";
+            error_log("Failed to insert into sales_records: " . mysqli_error($con));
+            echo "Failed to insert sale: " . mysqli_error($con);
+            exit();
+        }
+    } else {
+        // Handle empty cart case
+        $_SESSION['notify'] = "cart-empty";
+        header("location: ../?page=manage_sell_product");
+        exit();
+    }
+}
+
+
+
+// /SELL PRODUCT
 
 //payment manage
 // Process Payment
@@ -96,13 +187,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['process_payment'])) {
     }
 }
 
-// Function to generate receipt PDF
+// Function to generate plain receipt PDF with a logo
 function generateReceiptPDFFunction($advance_id, $user_id) {
     global $con;
     require('../../plugins/fpdf/fpdf.php');
 
     // Fetch payment details
-    $sql = "SELECT cash_advances.*, user.fname, user.lname FROM cash_advances 
+    $sql = "SELECT cash_advances.*, user.fname, user.mname, user.lname FROM cash_advances 
             INNER JOIN user ON cash_advances.user_id = user.user_id WHERE cash_advances.id = ?";
     $stmt = mysqli_prepare($con, $sql);
     mysqli_stmt_bind_param($stmt, "i", $advance_id);
@@ -113,7 +204,7 @@ function generateReceiptPDFFunction($advance_id, $user_id) {
     }
     $row = mysqli_fetch_assoc($result);
 
-    $user_name = $row['fname'] . ' ' . $row['lname'];
+    $user_name = $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'];
 
     // Fetch the most recent payment
     $sql_recent_payment = "SELECT invoice_id, amount AS payment_amount, date_issued AS payment_date, original_amount, remaining_amount FROM invoices WHERE user_id = ? ORDER BY date_issued DESC LIMIT 1";
@@ -134,54 +225,50 @@ function generateReceiptPDFFunction($advance_id, $user_id) {
     $pdf->SetTitle('Fully Paid Receipt', true);
     $pdf->AddPage();
 
+    // Add Logo in the top-right corner
+    $pdf->Image('uploads/icon.png', 160, 10, 30); // Adjust the path and position as needed
+
     // Title header
     $pdf->SetFont('Arial', 'B', 16);
-    $pdf->SetX(60);
-    $pdf->Cell(90, 13, 'Fully Paid Receipt', '', 0, 'C');
-    $pdf->Ln();
-    $pdf->SetFont('Arial', '', 9);
+    $pdf->Cell(0, 13, 'Receipt for Cash Advance', 0, 1, 'C');
     $pdf->Ln();
 
-    // Style the receipt
+    // System Name Header
     $pdf->SetFont('Arial', 'B', 12);
-    $pdf->SetFillColor(0, 51, 102);
-    $pdf->SetTextColor(255, 255, 255);
-    $pdf->Cell(190, 10, 'DanRose Fishing Management System', 0, 1, 'C', true);
-    $pdf->SetFont('Arial', '', 10);
-    $pdf->SetTextColor(0, 0, 0);
-    $pdf->Cell(190, 5, 'Receipt for Cash Advance', 0, 1, 'C');
-    $pdf->Cell(190, 5, 'FROM: ' . date('Y-m-d') . ' TO: ' . date('Y-m-d'), 0, 1, 'C');
-    $pdf->Ln();
+    $pdf->Cell(0, 10, 'DanRose Fishing Management System', 0, 1, 'C');
 
-    // Add user name
+    // Details Section
+    $pdf->SetFont('Arial', '', 10);
+    $pdf->Cell(0, 5, 'Date Issued: ' . date('Y-m-d', strtotime($recent_payment['payment_date'])), 0, 1, 'C');
+    $pdf->Ln();
     $pdf->SetFont('Arial', '', 12);
-    $pdf->Cell(190, 10, 'Agent Name: ' . $user_name, 0, 1, 'C');
+    $pdf->Cell(0, 10, 'Agent Name: ' . $user_name, 0, 1, 'C');
     $pdf->Ln();
 
-    // Set colors for the table headers
-    $pdf->SetFillColor(100, 100, 255); // Light blue
-    $pdf->SetTextColor(255, 255, 255); // White text
-    $pdf->SetDrawColor(0, 0, 0); // Black border
-    $pdf->SetLineWidth(0.5); // Line width
-
-    // Receipt details with table headers
+    // Table Headers
     $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(40, 10, 'Transaction ID', 1, 0, 'C', true);
-    $pdf->Cell(40, 10, 'Original Amount', 1, 0, 'C', true);
-    $pdf->Cell(40, 10, 'Pay', 1, 0, 'C', true);
-    $pdf->Cell(40, 10, 'Remaining Amount', 1, 0, 'C', true);
-    $pdf->Cell(30, 10, 'Status', 1, 1, 'C', true);
+    $pdf->Cell(40, 10, 'Transaction ID', 1, 0, 'C');
+    $pdf->Cell(40, 10, 'Original Amount', 1, 0, 'C');
+    $pdf->Cell(40, 10, 'Pay', 1, 0, 'C');
+    $pdf->Cell(40, 10, 'Remaining Amount', 1, 0, 'C');
+    $pdf->Cell(30, 10, 'Status', 1, 1, 'C');
 
-    // Add data to the table
+    // Table Content
     $pdf->SetFont('Arial', '', 10);
-    $pdf->SetFillColor(245, 245, 245); // Light gray for rows
-    $pdf->SetTextColor(0, 0, 0); // Black text
-    $pdf->Cell(40, 10, $invoice_id, 1, 0, 'C', true);
-    $pdf->Cell(40, 10, 'Pesos ' . number_format($original_amount, 2), 1, 0, 'C', true);
-    $pdf->Cell(40, 10, 'Pesos ' . number_format($paid_amount, 2), 1, 0, 'C', true);
-    $pdf->Cell(40, 10, 'Pesos ' . number_format($remaining_amount, 2), 1, 0, 'C', true);
-    $pdf->Cell(30, 10, 'Paid', 1, 1, 'C', true);
+    $pdf->Cell(40, 10, $invoice_id, 1, 0, 'C');
+    $pdf->Cell(40, 10, 'Pesos ' . number_format($original_amount, 2), 1, 0, 'C');
+    $pdf->Cell(40, 10, 'Pesos ' . number_format($paid_amount, 2), 1, 0, 'C');
+    $pdf->Cell(40, 10, 'Pesos ' . number_format($remaining_amount, 2), 1, 0, 'C');
+    $pdf->Cell(30, 10, 'Paid', 1, 1, 'C');
     $pdf->Ln();
+
+   // Signature Section
+$pdf->Ln(20); // Space between table and signature line
+$pdf->SetFont('Arial', '', 10);
+$pdf->Cell(140); // Move to the right
+$pdf->Cell(60, 10, '_________________________', 0, 1, 'C'); // Signature line
+$pdf->Cell(140); // Move to the right again to align the "Signature" label
+$pdf->Cell(60, 5, 'Signature', 0, 1, 'C');
 
     // Output the PDF to browser for print
     $pdf->Output('I', 'Fully_Paid_Receipt.pdf');
@@ -204,7 +291,10 @@ function generateReceiptPDFFunction($advance_id, $user_id) {
 
 
 
-////////////////////////////////////////OPSSSSSS SAKTO/////////////////////////
+
+////////////////////////////////////////OPSSSSSS SAKTO NA /////////////////////////
+
+
 // Archive Cash Advance
 if (isset($_POST['archive_cash_advance'])) {
     $id = $_POST['id'];
@@ -316,10 +406,11 @@ if (isset($_POST["btn-cottage-add"])) {
     $name = $_POST["name"];
     $type = $_POST["type"];
     $cat = $_POST["category"];
-    $team = $_POST["team"];  // New team field
+    $team = $_POST["team"];
+    $pumpboat_no = $_POST["pumpboat_no"];  // Make sure this is collected
 
-    $sqlcott = "INSERT INTO `cottage/hall` (`name`, `type`, `category`, `team`) 
-                VALUES ('$name', '$type', '$cat', '$team')";
+    $sqlcott = "INSERT INTO `cottage/hall` (`name`, `type`, `category`, `team`, `pumpboat_no`) 
+                VALUES ('$name', '$type', '$cat', '$team', '$pumpboat_no')";  // Include pumpboat_no in the query
 
     $query = mysqli_query($con, $sqlcott);
 
@@ -708,11 +799,11 @@ if (isset($_GET["feedback-del"])) {
 if (isset($_POST["btn-cottage-edit"])) {
     $id = $_POST["id"];
     $team  = $_POST["team"];
-    $name = $_POST["name"];
+  //  $name = $_POST["name"];
     $type = $_POST["type"];
     $category = $_POST["category"];
 
-    $sql = "UPDATE `cottage/hall` SET `team`='$team', `name`='$name', `type`='$type', `category`='$category' WHERE id = '$id'";
+    $sql = "UPDATE `cottage/hall` SET `team`='$team',  `type`='$type', `category`='$category' WHERE id = '$id'";
     $query = mysqli_query($con, $sql);
 
     if (!$query) {
@@ -845,30 +936,161 @@ if (isset($_POST["btn-picture-edit"])) {
         }
         // /Delete Operation PUMPBOATS
         
-        // File Upload for Edit PUMPBOAT
-        if (isset($_POST["btn-pumpboat-edit"])) {
-            $id = $_POST["id"];
-            $license_no = $_POST["license_no"];
-            $pumpboat_no = $_POST["pumpboat_no"];
-            $type = $_POST["type"];
-            $status = $_POST["status"];
+       // File Upload for Edit PUMPBOAT
+if (isset($_POST["btn-pumpboat-edit"])) {
+    $id = $_POST["id"];
+    $license_no = $_POST["license_no"];
+    $pumpboat_no = $_POST["pumpboat_no"];
+    $type = $_POST["type"];
+    $team = $_POST["team"];
+    // $status = $_POST["status"];
+
+    $sql = "UPDATE `pumpboats` SET `license_no`='$license_no', `pumpboat_no`='$pumpboat_no', `type`='$type', `team`='$team' WHERE id = '$id'";
+
+    $query = mysqli_query($con, $sql);
+
+    if (!$query) {
+        $_SESSION["notify"] = "failed";
+        header("location: ../?manage_pumpboats");
+        return;
+    }
+    if ($query) {
+        $_SESSION["notify"] = "success";
+        header("location: ../?manage_pumpboats");
+        return;
+    }
+}
+// /File Upload for Edit PUMPBOAT
+
         
-            $sql = "UPDATE `pumpboats` SET `license_no`='$license_no',`pumpboat_no`='$pumpboat_no',`type`='$type',`status`='$status' WHERE id = '$id'";
+
+
+     // Insert Operation - CATCH BY TEAM
+if (isset($_POST["btn-catch-add"])) {
+    $team = $_POST["team"];
+    $catch_items = $_POST["catch_item"];
+    $catch_amounts = $_POST["catch_amount"];
+    $catch_kilos = $_POST["catch_kilo"];
+    $catch_date = $_POST["catch_date"];
+
+    // Track added record IDs for printing
+    $added_ids = [];
+
+    // Prepare the SQL statements for both catch_records and catch_records_sell
+    $stmt_catch_records = $con->prepare("INSERT INTO `catch_records`(`team`, `catch_item`, `catch_amount`, `catch_kilo`, `catch_date`) VALUES (?, ?, ?, ?, ?)");
+    $stmt_catch_records_sell = $con->prepare("INSERT INTO `catch_records_sell`(`team`, `catch_item`, `catch_amount`, `catch_kilo`, `catch_date`) VALUES (?, ?, ?, ?, ?)");
+
+    if ($stmt_catch_records === false || $stmt_catch_records_sell === false) {
+        $_SESSION["notify"] = "failed-add";
+        header("location: ../?manage_catch_by_team");
+        exit();
+    }
+
+    foreach ($catch_items as $index => $catch_item) {
+        $catch_amount = $catch_amounts[$index];
+        $catch_kilo = $catch_kilos[$index];
+
+        // Bind parameters for catch_records
+        $stmt_catch_records->bind_param("ssdds", $team, $catch_item, $catch_amount, $catch_kilo, $catch_date);
         
-            $query = mysqli_query($con, $sql);
-        
-            if (!$query) {
-                $_SESSION["notify"] = "failed";
-                header("location: ../?manage_pumpboats");
-                return;
-            }
-            if ($query) {
-                $_SESSION["notify"] = "success";
-                header("location: ../?manage_pumpboats");
-                return;
-            }
+        // Bind parameters for catch_records_sell
+        $stmt_catch_records_sell->bind_param("ssdds", $team, $catch_item, $catch_amount, $catch_kilo, $catch_date);
+
+        // Execute the statements for both tables
+        if ($stmt_catch_records->execute() && $stmt_catch_records_sell->execute()) {
+            $added_ids[] = $stmt_catch_records->insert_id; // Store the ID of the newly inserted record from catch_records
+        } else {
+            $_SESSION["notify"] = "failed-add";
+            header("location: ../?manage_catch_by_team");
+            exit();
         }
-        // /File Upload for Edit PUMPBOAT
+    }
+
+    // Close the prepared statements
+    $stmt_catch_records->close();
+    $stmt_catch_records_sell->close();
+
+    // Set session for print with team information
+    $_SESSION["notify"] = "success-add";
+    $_SESSION["print_ready_team"] = $team;
+    $_SESSION["added_ids"] = $added_ids;
+
+    // Redirect to the print page
+    header("location: ../view/print_catch.php");
+    exit();
+}
+
+// Delete Operation - CATCH BY TEAM
+if (isset($_GET["catch-del"])) {
+    $id = $_GET["catch-del"];
+    
+    // Prepare delete statements for both tables
+    $stmt_delete_catch_records = $con->prepare("DELETE FROM `catch_records` WHERE id = ?");
+    $stmt_delete_catch_records_sell = $con->prepare("DELETE FROM `catch_records_sell` WHERE id = ?");
+    
+    if ($stmt_delete_catch_records && $stmt_delete_catch_records_sell) {
+        // Bind parameter
+        $stmt_delete_catch_records->bind_param("i", $id);
+        $stmt_delete_catch_records_sell->bind_param("i", $id);
         
+        // Execute both delete statements
+        if ($stmt_delete_catch_records->execute() && $stmt_delete_catch_records_sell->execute()) {
+            $_SESSION["notify"] = "success-delete";
+            header("location: ../?manage_catch_by_team");
+            exit();
+        } else {
+            $_SESSION["notify"] = "failed-delete";
+            header("location: ../?manage_catch_by_team");
+            exit();
+        }
+
+        // Close the delete statements
+        $stmt_delete_catch_records->close();
+        $stmt_delete_catch_records_sell->close();
+    } else {
+        $_SESSION["notify"] = "failed-delete";
+        header("location: ../?manage_catch_by_team");
+        exit();
+    }
+}
+// /Delete Operation CATCH BY TEAM
 
 
+// Insert Operation SELL PRODUCT
+if (isset($_POST["btn-sell-product"])) {
+    $catch_id = $_POST["catch_id"];
+    $quantity_sold = $_POST["quantity_sold"];
+    $sale_amount = $_POST["sale_amount"];
+    $sale_date = $_POST["sale_date"];
+    $buyer_name = $_POST["buyer_name"];
+
+    $sale_id = add_sale($catch_id, $quantity_sold, $sale_amount, $sale_date, $buyer_name);
+
+    if ($sale_id) {
+        $_SESSION["notify"] = "success-sale";
+        header("location: ../?manage_sell_product");
+        exit();
+    } else {
+        $_SESSION["notify"] = "failed-sale";
+        header("location: ../?manage_sell_product");
+        exit();
+    }
+}
+
+// Delete Operation SELL PRODUCT
+if (isset($_GET["sell-del"])) {
+    $id = $_GET["sell-del"];
+    $sql = "DELETE FROM `sales_records` WHERE id = '$id'";
+    $query = mysqli_query($con);
+
+    if ($query) {
+        $_SESSION["notify"] = "success-delete";
+        header("location: ../?manage_sell_product");
+        exit();
+    } else {
+        $_SESSION["notify"] = "failed-delete";
+        header("location: ../?manage_sell_product");
+        exit();
+    }
+}
+// /Insert Operation SELL PRODUCT

@@ -27,23 +27,55 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
     exit();
 }
 
+// Fetch aggregated data for Total Sales from receipt_records
+$query_receipt = "SELECT payment_date, SUM(total_amount) AS total_amount FROM receipt_records WHERE total_amount > 0 GROUP BY payment_date ORDER BY payment_date ASC";
+$result_receipt = $con->query($query_receipt);
+
+$receipt_dates = [];
+$receipt_amounts = [];
+
+if ($result_receipt->num_rows > 0) {
+    while ($row = $result_receipt->fetch_assoc()) {
+        $receipt_dates[] = $row['payment_date'];
+        $receipt_amounts[] = $row['total_amount']; // Aggregated total amount for each date
+    }
+}
+
 
 if (isset($_GET["dashboard"])) {
     include "../../config/db.php";
 
-    // Fetch data for Cash Advances chart
-    $query = "SELECT date_issued, amount FROM invoices WHERE amount > 0";
-    $result = $con->query($query);
+   // Fetch aggregated data for Cash Advances
+$query_cash_advances = "SELECT date_issued, SUM(amount) AS total_amount FROM invoices WHERE amount > 0 GROUP BY date_issued ORDER BY date_issued ASC";
+$result_cash_advances = $con->query($query_cash_advances);
 
-    $dates = [];
-    $amounts = [];
+$cash_advance_dates = [];
+$cash_advances_amounts = [];
 
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $dates[] = $row['date_issued'];
-            $amounts[] = $row['amount'];
-        }
+if ($result_cash_advances->num_rows > 0) {
+    while ($row = $result_cash_advances->fetch_assoc()) {
+        $cash_advance_dates[] = $row['date_issued'];
+        $cash_advances_amounts[] = $row['total_amount']; // Aggregated total amount for each date
     }
+}
+
+// Combine all unique dates from both datasets and sort them
+$all_dates = array_unique(array_merge($cash_advance_dates, $receipt_dates));
+sort($all_dates);
+
+// Align data for Cash Advances
+$aligned_cash_advances_amounts = [];
+foreach ($all_dates as $date) {
+    $index = array_search($date, $cash_advance_dates);
+    $aligned_cash_advances_amounts[] = ($index !== false) ? $cash_advances_amounts[$index] : null;
+}
+
+// Align data for Total Sales
+$aligned_receipt_amounts = [];
+foreach ($all_dates as $date) {
+    $index = array_search($date, $receipt_dates);
+    $aligned_receipt_amounts[] = ($index !== false) ? $receipt_amounts[$index] : null;
+}
 
 
      function extractParam($pathSegments, $pathIndex, $query_params, $query_param) {
@@ -365,11 +397,11 @@ body {
             <!-- small box -->
             <div class="small-box bg-primary">
                 <div class="inner">
-                    <h3>₱<?= htmlspecialchars(count_me2($con)) ?></h3>
+                    <h3><?= htmlspecialchars(count_me2($con)) ?></h3>
                     <p>Total Payments of Cash Advances</p>
                 </div>
                 <div class="icon">
-                    <i class="fas fa-credit-card"></i>
+                    <i class="fa fa-peso-sign"></i>
                 </div>
             </div>
         </div>
@@ -395,7 +427,7 @@ body {
                     <p>User Accounts</p>
                 </div>
                 <div class="icon">
-                    <i class="fa fa-users"></i>
+                    <i class="fas fa-user-circle"></i>
                 </div>
             </div>
         </div>
@@ -405,10 +437,10 @@ body {
             <div class="small-box bg-danger">
                 <div class="inner">
                     <h3><?= htmlspecialchars(count_totalagents($con, 'Canceled')) ?></h3>
-                    <p>Total Agents</p>
+                    <p>Total Sales</p>
                 </div>
                 <div class="icon">
-                    <i class="fa fa-users"></i>
+                    <i class="fa fa-peso-sign"></i>
                 </div>
             </div>
         </div>
@@ -457,57 +489,68 @@ body {
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const ctx = document.getElementById('cashAdvancesChart').getContext('2d');
-        const cashAdvancesChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: <?= json_encode($dates) ?>,
-                datasets: [{
+   document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('cashAdvancesChart').getContext('2d');
+    const cashAdvancesChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: <?= json_encode($all_dates) ?>, // Use the unified date array as labels
+            datasets: [
+                {
                     label: 'Cash Advances',
-                    data: <?= json_encode($amounts) ?>,
+                    data: <?= json_encode($aligned_cash_advances_amounts) ?>, // Aligned Cash Advances data
                     backgroundColor: 'rgba(0, 123, 255, 0.2)',
                     borderColor: 'rgba(0, 123, 255, 1)',
                     borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        type: 'time',
-                        time: {
-                            unit: 'day',
-                            tooltipFormat: 'MMM d, yyyy', // Display only date in tooltip
-                            displayFormats: {
-                                day: 'MMM d' // Display only date on x-axis
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Date Issued'
+                },
+                {
+                    label: 'Total Sales',
+                    data: <?= json_encode($aligned_receipt_amounts) ?>, // Aligned Total Sales data
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    type: 'time', // Use time-based x-axis
+                    time: {
+                        unit: 'day',
+                        tooltipFormat: 'MMM d, yyyy',
+                        displayFormats: {
+                            day: 'MMM d'
                         }
                     },
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Cash Advances'
-                        }
+                    title: {
+                        display: true,
+                        text: 'Date Issued'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Amount'
                     }
                 }
             }
-        });
-
-        // Resize listener to make chart re-render when screen size changes
-        window.addEventListener('resize', function() {
-            cashAdvancesChart.resize();
-        });
+        }
     });
+
+    // Resize listener to make chart re-render when screen size changes
+    window.addEventListener('resize', function() {
+        cashAdvancesChart.resize();
+    });
+});
+
+
 </script>
 
-<!-- Weather Forecast -->
+<!-- Weather Forecast 
 <section class="container-fluid">
     <h1>Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?></h1>
     <div class="table-responsive">
@@ -538,7 +581,7 @@ body {
             </tbody>
         </table>
     </div>
-</section>
+</section>      -->
 
 <script type="text/javascript">
     // Disable right-click with an alert

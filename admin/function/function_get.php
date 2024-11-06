@@ -12,20 +12,24 @@ function get_maintenance_requests($con) {
             echo "
             <tr>
                 <td>".$i."</td>
-                <td>".$fetch["item_name"]."</td>
-                <td>".$fetch["description"]."</td>
-                <td>".$fetch["request_date"]."</td>
-                <!-- <td>".$fetch["status"]."</td> !-->
-                <td>".$fetch["admin_comment"]."</td>
-                <td>".$fetch["admin_approval"]."</td>
-                <td>
-                    <button type='button' data-toggle='modal' data-target='#modal-edit-".$fetch['id']."' class='btn btn-warning edit' id='".$fetch['id']."'>
-                        <i class='fa fa-edit'></i>
-                    </button>
-                    <button type='button' data-toggle='modal' data-target='#modal-delete-".$fetch['id']."' class='btn btn-danger delete' id='".$fetch['id']."'>
-                        <i class='fa fa-trash'></i>
-                    </button>
-                </td>
+                <td>".htmlspecialchars($fetch["item_name"])."</td>
+                <td>".htmlspecialchars($fetch["description"])."</td>
+                <td>".htmlspecialchars($fetch["request_date"])."</td>
+                <td>".htmlspecialchars($fetch["admin_comment"])."</td>
+                <td>".htmlspecialchars($fetch["admin_approval"])."</td>
+                <td>";
+
+            // Disable buttons if status is "Approved"
+            $disabled = $fetch['admin_approval'] === 'Approved' ? 'disabled' : '';
+
+            echo "
+                <button type='button' data-toggle='modal' data-target='#modal-edit-".$fetch['id']."' class='btn btn-warning edit' id='".$fetch['id']."' $disabled>
+                    <i class='fa fa-edit'></i>
+                </button>
+                <button type='button' data-toggle='modal' data-target='#modal-delete-".$fetch['id']."' class='btn btn-danger delete' id='".$fetch['id']."' $disabled>
+                    <i class='fa fa-trash'></i>
+                </button>
+            </td>
             </tr>";
 
             // Edit Modal
@@ -41,21 +45,29 @@ function get_maintenance_requests($con) {
                             <form method='post' action='function/function_crud.php'>
                                 <input type='hidden' name='update_maintenance_request' value='1'>
                                 <input type='hidden' name='id' value='".$fetch['id']."'>
-                                <label>Item Name: </label> <input type='text' name='item_name' value='".$fetch["item_name"]."' class='form-control' readonly><br>
-                                <label>Description: </label> <input type='text' name='description' value='".$fetch["description"]."' class='form-control' readonly><br>
-                                <label>Request Date: </label> <input type='date' name='request_date' value='".$fetch["request_date"]."' class='form-control' readonly><br>
-                                <!-- <label>Status: </label> <input type='text' name='status' value='".$fetch["status"]."' class='form-control'><br> !-->
-                                <label>Admin Comment: </label> <input type='text' name='admin_comment' value='".$fetch["admin_comment"]."' class='form-control'><br>
+                                <label>Item Name: </label> 
+                                <input type='text' name='item_name' value='".htmlspecialchars($fetch["item_name"])."' class='form-control' readonly><br>
+                                <label>Team: </label> 
+                                <input type='text' name='description' value='".htmlspecialchars($fetch["description"])."' class='form-control' readonly><br>
+                                <label>Request Date: </label> 
+                                <input type='date' name='request_date' value='".htmlspecialchars($fetch["request_date"])."' class='form-control' readonly><br>
+                                
+                                <label>Admin Comment: </label> 
+                                <input type='text' name='admin_comment' value='".htmlspecialchars($fetch["admin_comment"])."' 
+                                       class='form-control' maxlength='100' 
+                                       pattern='[A-Za-z0-9 ]*' 
+                                       title='Only letters and numbers are allowed, with a maximum length of 100 characters.'
+                                       ".($fetch['admin_approval'] === 'Approved' ? 'readonly' : '')."><br>
+                                
                                 <label>Admin Approval: </label>
-                                <select name='admin_approval' class='form-control'>
+                                <select name='admin_approval' class='form-control' ".($fetch['admin_approval'] === 'Approved' ? 'disabled' : '').">
                                     <option value='Pending'".($fetch["admin_approval"] == 'Pending' ? ' selected' : '').">Pending</option>
                                     <option value='Approved'".($fetch["admin_approval"] == 'Approved' ? ' selected' : '').">Approved</option>
-                                    <!-- <option value='Disapproved'".($fetch["admin_approval"] == 'Disapproved' ? ' selected' : '').">Disapproved</option> !-->
                                 </select>
                                 <br><br>
                         </div>
                         <div class='modal-footer'>
-                            <button type='submit' class='btn btn-primary'>Update</button>
+                            <button type='submit' class='btn btn-primary' ".($fetch['admin_approval'] === 'Approved' ? 'disabled' : '').">Update</button>
                             <button type='button' class='btn bg-maroon' data-dismiss='modal'>Close</button>
                             </form>
                         </div>
@@ -79,7 +91,7 @@ function get_maintenance_requests($con) {
                             <form method='post' action='function/function_crud.php'>
                                 <input type='hidden' name='delete_maintenance_request' value='1'>
                                 <input type='hidden' name='id' value='".$fetch['id']."'>
-                                <button type='submit' class='btn btn-danger'>Delete</button>
+                                <button type='submit' class='btn btn-danger' ".($fetch['admin_approval'] === 'Approved' ? 'disabled' : '').">Delete</button>
                             </form>
                         </div>
                     </div>
@@ -92,8 +104,10 @@ function get_maintenance_requests($con) {
 }
 
 
+
 function get_cash_advances($con) {
-    $sql = "SELECT * FROM cash_advances WHERE archived = 0";
+    // Modify the query to exclude records with an amount of 0
+    $sql = "SELECT * FROM cash_advances WHERE archived = 0 AND amount > 0";
     $query = mysqli_query($con, $sql);
     $i = 1;
 
@@ -102,17 +116,22 @@ function get_cash_advances($con) {
             echo "
             <tr>
                 <td>".$i."</td>
-                <td>".$fetch["name"]."</td>
-                <td>".$fetch["amount"]."</td>
-                <td>".$fetch["date"]."</td>
-                <td>".$fetch["status"]."</td>
-                <td>
-                    <button type='button' data-toggle='modal' data-target='#modal-edit-cash-".$fetch['id']."' class='btn btn-warning edit' id='".$fetch['id']."'>
-                        <i class='fa fa-edit'></i>
-                    </button>
-                    <button type='button' data-toggle='modal' data-target='#modal-delete-cash-".$fetch['id']."' class='btn btn-danger delete' id='".$fetch['id']."'>
-                        <i class='fa fa-trash'></i>
-                    </button>";
+                <td>".htmlspecialchars($fetch["name"])."</td>
+                <td>".htmlspecialchars($fetch["amount"])."</td>
+                <td>".htmlspecialchars($fetch["date"])."</td>
+                <td>".htmlspecialchars($fetch["status"])."</td>
+                <td>";
+
+            // Disable buttons if status is "Approved"
+            $disabled = $fetch['status'] === 'Approved' ? 'disabled' : '';
+
+            echo "
+                <button type='button' data-toggle='modal' data-target='#modal-edit-cash-".$fetch['id']."' class='btn btn-warning edit' id='".$fetch['id']."' $disabled>
+                    <i class='fa fa-edit'></i>
+                </button>
+                <button type='button' data-toggle='modal' data-target='#modal-delete-cash-".$fetch['id']."' class='btn btn-danger delete' id='".$fetch['id']."' $disabled>
+                    <i class='fa fa-trash'></i>
+                </button>";
             
             // Only show archive button if status is not Approved
             if ($fetch['status'] !== 'Approved') {
@@ -138,18 +157,18 @@ function get_cash_advances($con) {
                             <form method='post' action='function/function_crud.php'>
                                 <input type='hidden' name='update_cash_advance' value='1'>
                                 <input type='hidden' name='id' value='" . $fetch['id'] . "'>
-                                <label>Name: </label> <input type='text' name='name' value='" . $fetch["name"] . "' class='form-control' readonly><br>
-                                <label>Amount: </label> <input type='text' name='amount' value='" . $fetch["amount"] . "' class='form-control' readonly><br>
-                                <label>Date: </label> <input type='date' name='date' value='" . $fetch["date"] . "' class='form-control' readonly><br>
+                                <label>Name: </label> <input type='text' name='name' value='" . htmlspecialchars($fetch["name"]) . "' class='form-control' readonly><br>
+                                <label>Amount: </label> <input type='text' name='amount' value='" . htmlspecialchars($fetch["amount"]) . "' class='form-control' readonly><br>
+                                <label>Date: </label> <input type='date' name='date' value='" . htmlspecialchars($fetch["date"]) . "' class='form-control' readonly><br>
                                 <label>Status: </label>
-                                <select name='status' class='form-control'>
+                                <select name='status' class='form-control' ".($fetch['status'] === 'Approved' ? 'disabled' : '').">
                                     <option value='Pending'" . ($fetch["status"] == 'Pending' ? ' selected' : '') . ">Pending</option>
                                     <option value='Approved'" . ($fetch["status"] == 'Approved' ? ' selected' : '') . ">Approved</option>
                                 </select>
                                 <br><br>
                         </div>
                         <div class='modal-footer'>
-                            <button type='submit' class='btn btn-primary'>Update</button>
+                            <button type='submit' class='btn btn-primary' ".($fetch['status'] === 'Approved' ? 'disabled' : '').">Update</button>
                             <button type='button' class='btn bg-maroon' data-dismiss='modal'>Close</button>
                             </form>
                         </div>
@@ -173,7 +192,7 @@ function get_cash_advances($con) {
                             <form method='post' action='function/function_crud.php'>
                                 <input type='hidden' name='delete_cash_advance' value='1'>
                                 <input type='hidden' name='id' value='".$fetch['id']."'>
-                                <button type='submit' class='btn btn-danger'>Delete</button>
+                                <button type='submit' class='btn btn-danger' ".($fetch['status'] === 'Approved' ? 'disabled' : '').">Delete</button>
                             </form>
                         </div>
                     </div>
@@ -196,7 +215,7 @@ function get_cash_advances($con) {
                             <form method='post' action='function/function_crud.php'>
                                 <input type='hidden' name='archive_cash_advance' value='1'>
                                 <input type='hidden' name='id' value='".$fetch['id']."'>
-                                <button type='submit' class='btn btn-secondary'>Archive</button>
+                                <button type='submit' class='btn btn-secondary' ".($fetch['status'] === 'Approved' ? 'disabled' : '').">Archive</button>
                             </form>
                         </div>
                     </div>
@@ -207,6 +226,8 @@ function get_cash_advances($con) {
         }
     }
 }
+
+
 
 
 function get_cash_advances_archive($con) {
@@ -259,10 +280,10 @@ function get_cash_advances_archive($con) {
 }
 
 
+//Manage Agents
 
-
-//add agent
 function get_cottage($con) {
+    // Select all relevant fields, including pumpboat_no
     $sql = "SELECT * FROM `cottage/hall`";
     $query = mysqli_query($con, $sql);
     $i = 1;
@@ -272,13 +293,8 @@ function get_cottage($con) {
             echo "
                 <tr>
                     <td>".$i."</td>
-                    <!-- <td><img src='function/".$fetch['img']."' alt='image' width='60px'></td> -->
-                    <!-- <td class='text-center'>".$fetch['actual_no']."</td> -->
                     <td>".$fetch['name']."</td>
-                    <!-- <td>".$fetch['category']."</td> -->
-                    <td>".$fetch['type']."</td>
-                  <!--  <td>".$fetch['max_person']."</td> !-->
-                 <!--   <td>".$fetch['category']."</td> !-->
+                    <td>".$fetch['pumpboat_no']."</td> <!-- Display pumpboat_no here -->
                     <td>".$fetch['team']."</td>
                     <td>
                         <a href='?cottage-edit=".$fetch['id']."' class='btn btn-warning btn-sm'><i class='fa fa-edit'></i></a>
@@ -1512,10 +1528,25 @@ function count_pumpboats($con) {
 function count_me2($con){
     $sql = "SELECT SUM(amount) AS total_sales FROM invoices";
     $query = mysqli_query($con, $sql);
-    $result = mysqli_fetch_assoc($query);
-    $total_sales = $result['total_sales'];
-    echo $total_sales;
+    
+    if ($query) {
+        $result = mysqli_fetch_assoc($query);
+        $total_sales = $result['total_sales'];
+
+        // Check if total_sales is not null
+        if ($total_sales !== null) {
+            // Format the total sales with commas and two decimal places
+            echo '₱' . number_format($total_sales, 2);
+        } else {
+            // If total_sales is null, display ₱0.00
+            echo '₱0.00';
+        }
+    } else {
+        // Output the error message if the query failed
+        echo "Error: " . mysqli_error($con);
+    }
 }
+
 
 
 function count_me0($con){
@@ -1540,7 +1571,7 @@ function total_teams($con) {
 }
 
 function unpaid_total($con) {
-    $sql = "SELECT SUM(amount) AS total FROM cash_advances WHERE amount IS NOT NULL";
+    $sql = "SELECT IFNULL(SUM(amount), 0) AS total FROM cash_advances WHERE amount IS NOT NULL AND status != 'pending'";
     $query = mysqli_query($con, $sql);
     if ($query) {
         $result = mysqli_fetch_assoc($query);
@@ -1551,31 +1582,30 @@ function unpaid_total($con) {
     }
 }
 
+
 function count_totalagents($con) {
-    // Prepare the SQL query
-    $sql = "SELECT COUNT(*) AS total FROM `cottage/hall`";
-    $stmt = $con->prepare($sql);
+    $sql = "SELECT SUM(total_amount) AS total_sales FROM receipt_records";
+    $query = mysqli_query($con, $sql);
     
-    if ($stmt === false) {
-        die("Prepare failed: " . $con->error);
+    if ($query) {
+        $result = mysqli_fetch_assoc($query);
+        $total_sales = $result['total_sales'];
+
+        // Check if total_sales is not null
+        if ($total_sales !== null) {
+            // Format the total sales with commas and two decimal places
+            echo '₱' . number_format($total_sales, 2);
+        } else {
+            // If total_sales is null, display ₱0.00
+            echo '₱0.00';
+        }
+    } else {
+        // Output the error message if the query failed
+        echo "Error: " . mysqli_error($con);
     }
-    
-    // Execute the statement
-    if (!$stmt->execute()) {
-        die("Execute failed: " . $stmt->error);
-    }
-    
-    // Bind the result
-    $stmt->bind_result($total);
-    
-    // Fetch the result
-    if (!$stmt->fetch()) {
-        die("Fetch failed: " . $stmt->error);
-    }
-    
-    // Close the statement
-    $stmt->close();
-    
-    // Output the total
-    echo $total;
 }
+
+
+
+
+

@@ -8,23 +8,19 @@ $to = $_POST["to"];
 $category = $_POST["category"]; // Correctly retrieve category
 
 $sumOfCottage = 0;
-$sumOfchild = 0;
-$sumOfadult = 0;
-
 $fill = true;
 
 $pdf = new FPDF('L', 'mm', 'LETTER');
 $pdf->SetTitle('Monthly Report', true);
 $pdf->AddPage();
 
-// Add background image
-//$background_image = 'uploads/danrose_house.jpg'; // Set the path to your background image
-//$pdf->Image($background_image, 0, 0, 279.4, 215.9); // Adjust the width and height according to your page size
+// Add Logo in the top-right corner
+$pdf->Image('uploads/icon.png', 240, 10, 30); // Adjust the path and position as needed
 
 // Title header
 $pdf->SetFont('Arial', 'B', 25);
 $pdf->SetX(90);
-$pdf->Cell(90, 10, 'DanRose Fishing', '', 0, 'C');
+$pdf->Cell(90, 10, 'DanRose Fishing Agency Management System', '', 0, 'C');
 $pdf->Ln();
 $pdf->SetX(90); 
 $pdf->SetFont('Arial', 'B', 16);
@@ -41,7 +37,7 @@ $pdf->SetLeftMargin(20);
 
 // Set colors for the table headers
 $pdf->SetFillColor(100, 100, 255); // Light blue
-$pdf->SetTextColor(0, 0, 0); // White text
+$pdf->SetTextColor(0, 0, 0); // Black text
 $pdf->SetDrawColor(0, 0, 0); // Black border
 $pdf->SetLineWidth(0.5); // Line width
 
@@ -80,8 +76,6 @@ if (isset($_POST["btnReport"])) {
 
         while ($row = $query->fetch_assoc()) {
             $sumOfCottage += $row["amount"];
-            $sumOfchild += $row["original_amount"];
-            $sumOfadult += $row["remaining_amount"];
 
             $pdf->SetFont('Arial', '', 10);
             $pdf->Cell(43, 5, ucfirst($row['fname']) . ' ' . ucfirst($row['lname']), 1, 0, 'L');
@@ -94,14 +88,13 @@ if (isset($_POST["btnReport"])) {
             $pdf->Ln();
         }
 
-        $pdf->SetFont('Arial', '', 10);
-     //   $pdf->Cell(43, 5, '', 1, 0, 'L');
-      //  $pdf->Cell(30, 5, '', 1, 0, 'L');
-   //     $pdf->Cell(40, 5, '', 1, 0, 'L');
-       // $pdf->Cell(33, 5, 'Total', 1, 0, 'R');
-      //  $pdf->Cell(33, 5, number_format($sumOfCottage, 2), 1, 0, 'R');
-       // $pdf->Cell(33, 5, number_format($sumOfchild, 2), 1, 0, 'R');
-    //    $pdf->Cell(25, 5, '', 1, 0, 'L');
+        // Add a row for the total, excluding the original amount and balance
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Cell(113, 5, 'Total: ', 1, 0, 'R', $fill);
+        $pdf->Cell(33, 5, number_format($sumOfCottage, 2), 1, 0, 'R');
+        $pdf->Cell(33, 5, '', 1, 0, 'R'); // Empty cell for the Original Amount
+        $pdf->Cell(33, 5, '', 1, 0, 'R'); // Empty cell for the Balance
+        $pdf->Cell(25, 5, '', 1, 0, 'L');
         $pdf->Ln();
     } else {
         $pdf->SetFont('Arial', '', 10);
@@ -116,4 +109,5 @@ if (isset($_POST["btnReport"])) {
 }
 
 $pdf->Output();
+
 ?>

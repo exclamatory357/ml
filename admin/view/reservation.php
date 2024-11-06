@@ -67,32 +67,32 @@ if (isset($_GET["manage_pumpboats"])) { ?>
 
     <!-- Main content -->
     <section class="content container-fluid">
-    <div class="box-body">
-                <div class="mb-3">
-                    <a href="?pumpboat-add" class="btn btn-success"><i class="fa fa-plus"></i> Add Pumpboat</a>
-                </div>
-                <br>
-        <div class="box box-default mt-4">
-            <div class="box-header with-border">
-                <h3 class="box-title">Pumpboat List</h3>
+        <div class="box-body">
+            <div class="mb-3">
+                <a href="?pumpboat-add" class="btn btn-success"><i class="fa fa-plus"></i> Add Pumpboat</a>
             </div>
-            
-            <div class="table-responsive">
-                <table id="users" class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>License No</th>
-                            <th>Pumpboat No</th>
-                            <th>Type</th>
-                            <th>Team</th>
-                            <th><i class="fa fa-cogs"></i> Options</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php get_pumpboats($con); ?>
-                    </tbody>
-                </table>
+            <br>
+            <div class="box box-default mt-4">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Pumpboat List</h3>
+                </div>
+                <div class="table-responsive">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>License No</th>
+                                <th>Pumpboat No</th>
+                                <th>Type</th>
+                                <th>Team</th>
+                                <th><i class="fa fa-cogs"></i> Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php get_pumpboats($con); ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </section>
@@ -127,17 +127,19 @@ if (isset($_GET["pumpboat-add"])) { ?>
             <form action="function/function_crud.php" method="post" enctype="multipart/form-data" class="form-horizontal">
                 <div class="card-body">
                     <div class="row">
-                       <div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">License No.</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="license_no" required pattern="[A-Za-z0-9]+">
+                                    <input type="text" class="form-control" name="license_no" required 
+                                           oninput="validateLicenseNo(this)" maxlength="20">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Pumpboat No.</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pumpboat_no" required pattern="[A-Za-z0-9]+">
+                                    <input type="text" class="form-control" name="pumpboat_no" required 
+                                           oninput="validateNumberOnly(this)" maxlength="20">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -153,7 +155,8 @@ if (isset($_GET["pumpboat-add"])) { ?>
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Team</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="team" required pattern="[A-Za-z0-9]+">
+                                    <input type="text" class="form-control" name="team" required 
+                                           oninput="validateLettersOnly(this)" maxlength="20">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -161,9 +164,6 @@ if (isset($_GET["pumpboat-add"])) { ?>
                                     <button type="submit" class="btn btn-primary" name="btn-pumpboat-add">Submit</button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <!-- Additional form fields can go here -->
                         </div>
                     </div>
                 </div>
@@ -213,14 +213,16 @@ if (isset($_GET["pumpboat-edit"])) {
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">License No.</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars($fetch["license_no"]) ?>" name="license_no" required pattern="[A-Za-z0-9]+">
+                                    <input type="text" class="form-control" value="<?= htmlspecialchars($fetch["license_no"]) ?>" name="license_no" required 
+                                           oninput="validateLicenseNo(this)" maxlength="20">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Pumpboat No.</label>
                                 <div class="col-sm-8">
                                     <input type="hidden" class="form-control" value="<?= htmlspecialchars($fetch["id"]) ?>" name="id" required>
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars($fetch["pumpboat_no"]) ?>" name="pumpboat_no" required pattern="[A-Za-z0-9]+">
+                                    <input type="text" class="form-control" value="<?= htmlspecialchars($fetch["pumpboat_no"]) ?>" name="pumpboat_no" required 
+                                           oninput="validateNumberOnly(this)" maxlength="20">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -236,7 +238,8 @@ if (isset($_GET["pumpboat-edit"])) {
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Team</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars($fetch["team"]) ?>" name="team" required pattern="[A-Za-z0-9]+">
+                                    <input type="text" class="form-control" value="<?= htmlspecialchars($fetch["team"]) ?>" name="team" required 
+                                           oninput="validateLettersOnly(this)" maxlength="20">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -245,17 +248,48 @@ if (isset($_GET["pumpboat-edit"])) {
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <!-- Additional form fields can go here -->
-                        </div>
                     </div>
                 </div>
             </form>
         </div>
     </section>
-    <?php
-}
-?>
+<?php } ?>
+
+<script>
+    function validateLicenseNo(input) {
+        const licensePattern = /^[A-Za-z0-9-]*$/;
+        if (licensePattern.test(input.value)) {
+            input.setCustomValidity("");
+            input.style.borderColor = "green";
+        } else {
+            input.setCustomValidity("License No. can only contain letters, numbers, and hyphens, with a maximum of 20 characters.");
+            input.style.borderColor = "red";
+        }
+    }
+
+    function validateNumberOnly(input) {
+        const numberPattern = /^[0-9]*$/;
+        if (numberPattern.test(input.value)) {
+            input.setCustomValidity("");
+            input.style.borderColor = "green";
+        } else {
+            input.setCustomValidity("This field can only contain numbers with a maximum of 20 characters.");
+            input.style.borderColor = "red";
+        }
+    }
+
+    function validateLettersOnly(input) {
+        const lettersPattern = /^[A-Za-z]*$/;
+        if (lettersPattern.test(input.value)) {
+            input.setCustomValidity("");
+            input.style.borderColor = "green";
+        } else {
+            input.setCustomValidity("Team can only contain letters with a maximum of 20 characters.");
+            input.style.borderColor = "red";
+        }
+    }
+</script>
+
 
 <!-- Bootstrap and other necessary scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -14,7 +14,7 @@
 
         <div class="pull-left image">
 
-          <img src="../dist/img/ohaha.jpg" class="img-circle" alt="User Image">
+          <img src="../dist/img/icon.png" class="img-circle" alt="User Image">
 
         </div>
 
@@ -71,7 +71,9 @@
           <ul class="treeview-menu">
 
             <li><a href="?manage_pumpboats"><i class="fa fa-tasks"></i>Manage Pumpboats</a></li>
- 
+            <li><a href="?manage_catch_by_team"><i class="fa fa-tasks"></i>Catch By Team</a></li>
+            <li><a href="?page=manage_sell_product"><i class="fa fa-tasks"></i>Sell Products</a></li>
+            
             <li><a href="?reserved2"><i class="fa fa-tasks"></i> Manage Mainitenance & C/A</a></li>
 
             <li><a href="?manage_payment"><i class="fa fa-tasks"></i>Manage Payment</a></li>

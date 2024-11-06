@@ -55,7 +55,7 @@ try {
     <nav class="navbar navbar-static-top">
       <div class="container">
         <div class="navbar-header">
-          <a href="#" class="navbar-brand"><b>DRMS</b></a>
+          <a href="#" class="navbar-brand"><b>DRFAMS</b></a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
           </button>
@@ -63,18 +63,17 @@ try {
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li id="home"><a href="?home">Home</a></li>
-            <li id="home"><a href="?gallery">Gallery</a></li>
-            <?php
-             if (!isset($_SESSION["username"])) {?>
-               <!--# code...-->
-            <?php } else {?>
-              <li id="reserve"><a href="?request">Request</a></li>
-            <?php }
-             
-            ?>
-          </ul>
+        <ul class="nav navbar-nav">
+  <li id="home"><a href="?home">Home</a></li>
+  <li id="home"><a href="?gallery">Gallery</a></li>
+  <?php if (!isset($_SESSION["username"])) { ?>
+    <li id="home"><a href="?weather">Weather</a></li>
+  <?php } ?>
+  <?php if (isset($_SESSION["username"])) { ?>
+    <li id="reserve"><a href="?request">Request</a></li>
+  <?php } ?>
+</ul>
+
         </div>
         <!-- /.navbar-collapse -->
         <!-- Navbar Right Menu -->
@@ -96,7 +95,7 @@ try {
               <!-- Menu Toggle Button -->
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <!-- The user image in the navbar-->
-                <img src="../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                <img src="../dist/img/icon.png" class="user-image" alt="User Image">
                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
                 <span class="hidden-xs">Welcome, <?php echo $_SESSION["username"]?></span>
               </a>

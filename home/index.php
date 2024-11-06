@@ -8,7 +8,7 @@ include "function/function_get.php";
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>DRMS</title>
+  <title>DRFAMS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <?php include "shared/link.php" ?>
   <!-- Demo styles -->
@@ -70,6 +70,8 @@ include "function/function_get.php";
       <?php include "view/home.php" ?>
       <!-- GALLERY PAGE -->
       <?php include "view/gallery.php" ?>
+      <!-- WEATHER PAGE -->
+      <?php include "view/weather.php" ?>
       <!-- RESERVATION PAGE -->
       <?php include "view/reservation.php" ?>
       <!-- MY-RESERVE PAGE -->
@@ -114,6 +116,42 @@ include "function/function_get.php";
 <?php include "shared/script.php" ?>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+
+
+$(function () {
+    $('#cash').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,  // Ensure the table adapts its width
+        "responsive": true,  // Make the table responsive
+        "columnDefs": [
+            { "width": "10%", "targets": 0 },  // Adjust width as necessary for specific columns
+            { "width": "20%", "targets": 9 },  // Password and Username might need specific widths
+            { "orderable": false, "targets": 10 }  // Disable ordering on action column (edit/delete)
+        ]
+    });
+});
+
+$(function () {
+    $('#maintinance').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,  // Ensure the table adapts its width
+        "responsive": true,  // Make the table responsive
+        "columnDefs": [
+            { "width": "10%", "targets": 0 },  // Adjust width as necessary for specific columns
+            { "width": "20%", "targets": 9 },  // Password and Username might need specific widths
+            { "orderable": false, "targets": 10 }  // Disable ordering on action column (edit/delete)
+        ]
+    });
+});
+
   var swiper = new Swiper(".mySwiper", {
     slidesPerView: 3,
     spaceBetween: 30,

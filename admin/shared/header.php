@@ -27,9 +27,9 @@ header("X-XSS-Protection: 1; mode=block");
     <!-- Logo -->
     <a href="#" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>DRMS</b></span>
+        <span class="logo-mini"><b>DRFAMS</b></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>DRMS</b></span>
+        <span class="logo-lg"><b>DRFAMS</b></span>
     </a>
 
     <!-- Header Navbar -->

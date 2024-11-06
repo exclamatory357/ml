@@ -9,7 +9,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>DRMS</title>
+  <title>DRFAMS</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <?php include "shared/link.php"?>
 
@@ -35,6 +35,10 @@
   <?php include "view/cottage.php"?>
   <!-- RESERVATION PAGE -->
   <?php include "view/reservation.php"?>
+  <!-- SELL PRODUCT -->
+  <?php include "view/sell_product.php"?>
+  <!-- MANAGE CATCH BY TEAM -->
+  <?php include "view/manage_catch_by_team.php"?>
   <!-- FEATURES PAGE -->
   <?php include "view/features.php"?>
   <!-- PICTURES PAGE -->
@@ -139,6 +143,23 @@ $(function () {
     });
 });
 
+
+$(function () {
+    $('#pumpboat').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,  // Ensure the table adapts its width
+        "responsive": true,  // Make the table responsive
+        "columnDefs": [
+            { "width": "10%", "targets": 0 },  // Adjust width as necessary for specific columns
+            { "width": "20%", "targets": 9 },  // Password and Username might need specific widths
+            { "orderable": false, "targets": 10 }  // Disable ordering on action column (edit/delete)
+        ]
+    });
+});
 
   // SWEETALERT NOTIFICATION
   document.addEventListener('DOMContentLoaded', (event) => {

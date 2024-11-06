@@ -4,11 +4,9 @@
 <!-- FontAwesome CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-
-
 <?php if (isset($_GET["cottage"])) { ?>
 
-    <section class="content-header">
+<section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2 align-items-center">
             <div class="col-6">
@@ -24,7 +22,6 @@
     </div>
 </section>
 
-
 <!-- Main content -->
 <section class="content container-fluid">
     <div class="card">
@@ -34,17 +31,11 @@
         <div class="card-body">
             <table id="example2" class="table table-bordered">
                 <thead>
-                <th>#</th>
-                <!-- <th>Image</th> Uncomment if needed -->
-                <!-- <th>Cottage No.</th> Uncomment if needed -->
-                <th>Name</th>
-                <th>Pumpboat No.</th>
-             <!--   <th>Max Person</th> !-->
-           <!--     <th>Category</th> !-->
-                <th>Team</th>
-                <th><i class="fa fa-cogs"></i></th>
-                      
-                    </tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Pumpboat No.</th>
+                    <th>Team</th>
+                    <th><i class="fa fa-cogs"></i></th>
                 </thead>
                 <?php get_cottage($con); ?>
             </table>
@@ -73,15 +64,10 @@
     </div>
 </section>
 
-
-
-<!-- Main content -->
-<!-- Main content -->
 <?php
-
 include "../../config/db.php";
 
-// Fetch agent names from the database including middle name
+// Fetch agent names from the database
 function fetch_agents($con) {
     $sql = "SELECT CONCAT(fname, ' ', IFNULL(CONCAT(mname, ' '), ''), lname) AS full_name 
             FROM user 
@@ -96,10 +82,9 @@ function fetch_agents($con) {
     return $agents;
 }
 
-
-// Fetch pumpboat numbers from the database without status
+// Fetch pumpboat numbers and team from the database
 function fetch_pumpboats($con) {
-    $sql = "SELECT pumpboat_no FROM pumpboats"; // Removed 'status' from the query
+    $sql = "SELECT pumpboat_no, team FROM pumpboats";
     $query = mysqli_query($con, $sql);
     $pumpboats = [];
     if (mysqli_num_rows($query) > 0) {
@@ -114,8 +99,6 @@ $agents = fetch_agents($con);
 $pumpboats = fetch_pumpboats($con);
 ?>
 
-
-<!-- Main content -->
 <section class="content container-fluid">
     <div class="card">
         <div class="card-header">
@@ -125,12 +108,22 @@ $pumpboats = fetch_pumpboats($con);
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
+                        <!-- Team Dropdown -->
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Team</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="team" required>
+                                <select class="form-control" name="team" id="team-select" required>
+                                    <option value="">Select Team</option>
+                                    <?php foreach ($pumpboats as $pumpboat): ?>
+                                        <option value="<?php echo $pumpboat['team']; ?>" data-pumpboat="<?php echo $pumpboat['pumpboat_no']; ?>">
+                                            <?php echo $pumpboat['team']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                         </div>
+
+                        <!-- Agent Name Dropdown -->
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Agent Name</label>
                             <div class="col-sm-8">
@@ -144,55 +137,81 @@ $pumpboats = fetch_pumpboats($con);
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Pumpboat No.</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" name="type" id="pumpboat-select">
-                                <option value="">Select Pumpboats</option>
-                                <?php foreach ($pumpboats as $pumpboat): ?>
-                                    <option value="<?php echo $pumpboat['pumpboat_no']; ?>">
-                                        Pumpboat <?php echo $pumpboat['pumpboat_no']; ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
 
-                      <!--  <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Type</label>
-                            <div class="col-sm-8">
-                                <select class="form-control" name="category" required>
-                                    <option value="Pamo">Pamo</option>
-                                    <option value="Panambahan">Panambahan</option>
-                                    <option value="Island hopping">Island hopping</option>
-                                </select>
-                            </div> !-->
-                        </div>
+                        <!-- Pumpboat Dropdown -->
                         <div class="form-group row">
-                            <div class="col-sm-8 offset-sm-4">
-                                <button type="submit" class="btn btn-primary" name="btn-cottage-add">Submit</button>
+                            <label class="col-sm-4 col-form-label">Pumpboat No.</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="pumpboat_no" id="pumpboat-select" required>
+                                    <option value="">Select Pumpboat No.</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <!-- Additional form fields can go here -->
+
+                    <div class="form-group row">
+                        <div class="col-sm-8 offset-sm-4">
+                            <button type="submit" class="btn btn-primary" name="btn-cottage-add">Submit</button>
+                        </div>
                     </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Additional form fields can go here -->
                 </div>
             </div>
         </form>
     </div>
 </section>
 
-
 <!-- Bootstrap and other necessary scripts -->
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
+<script>
+// JavaScript to link the Team and Pumpboat dropdowns
+document.getElementById('team-select').addEventListener('change', function() {
+    var pumpboatNo = this.options[this.selectedIndex].getAttribute('data-pumpboat');
+    var pumpboatSelect = document.getElementById('pumpboat-select');
+    
+    pumpboatSelect.innerHTML = ''; // Clear current options
+    if (pumpboatNo) {
+        var option = document.createElement('option');
+        option.value = pumpboatNo;
+        option.text = 'Pumpboat ' + pumpboatNo;
+        pumpboatSelect.appendChild(option);
+    }
+});
+</script>
 
 <?php } ?>
 
 <!-- AGENT EDIT FORM -->
-<?php if (isset($_GET["cottage-edit"])) { ?>
+<?php 
+if (isset($_GET["cottage-edit"])) { 
+
+    // Fetch the agent details to be edited
+    $id = intval($_GET["cottage-edit"]);
+    $sql = "SELECT * FROM `cottage/hall` WHERE id = $id";
+    $query = mysqli_query($con, $sql);
+    $fetch = mysqli_fetch_assoc($query);
+
+    if (!$fetch) {
+        echo "<p>Agent not found.</p>";
+        exit;
+    }
+
+    // Fetch the pumpboat data from the `pumpboats` table
+    $sql_pumpboats = "SELECT DISTINCT team, pumpboat_no FROM pumpboats";
+    $query_pumpboats = mysqli_query($con, $sql_pumpboats);
+    $pumpboats = [];
+
+    if (mysqli_num_rows($query_pumpboats) > 0) {
+        while ($row = mysqli_fetch_assoc($query_pumpboats)) {
+            $pumpboats[] = $row;
+        }
+    }
+
+?>
 
 <section class="content-header">
     <div class="container-fluid">
@@ -210,9 +229,6 @@ $pumpboats = fetch_pumpboats($con);
     </div>
 </section>
 
-
-
-
 <section class="content container-fluid">
     <div class="card">
         <div class="card-header">
@@ -222,75 +238,103 @@ $pumpboats = fetch_pumpboats($con);
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
+                        <!-- Team Dropdown -->
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Team</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" value="<?php echo $fetch["team"] ?>" name="team" required>
+                                <select class="form-control" name="team" id="team-select" required>
+                                    <option value="">Select Team</option>
+                                    <?php 
+                                    // Fetch unique teams from the pumpboats data
+                                    $unique_teams = array_unique(array_column($pumpboats, 'team'));
+                                    foreach ($unique_teams as $team): ?>
+                                        <option value="<?php echo $team; ?>" <?php echo ($fetch['team'] == $team) ? "selected" : ""; ?>>
+                                            <?php echo $team; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Agent Name</label>
-                            <div class="col-sm-8">
-                                <input type="hidden" class="form-control" value="<?php echo $fetch["id"] ?>" name="id" required>
-                                <input type="text" class="form-control" value="<?php echo $fetch["name"] ?>" name="name" required>
-                            </div>
-                        </div>
+
+                        <!-- Pumpboat Dropdown -->
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Pumpboat No.</label>
                             <div class="col-sm-8">
-                                <select class="form-control" name="type" id="pumpboat-select" required>
-                                    <option value="">Select Pumpboats</option> 
+                                <select class="form-control" name="pumpboat_no" id="pumpboat-select" required>
+                                    <option value="">Select Pumpboat No.</option>
+                                    <!-- Options will be populated by JavaScript -->
                                 </select>
                             </div>
                         </div>
-                  <!--      <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Type</label>
-                            <div class="col-sm-8">
-                                <select class="form-control" name="type" required>
-                                    <option value="Pamo" <?php if($fetch["type"] == "Pamo") echo "selected"; ?>>Pamo</option>
-                                    
-                                </select>
-                            </div>
-                        </div> !-->
-                        <div class="form-group row">
-                            <div class="col-sm-8 offset-sm-4">
-                                <button type="submit" class="btn btn-primary" name="btn-cottage-edit">Update</button>
-                            </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-8 offset-sm-4">
+                            <input type="hidden" name="id" value="<?php echo $fetch['id']; ?>">
+                            <button type="submit" class="btn btn-primary" name="btn-cottage-edit">Update</button>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <!-- Additional form fields can go here -->
-                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Additional form fields can go here -->
                 </div>
             </div>
         </form>
     </div>
 </section>
 
+<!-- Include jQuery and Bootstrap Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
 <script>
-    const pumpboats = <?php echo json_encode($pumpboats); ?>;
-    
-    const pumpboatSelect = document.getElementById('pumpboat-select');
-    
-    pumpboats.forEach(pumpboat => {
-        const option = document.createElement('option');
-        option.value = pumpboat.pumpboat_no;
-        option.text = 'Pumpboat ' + pumpboat.pumpboat_no;
-        if (pumpboat.status == 1) {
-            option.disabled = true;
+$(document).ready(function() {
+    var pumpboats = <?php echo json_encode($pumpboats); ?>;
+    var preselectedPumpboatNo = '<?php echo $fetch['pumpboat_no']; ?>';
+
+    // Function to populate pumpboat dropdown based on selected team
+    function populatePumpboats(selectedTeam) {
+        var pumpboatSelect = $('#pumpboat-select');
+        pumpboatSelect.html('<option value="">Select Pumpboat No.</option>'); // Clear current options
+
+        if (selectedTeam) {
+            var teamPumpboats = pumpboats.filter(function(pumpboat) {
+                return pumpboat.team === selectedTeam;
+            });
+            teamPumpboats.forEach(function(pumpboat) {
+                var selected = '';
+                if (pumpboat.pumpboat_no === preselectedPumpboatNo) {
+                    selected = ' selected';
+                }
+                pumpboatSelect.append('<option value="' + pumpboat.pumpboat_no + '"' + selected + '>Pumpboat ' + pumpboat.pumpboat_no + '</option>');
+            });
+            // If only one pumpboat, auto-select it
+            if (teamPumpboats.length === 1) {
+                pumpboatSelect.val(teamPumpboats[0].pumpboat_no);
+            }
         }
-        pumpboatSelect.appendChild(option);
+    }
+
+    // When the team dropdown changes, update the pumpboat dropdown
+    $('#team-select').on('change', function() {
+        var selectedTeam = $(this).val();
+        preselectedPumpboatNo = ''; // Clear the preselected pumpboat when team changes
+        populatePumpboats(selectedTeam);
     });
 
-    // Set the selected value
-    const selectedCategory = "<?php echo $fetch['category']; ?>";
-    if (selectedCategory) {
-        pumpboatSelect.value = selectedCategory;
+    // On page load, populate the pumpboat dropdown
+    var preselectedTeam = $('#team-select').val();
+    if (preselectedTeam) {
+        populatePumpboats(preselectedTeam);
     }
+});
 </script>
 
 <?php } ?>
 
+
 <!-- Bootstrap and other necessary scripts -->
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+
