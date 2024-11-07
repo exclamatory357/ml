@@ -111,12 +111,12 @@ if (isset($_GET['page']) && $_GET['page'] === 'manage_sell_product') {
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2 align-items-center">
-            <div class="col-6"><h1>Sell Product</h1></div>
+            <div class="col-6"><h1>Sold Products</h1></div>
             <div class="col-6">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Sell Product</li>
+                        <li class="breadcrumb-item active" aria-current="page">Sold Products</li>
                     </ol>
                 </nav>
             </div>
