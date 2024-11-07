@@ -107,7 +107,7 @@ $mail->Body = "
             color: #ffffff;
             background-color: #007bff;
             border-radius: 5px;
-            text-decoration: none;
+            
             margin: 20px 0;
         }
         .footer {
