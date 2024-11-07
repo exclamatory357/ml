@@ -143,7 +143,7 @@ $mail->Body = "
             <p>Hello,</p>
             <p>Please use the following One-Time Password (OTP) to complete your login:</p>
             <div class='otp-code'>$otp</div>
-            <p>This OTP is valid for a limited time only. If you did not request this, please ignore this email.</p>
+            <p>This OTP is valid for a limited time only (5 minutes). If you did not request this, please ignore this email.</p>
         </div>
         <div class='footer'>
             © 2024 Your Company. All rights reserved.
