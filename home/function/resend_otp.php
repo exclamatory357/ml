@@ -71,7 +71,7 @@ if ($result->num_rows > 0) {
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
             .header {
-                background-color: #007bff;
+                background-color: #AF0401;
                 color: #ffffff;
                 text-align: center;
                 padding: 20px;
@@ -85,7 +85,7 @@ if ($result->num_rows > 0) {
             .otp-code {
                 font-size: 32px;
                 font-weight: bold;
-                color: #007bff;
+                color: #AF0401;
                 margin: 20px 0;
             }
             .footer {
@@ -109,7 +109,7 @@ if ($result->num_rows > 0) {
                 <p>This code is valid for a limited time only (5 minutes). If you did not request this OTP, please ignore this email.</p>
             </div>
             <div class='footer'>
-                © 2024 Your Company. All rights reserved.
+                © 2024 Danrose Fishing Agency Management System. All rights reserved.
             </div>
         </div>
     </body>
