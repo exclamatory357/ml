@@ -72,7 +72,7 @@
 
             <li><a href="?manage_pumpboats"><i class="fa fa-tasks"></i>Manage Pumpboats</a></li>
             <li><a href="?manage_catch_by_team"><i class="fa fa-tasks"></i>Catch By Team</a></li>
-            <li><a href="?page=manage_sell_product"><i class="fa fa-tasks"></i>Sell Products</a></li>
+            <li><a href="?page=manage_sell_product"><i class="fa fa-tasks"></i>Sold Products</a></li>
             
             <li><a href="?reserved2"><i class="fa fa-tasks"></i> Manage Mainitenance & C/A</a></li>
 
