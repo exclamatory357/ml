@@ -133,7 +133,7 @@ $mail->Body = "
             <p>If you did not request a password reset, please ignore this email or contact support if you have questions.</p>
         </div>
         <div class='footer'>
-            © 2024 Your Company. All rights reserved.
+            © 2024 Danrose Fishing Management System. All rights reserved.
         </div>
     </div>
 </body>
