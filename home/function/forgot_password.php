@@ -130,7 +130,7 @@ $mail->Body = "
             <p>Hello,</p>
             <p>You requested to reset your password. Click the button below to proceed:</p>
             <a href='https://danrosefishing.com/home/function/reset_password.php?email=" . urlencode($email) . "' class='button'>Reset Password</a>
-            <p>If you did not request a password reset, please ignore this email or contact support if you have questions.</p>
+            <p>If you did not request a password reset, please ignore this email.</p>
         </div>
         <div class='footer'>
             © 2024 Danrose Fishing Management System. All rights reserved.
