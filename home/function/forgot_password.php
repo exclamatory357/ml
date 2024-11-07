@@ -101,15 +101,17 @@ $mail->Body = "
             text-align: center;
         }
         .button {
-            display: inline-block;
-            padding: 12px 24px;
-            font-size: 16px;
-            color: #ffffff;
-            background-color: #007bff;
-            border-radius: 5px;
-            
-            margin: 20px 0;
+        display: inline-block;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: bold; /* Makes the text bolder */
+        color: #ffffff; /* Ensures the text color is white */
+        background-color: #007bff;
+        border-radius: 5px;
+        text-decoration: none;
+        margin: 20px 0;
         }
+
         .footer {
             background-color: #f4f4f4;
             padding: 10px;
