@@ -89,7 +89,7 @@ $mail->Body = "
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .header {
-            background-color: #007bff;
+            background-color: #AF0401;
             color: #ffffff;
             text-align: center;
             padding: 20px;
@@ -106,7 +106,7 @@ $mail->Body = "
         font-size: 16px;
         font-weight: bold; /* Makes the text bolder */
         color: #ffffff; /* Ensures the text color is white */
-        background-color: #007bff;
+        background-color: #AF0401;
         border-radius: 5px;
         text-decoration: none;
         margin: 20px 0;
