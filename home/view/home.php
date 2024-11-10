@@ -172,54 +172,26 @@ if (isset($_GET["home"])) { ?>
                 <span class="sr-only">Next</span>
             </a> -->
         </div>
-        <?php 
-session_start(); // Ensure session is started
-$login_disabled = false;
-$remaining_time = 0;
 
-// Check if login button should be disabled
-if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
-    $remaining_time = ($_SESSION['timeout'] + 300) - time(); // Set timeout for 5 minutes (300 seconds)
-    if ($remaining_time > 0) {
-        $login_disabled = true;
-    } else {
-        // Reset after timeout expires
-        $_SESSION['login_attempts'] = 0;
-        unset($_SESSION['timeout']);
-    }
-}
-?>
+        <?php if ($login_disabled && $remaining_time > 0) { ?>
+    <script>
+        let remainingTime = <?php echo $remaining_time; ?>;
+        const button = document.querySelector('button[name="btnlogin"]');
 
-<!-- LOGIN PAGE -->
-<?php if (!isset($_SESSION["username"])) { ?>
-    <!-- LOGIN FORM, show if session is not set -->
-    <div class="login-box-body p-absolute-login container mt-5">
-        <p class="login-box-msg text-center">Welcome back!</p>
-        <form action="function/login.php" method="post">
-            <div class="form-group has-feedback">
-                <input type="text" class="form-control form-control-lg" placeholder="Enter Username" name="username" required autofocus>
-                <span class="glyphicon glyphicon-user form-control-feedback"></span>
-            </div>
-            <div class="form-group has-feedback">
-               <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required> 
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            </div>
-            
-            <!-- Disable the button if login is disabled due to failed attempts -->
-            <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin" 
-                <?php if ($login_disabled) echo 'disabled'; ?>>
-                <?php if ($login_disabled) {
-                    echo "Login disabled. Try again in " . max(1, ceil($remaining_time / 60)) . " minute(s)";
-                } else {
-                    echo "Sign In";
-                } ?>
-            </button>
-
-            <button type="button" data-toggle="modal" data-target="#modal-forgot-password" class="btn btn-success btn-block btn-lg">Forgot password</button>
-        </form>
-    </div>
+        const timer = setInterval(() => {
+            if (remainingTime <= 0) {
+                clearInterval(timer);
+                button.disabled = false;
+                button.innerText = "Sign In";
+            } else {
+                let minutes = Math.floor(remainingTime / 60);
+                let seconds = remainingTime % 60;
+                button.innerText = `Login disabled. Try again in ${minutes}m ${seconds}s`;
+                remainingTime--;
+            }
+        }, 1000);
+    </script>
 <?php } ?>
-
 
         
         
