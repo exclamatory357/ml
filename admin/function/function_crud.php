@@ -919,12 +919,23 @@ if (isset($_POST["btn-picture-edit"])) {
 
 
 
-       // Insert Operation PUMPBOATS
+      // Insert Operation for PUMPBOATS
 if (isset($_POST["btn-pumpboat-add"])) {
     $license_no = htmlspecialchars($_POST["license_no"], ENT_QUOTES, 'UTF-8');
     $pumpboat_no = htmlspecialchars($_POST["pumpboat_no"], ENT_QUOTES, 'UTF-8');
     $type = htmlspecialchars($_POST["type"], ENT_QUOTES, 'UTF-8');
     $team = htmlspecialchars($_POST["team"], ENT_QUOTES, 'UTF-8');
+
+    // Check if the specified team exists in the database
+    $team_check_sql = "SELECT * FROM `teams` WHERE `team_name` = '$team'"; // Adjust `team_name` and `teams` table name based on your actual structure
+    $team_check_query = mysqli_query($con, $team_check_sql);
+
+    if (mysqli_num_rows($team_check_query) == 0) {
+        // Team does not exist
+        $_SESSION["notify"] = "team-not-found";
+        header("location: ../?manage_pumpboats");
+        return;
+    }
 
     // Check for duplicate license_no or pumpboat_no
     $check_sql = "SELECT * FROM `pumpboats` WHERE `license_no` = '$license_no' OR `pumpboat_no` = '$pumpboat_no'";
@@ -950,6 +961,7 @@ if (isset($_POST["btn-pumpboat-add"])) {
         header("location: ../?manage_pumpboats");
     }
 }
+
 
 
 
