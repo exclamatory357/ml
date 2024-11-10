@@ -969,31 +969,42 @@ if (isset($_POST["btn-pumpboat-add"])) {
         }
         // /Delete Operation PUMPBOATS
         
-       // File Upload for Edit PUMPBOAT
+       // Update Operation for PUMPBOATS
 if (isset($_POST["btn-pumpboat-edit"])) {
-    $id = $_POST["id"];
-    $license_no = $_POST["license_no"];
-    $pumpboat_no = $_POST["pumpboat_no"];
-    $type = $_POST["type"];
-    $team = $_POST["team"];
-    // $status = $_POST["status"];
+    $id = htmlspecialchars($_POST["id"], ENT_QUOTES, 'UTF-8');
+    $license_no = htmlspecialchars($_POST["license_no"], ENT_QUOTES, 'UTF-8');
+    $pumpboat_no = htmlspecialchars($_POST["pumpboat_no"], ENT_QUOTES, 'UTF-8');
+    $type = htmlspecialchars($_POST["type"], ENT_QUOTES, 'UTF-8');
+    $team = htmlspecialchars($_POST["team"], ENT_QUOTES, 'UTF-8');
 
-    $sql = "UPDATE `pumpboats` SET `license_no`='$license_no', `pumpboat_no`='$pumpboat_no', `type`='$type', `team`='$team' WHERE id = '$id'";
+    // Check for duplicate license_no or pumpboat_no in other records
+    $check_sql = "SELECT * FROM `pumpboats` WHERE (`license_no` = '$license_no' OR `pumpboat_no` = '$pumpboat_no') AND `id` != '$id'";
+    $check_query = mysqli_query($con, $check_sql);
 
+    if (mysqli_num_rows($check_query) > 0) {
+        // Duplicate entry found
+        $_SESSION["notify"] = "duplicate-edit";
+        header("location: ../?manage_pumpboats");
+        return;
+    }
+
+    // Update the pumpboat information
+    $sql = "UPDATE `pumpboats` SET 
+            `license_no`='$license_no', 
+            `pumpboat_no`='$pumpboat_no', 
+            `type`='$type', 
+            `team`='$team' 
+            WHERE `id` = '$id'";
     $query = mysqli_query($con, $sql);
 
-    if (!$query) {
-        $_SESSION["notify"] = "failed";
-        header("location: ../?manage_pumpboats");
-        return;
-    }
     if ($query) {
-        $_SESSION["notify"] = "success";
+        $_SESSION["notify"] = "success-edit";
         header("location: ../?manage_pumpboats");
-        return;
+    } else {
+        $_SESSION["notify"] = "failed-edit";
+        header("location: ../?manage_pumpboats");
     }
 }
-// /File Upload for Edit PUMPBOAT
 
         
 
