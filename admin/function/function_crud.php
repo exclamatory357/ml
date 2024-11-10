@@ -927,7 +927,7 @@ if (isset($_POST["btn-pumpboat-add"])) {
     $team = htmlspecialchars($_POST["team"], ENT_QUOTES, 'UTF-8');
 
     // Check if the specified team exists in the database
-    $team_check_sql = "SELECT * FROM `teams` WHERE `team_name` = '$team'"; // Adjust `team_name` and `teams` table name based on your actual structure
+    $team_check_sql = "SELECT * FROM `pumpboat` WHERE `team` = '$team'"; // Adjust `team_name` and `teams` table name based on your actual structure
     $team_check_query = mysqli_query($con, $team_check_sql);
 
     if (mysqli_num_rows($team_check_query) == 0) {
