@@ -919,15 +919,15 @@ if (isset($_POST["btn-picture-edit"])) {
 
 
 
-       // Insert Operation PUMPBOATS
+      // Insert Operation PUMPBOATS
 if (isset($_POST["btn-pumpboat-add"])) {
     $license_no = htmlspecialchars($_POST["license_no"], ENT_QUOTES, 'UTF-8');
     $pumpboat_no = htmlspecialchars($_POST["pumpboat_no"], ENT_QUOTES, 'UTF-8');
     $type = htmlspecialchars($_POST["type"], ENT_QUOTES, 'UTF-8');
     $team = htmlspecialchars($_POST["team"], ENT_QUOTES, 'UTF-8');
 
-    // Check for duplicate license_no or pumpboat_no
-    $check_sql = "SELECT * FROM `pumpboats` WHERE `license_no` = '$license_no' OR `pumpboat_no` = '$pumpboat_no'";
+    // Check for duplicate license_no, pumpboat_no, and team
+    $check_sql = "SELECT * FROM `pumpboats` WHERE (`license_no` = '$license_no' OR `pumpboat_no` = '$pumpboat_no') AND `team` = '$team'";
     $check_query = mysqli_query($con, $check_sql);
 
     if (mysqli_num_rows($check_query) > 0) {
@@ -953,6 +953,7 @@ if (isset($_POST["btn-pumpboat-add"])) {
 
 
 
+
         //  Delete Operation PUMPBOATS
         if (isset($_GET["pumpboat-del"])) {
             $id = $_GET["pumpboat-del"];
@@ -969,7 +970,7 @@ if (isset($_POST["btn-pumpboat-add"])) {
         }
         // /Delete Operation PUMPBOATS
         
-       // Update Operation for PUMPBOATS
+   // Update Operation for PUMPBOATS
 if (isset($_POST["btn-pumpboat-edit"])) {
     $id = htmlspecialchars($_POST["id"], ENT_QUOTES, 'UTF-8');
     $license_no = htmlspecialchars($_POST["license_no"], ENT_QUOTES, 'UTF-8');
@@ -977,8 +978,22 @@ if (isset($_POST["btn-pumpboat-edit"])) {
     $type = htmlspecialchars($_POST["type"], ENT_QUOTES, 'UTF-8');
     $team = htmlspecialchars($_POST["team"], ENT_QUOTES, 'UTF-8');
 
-    // Check for duplicate license_no or pumpboat_no in other records
-    $check_sql = "SELECT * FROM `pumpboats` WHERE (`license_no` = '$license_no' OR `pumpboat_no` = '$pumpboat_no') AND `id` != '$id'";
+    // Check if the specified team exists
+    $team_check_sql = "SELECT * FROM `teams` WHERE `team_id` = '$team'"; // Adjust `team_id` and table name to match your database structure
+    $team_check_query = mysqli_query($con, $team_check_sql);
+
+    if (mysqli_num_rows($team_check_query) == 0) {
+        // Team does not exist
+        $_SESSION["notify"] = "team-not-found";
+        header("location: ../?manage_pumpboats");
+        return;
+    }
+
+    // Check for duplicate license_no or pumpboat_no in other records within the same team
+    $check_sql = "SELECT * FROM `pumpboats` 
+                  WHERE (`license_no` = '$license_no' OR `pumpboat_no` = '$pumpboat_no') 
+                  AND `team` = '$team' 
+                  AND `id` != '$id'";
     $check_query = mysqli_query($con, $check_sql);
 
     if (mysqli_num_rows($check_query) > 0) {
