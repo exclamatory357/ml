@@ -926,9 +926,10 @@ if (isset($_POST["btn-pumpboat-add"])) {
     $type = htmlspecialchars($_POST["type"], ENT_QUOTES, 'UTF-8');
     $team = htmlspecialchars($_POST["team"], ENT_QUOTES, 'UTF-8');
 
-    // Check for duplicate license_no, pumpboat_no, or team combination
+    // Check for duplicate combination of license_no, pumpboat_no, and team
     $check_sql = "SELECT * FROM `pumpboats` 
-                  WHERE (`license_no` = '$license_no' OR `pumpboat_no` = '$pumpboat_no') 
+                  WHERE `license_no` = '$license_no' 
+                  AND `pumpboat_no` = '$pumpboat_no' 
                   AND `team` = '$team'";
     $check_query = mysqli_query($con, $check_sql);
 
