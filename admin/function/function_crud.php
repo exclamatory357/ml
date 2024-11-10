@@ -409,9 +409,20 @@ if (isset($_POST["btn-cottage-add"])) {
     $team = $_POST["team"];
     $pumpboat_no = $_POST["pumpboat_no"];  // Make sure this is collected
 
+    // Check for duplicate name
+    $check_sql = "SELECT * FROM `cottage/hall` WHERE `name` = '$name'";
+    $check_query = mysqli_query($con, $check_sql);
+
+    if (mysqli_num_rows($check_query) > 0) {
+        // Duplicate entry found
+        $_SESSION["notify"] = "duplicate-name";
+        header("location: ../?cottage");
+        return;
+    }
+
+    // Insert into the cottage/hall table
     $sqlcott = "INSERT INTO `cottage/hall` (`name`, `type`, `category`, `team`, `pumpboat_no`) 
                 VALUES ('$name', '$type', '$cat', '$team', '$pumpboat_no')";  // Include pumpboat_no in the query
-
     $query = mysqli_query($con, $sqlcott);
 
     if ($query) {
@@ -423,6 +434,7 @@ if (isset($_POST["btn-cottage-add"])) {
         header("location: ../?cottage");
     }
 }
+
 
 
 //delte cottage
