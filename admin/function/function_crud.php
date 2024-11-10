@@ -944,7 +944,7 @@ if (isset($_POST["btn-pumpboat-add"])) {
 
     if (mysqli_num_rows($check_query) > 0) {
         // Duplicate entry found
-        $_SESSION["notify"] = "duplicate-add";
+        $_SESSION["notify"] = "duplicate-add-pumpboat";
         header("location: ../?manage_pumpboats");
         return;
     }
@@ -955,10 +955,10 @@ if (isset($_POST["btn-pumpboat-add"])) {
     $query = mysqli_query($con, $sqlPumpboat);
 
     if ($query) {
-        $_SESSION["notify"] = "success-add";
+        $_SESSION["notify"] = "success-add-pumpboat";
         header("location: ../?manage_pumpboats");
     } else {
-        $_SESSION["notify"] = "failed-add";
+        $_SESSION["notify"] = "failed-add-pumpboat";
         header("location: ../?manage_pumpboats");
     }
 }
@@ -995,7 +995,7 @@ if (isset($_POST["btn-pumpboat-edit"])) {
 
     if (mysqli_num_rows($check_query) > 0) {
         // Duplicate entry found
-        $_SESSION["notify"] = "duplicate-edit";
+        $_SESSION["notify"] = "duplicate-edit-pumpboat";
         header("location: ../?manage_pumpboats");
         return;
     }
@@ -1010,10 +1010,10 @@ if (isset($_POST["btn-pumpboat-edit"])) {
     $query = mysqli_query($con, $sql);
 
     if ($query) {
-        $_SESSION["notify"] = "success-edit";
+        $_SESSION["notify"] = "success-edit-pumpboat";
         header("location: ../?manage_pumpboats");
     } else {
-        $_SESSION["notify"] = "failed-edit";
+        $_SESSION["notify"] = "failed-edit-pumpboat";
         header("location: ../?manage_pumpboats");
     }
 }
