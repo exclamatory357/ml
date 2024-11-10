@@ -1,7 +1,7 @@
 <?php
 // Start session securely
 session_start();
-
+/*
 // Redirect all HTTP requests to HTTPS if not already using HTTPS
 if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
     header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
@@ -12,32 +12,16 @@ if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
 header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
 
 // Secure session cookie settings
-ini_set('session.cookie_secure', '1');       // Enforces HTTPS-only session cookies
-ini_set('session.cookie_httponly', '1');     // Prevents JavaScript from accessing session cookies
+ini_set('session.cookie_secure', '1');    // Enforces HTTPS-only session cookies
+ini_set('session.cookie_httponly', '1');  // Prevents JavaScript from accessing session cookies
 ini_set('session.cookie_samesite', 'Strict'); // Prevents CSRF by limiting cross-site cookie usage
 
 // Additional security headers
 header("X-Content-Type-Options: nosniff");
 header("X-Frame-Options: DENY");
 header("X-XSS-Protection: 1; mode=block");
-
+*/
 include "../../config/db.php";
-
-// Initialize login attempt tracking
-if (!isset($_SESSION['login_attempts'])) {
-    $_SESSION['login_attempts'] = 0;
-}
-
-if (isset($_SESSION['timeout']) && time() < $_SESSION['timeout']) {
-    // If currently in lockout period
-    $_SESSION["notify"] = "locked"; // Custom notification for lockout
-    header("Location: ../?home");
-    exit();
-} elseif (isset($_SESSION['timeout']) && time() >= $_SESSION['timeout']) {
-    // Timeout has expired, reset attempts and timeout
-    $_SESSION['login_attempts'] = 0;
-    unset($_SESSION['timeout']);
-}
 
 if (isset($_POST["btnlogin"])) {
     // Sanitize and validate inputs
@@ -76,10 +60,6 @@ if (isset($_POST["btnlogin"])) {
             // Regenerate session ID to prevent session fixation attacks
             session_regenerate_id(true);
 
-            // Reset login attempts and timeout upon successful login
-            $_SESSION['login_attempts'] = 0;
-            unset($_SESSION['timeout']);
-
             // Generate OTP and store it in session
             $otp = rand(100000, 999999); // Generate a 6-digit OTP
             $_SESSION["otp"] = $otp; // Store OTP in session
@@ -105,73 +85,74 @@ if (isset($_POST["btnlogin"])) {
             $mail->setFrom('noreply-danrosefishing30@gmail.com', 'Danrose Fishing Management System');
             $mail->addAddress($email); // User's email
             $mail->isHTML(true);  // Set email format to HTML
-            $mail->Subject = 'Your OTP for Login';
+$mail->Subject = 'Your OTP for Login';
 
-            $mail->Body = "
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                        background-color: #f4f4f4;
-                        color: #333;
-                        margin: 0;
-                        padding: 0;
-                    }
-                    .container {
-                        width: 100%;
-                        max-width: 600px;
-                        margin: 0 auto;
-                        background-color: #ffffff;
-                        border-radius: 8px;
-                        overflow: hidden;
-                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                    }
-                    .header {
-                        background-color: #AF0401;
-                        color: #ffffff;
-                        text-align: center;
-                        padding: 20px;
-                        font-size: 24px;
-                    }
-                    .content {
-                        padding: 20px;
-                        text-align: center;
-                    }
-                    .otp-code {
-                        font-size: 32px;
-                        font-weight: bold;
-                        color: #AF0401;
-                        margin: 20px 0;
-                    }
-                    .footer {
-                        background-color: #f4f4f4;
-                        padding: 10px;
-                        text-align: center;
-                        font-size: 12px;
-                        color: #777;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class='container'>
-                    <div class='header'>
-                        Your OTP for Login
-                    </div>
-                    <div class='content'>
-                        <p>Hello,</p>
-                        <p>Please use the following One-Time Password (OTP) to complete your login:</p>
-                        <div class='otp-code'>$otp</div>
-                        <p>This OTP is valid for a limited time only (5 minutes). If you did not request this, please ignore this email.</p>
-                    </div>
-                    <div class='footer'>
-                        © 2024 Danrose Fishing Agency Management System. All rights reserved.
-                    </div>
-                </div>
-            </body>
-            </html>
-            ";
+$mail->Body = "
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #AF0401;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .otp-code {
+            font-size: 32px;
+            font-weight: bold;
+            color: #AF0401;
+            margin: 20px 0;
+        }
+        .footer {
+            background-color: #f4f4f4;
+            padding: 10px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='header'>
+            Your OTP for Login
+        </div>
+        <div class='content'>
+            <p>Hello,</p>
+            <p>Please use the following One-Time Password (OTP) to complete your login:</p>
+            <div class='otp-code'>$otp</div>
+            <p>This OTP is valid for a limited time only (5 minutes). If you did not request this, please ignore this email.</p>
+        </div>
+        <div class='footer'>
+            © 2024 Danrose Fishing Agency Management System. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
+";
+
 
             if (!$mail->send()) {
                 $_SESSION["notify"] = "otp_failed"; // Notify OTP email send failure
@@ -183,32 +164,12 @@ if (isset($_POST["btnlogin"])) {
             header("Location: otp_verification.php");
             exit();
         } else {
-            // Invalid password
-            $_SESSION['login_attempts'] += 1;
-
-            if ($_SESSION['login_attempts'] >= 3) {
-                // Set timeout to 5 minutes from now
-                $_SESSION['timeout'] = time() + (5 * 60); // 5 minutes in seconds
-                $_SESSION["notify"] = "locked"; // Notify lockout
-            } else {
-                $_SESSION["notify"] = "invalid"; // Invalid password
-            }
-
+            $_SESSION["notify"] = "invalid"; // Invalid password
             header("Location: ../?home");
             exit();
         }
     } else {
-        // User not found
-        $_SESSION['login_attempts'] += 1;
-
-        if ($_SESSION['login_attempts'] >= 3) {
-            // Set timeout to 5 minutes from now
-            $_SESSION['timeout'] = time() + (5 * 60); // 5 minutes in seconds
-            $_SESSION["notify"] = "locked"; // Notify lockout
-        } else {
-            $_SESSION["notify"] = "invalid"; // Invalid username
-        }
-
+        $_SESSION["notify"] = "invalid"; // User not found
         header("Location: ../?home");
         exit();
     }
