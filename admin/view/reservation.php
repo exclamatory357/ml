@@ -29,13 +29,10 @@ if (isset($_SESSION["notify"])) {
         echo "Swal.fire({ icon: 'error', title: 'Failed', text: 'An error occurred while adding the pumpboat.' });";
     } elseif ($_SESSION["notify"] == "duplicate-add") {
         echo "Swal.fire({ icon: 'warning', title: 'Duplicate Entry', text: 'A pumpboat with this license or pumpboat number already exists.' });";
-    } elseif ($_SESSION["notify"] == "team-not-found") {
-        echo "Swal.fire({ icon: 'error', title: 'Team Not Found', text: 'The specified team does not exist. Please select a valid team.' });";
     }
     echo "</script>";
     unset($_SESSION["notify"]); // Clear the notification after displaying
 }
-
 ?>
 
 <?php
