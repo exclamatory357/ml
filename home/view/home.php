@@ -179,14 +179,16 @@ $login_disabled = false;
 $remaining_time = 0;
 
 // Check if login button should be disabled
-if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
-    $remaining_time = $_SESSION['timeout'] - time(); // Calculate remaining time
-    if ($remaining_time > 0) {
-        $login_disabled = true;
-    } else {
-        // Reset after timeout expires
-        $_SESSION['login_attempts'] = 0;
-        unset($_SESSION['timeout']);
+if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= MAX_LOGIN_ATTEMPTS) {
+    if (isset($_SESSION['timeout'])) {
+        $remaining_time = $_SESSION['timeout'] - time(); // Calculate remaining time
+        if ($remaining_time > 0) {
+            $login_disabled = true;
+        } else {
+            // Reset after timeout expires
+            $_SESSION['login_attempts'] = 0;
+            unset($_SESSION['timeout']);
+        }
     }
 }
 ?>
@@ -196,6 +198,24 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
     <!-- LOGIN FORM, show if session is not set -->
     <div class="login-box-body p-absolute-login container mt-5">
         <p class="login-box-msg text-center">Welcome back!</p>
+        
+        <?php
+        // Display notifications based on session
+        if (isset($_SESSION["notify"])) {
+            if ($_SESSION["notify"] == "invalid") {
+                echo '<div class="alert alert-danger">Invalid username or password.</div>';
+            } elseif ($_SESSION["notify"] == "locked_out") {
+                echo '<div class="alert alert-danger">Too many failed login attempts. Please try again in ' . ceil($remaining_time / 60) . ' minute(s).</div>';
+            } elseif ($_SESSION["notify"] == "otp_failed") {
+                echo '<div class="alert alert-warning">Failed to send OTP. Please try again later.</div>';
+            } elseif ($_SESSION["notify"] == "server_error") {
+                echo '<div class="alert alert-danger">Server error. Please contact support.</div>';
+            }
+            // Unset the notify session after displaying
+            unset($_SESSION["notify"]);
+        }
+        ?>
+
         <form action="function/login.php" method="post">
             <div class="form-group has-feedback">
                 <input type="text" class="form-control form-control-lg" placeholder="Enter Username" name="username" required autofocus>
@@ -220,6 +240,7 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
         </form>
     </div>
 <?php } ?>
+
 
         
         
