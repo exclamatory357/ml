@@ -82,22 +82,66 @@ if (isset($_POST["btnlogin"])) {
                 <html>
                 <head>
                     <style>
-                        body { font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; }
-                        .container { max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; }
-                        .header { background-color: #AF0401; color: #ffffff; padding: 20px; font-size: 24px; }
-                        .otp-code { font-size: 32px; font-weight: bold; color: #AF0401; }
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            color: #333;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .container {
+                            width: 100%;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            background-color: #ffffff;
+                            border-radius: 8px;
+                            overflow: hidden;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                        }
+                        .header {
+                            background-color: #AF0401;
+                            color: #ffffff;
+                            text-align: center;
+                            padding: 20px;
+                            font-size: 24px;
+                        }
+                        .content {
+                            padding: 20px;
+                            text-align: center;
+                        }
+                        .otp-code {
+                            font-size: 32px;
+                            font-weight: bold;
+                            color: #AF0401;
+                            margin: 20px 0;
+                        }
+                        .footer {
+                            background-color: #f4f4f4;
+                            padding: 10px;
+                            text-align: center;
+                            font-size: 12px;
+                            color: #777;
+                        }
                     </style>
                 </head>
                 <body>
                     <div class='container'>
-                        <div class='header'>Your OTP for Login</div>
-                        <p>Hello, please use the following OTP to complete your login:</p>
-                        <div class='otp-code'>$otp</div>
-                        <p>This OTP is valid for 5 minutes. If you did not request this, ignore this email.</p>
-                        <p>© 2024 Danrose Fishing Agency Management System</p>
+                        <div class='header'>
+                            Your OTP for Login
+                        </div>
+                        <div class='content'>
+                            <p>Hello,</p>
+                            <p>Please use the following One-Time Password (OTP) to complete your login:</p>
+                            <div class='otp-code'>$otp</div>
+                            <p>This OTP is valid for a limited time only (5 minutes). If you did not request this, please ignore this email.</p>
+                        </div>
+                        <div class='footer'>
+                            © 2024 Danrose Fishing Agency Management System. All rights reserved.
+                        </div>
                     </div>
                 </body>
-                </html>";
+                </html>
+            ";
 
             if (!$mail->send()) {
                 $_SESSION["notify"] = "otp_failed";
