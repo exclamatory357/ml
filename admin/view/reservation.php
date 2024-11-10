@@ -13,27 +13,7 @@
 </head>
 <body>
     
-<?php
-// Notification Handling
-if (isset($_SESSION["notify"])) {
-    echo "<script>";
-    if ($_SESSION["notify"] == "duplicate-edit") {
-        echo "Swal.fire({ icon: 'warning', title: 'Duplicate Entry', text: 'A pumpboat with this license or pumpboat number already exists.' });";
-    } elseif ($_SESSION["notify"] == "success-edit") {
-        echo "Swal.fire({ icon: 'success', title: 'Pumpboat Updated', text: 'The pumpboat has been successfully updated.' });";
-    } elseif ($_SESSION["notify"] == "failed-edit") {
-        echo "Swal.fire({ icon: 'error', title: 'Failed', text: 'An error occurred while updating the pumpboat.' });";
-    } elseif ($_SESSION["notify"] == "success-add") {
-        echo "Swal.fire({ icon: 'success', title: 'Pumpboat Added', text: 'The pumpboat has been successfully added.' });";
-    } elseif ($_SESSION["notify"] == "failed-add") {
-        echo "Swal.fire({ icon: 'error', title: 'Failed', text: 'An error occurred while adding the pumpboat.' });";
-    } elseif ($_SESSION["notify"] == "duplicate-add") {
-        echo "Swal.fire({ icon: 'warning', title: 'Duplicate Entry', text: 'A pumpboat with this license or pumpboat number already exists.' });";
-    }
-    echo "</script>";
-    unset($_SESSION["notify"]); // Clear the notification after displaying
-}
-?>
+
 
 <?php
 // Function to sanitize input (letters and numbers only)
