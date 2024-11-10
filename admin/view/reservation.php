@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
-
+    
 <?php
 if (isset($_SESSION["notify"])) {
     echo "<script>";
@@ -26,19 +26,20 @@ if (isset($_SESSION["notify"])) {
     echo "</script>";
     unset($_SESSION["notify"]); // Clear the notification after displaying
 }
-
-    if (isset($_SESSION["notify"])) {
-        echo "<script>";
-        if ($_SESSION["notify"] == "duplicate-edit") {
-            echo "Swal.fire({ icon: 'warning', title: 'Duplicate Entry', text: 'A pumpboat with this license or pumpboat number already exists.' });";
-        } elseif ($_SESSION["notify"] == "success-edit") {
-            echo "Swal.fire({ icon: 'success', title: 'Pumpboat Updated', text: 'The pumpboat has been successfully updated.' });";
-        } elseif ($_SESSION["notify"] == "failed-edit") {
-            echo "Swal.fire({ icon: 'error', title: 'Failed', text: 'An error occurred while updating the pumpboat.' });";
-        }
-        echo "</script>";
-        unset($_SESSION["notify"]); // Clear the notification after displaying
+?>
+<?php
+if (isset($_SESSION["notify"])) {
+    echo "<script>";
+    if ($_SESSION["notify"] == "duplicate-edit") {
+        echo "Swal.fire({ icon: 'warning', title: 'Duplicate Entry', text: 'A pumpboat with this license or pumpboat number already exists.' });";
+    } elseif ($_SESSION["notify"] == "success-edit") {
+        echo "Swal.fire({ icon: 'success', title: 'Pumpboat Updated', text: 'The pumpboat has been successfully updated.' });";
+    } elseif ($_SESSION["notify"] == "failed-edit") {
+        echo "Swal.fire({ icon: 'error', title: 'Failed', text: 'An error occurred while updating the pumpboat.' });";
     }
+    echo "</script>";
+    unset($_SESSION["notify"]); // Clear the notification after displaying
+}
 ?>
 
 <?php
