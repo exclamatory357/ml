@@ -180,6 +180,10 @@ $remaining_time = 0;
 
 // Check if login button should be disabled
 if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
+    // Set a timeout if it doesn’t already exist
+    if (!isset($_SESSION['timeout'])) {
+        $_SESSION['timeout'] = time() + 300; // 5-minute timeout (300 seconds)
+    }
     $remaining_time = $_SESSION['timeout'] - time(); // Calculate remaining time
     if ($remaining_time > 0) {
         $login_disabled = true;
@@ -220,6 +224,7 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
         </form>
     </div>
 <?php } ?>
+
 
         
         
