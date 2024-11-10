@@ -622,8 +622,8 @@ function confirmDelete(id) {
 
 <script>
     function validateAmount(input) {
-        if (input.value < 100) {
-            input.setCustomValidity('Amount must be at least 100.');
+        if (input.value < 50) {
+            input.setCustomValidity('Amount must be at least 50.');
         } else {
             input.setCustomValidity('');
         }
