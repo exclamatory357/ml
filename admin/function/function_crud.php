@@ -705,6 +705,7 @@ if (isset($_GET["res-id-cancel"])) {
 
 
 // adduser
+// adduser
 if (isset($_POST["btnAddUser"])) {
     $fname = htmlspecialchars($_POST["fname"]);
     $mname = htmlspecialchars($_POST["mname"]);
@@ -721,21 +722,33 @@ if (isset($_POST["btnAddUser"])) {
     // Hash the password using bcrypt
     $hashed_pass = password_hash($pass, PASSWORD_BCRYPT);
 
-    // Insert into the database with the hashed password
-    $sql = "INSERT INTO `user`(`fname`, `mname`, `lname`, `email`, `contact_no`, `person_to_contact`, `uname`, `pass`, `user_type_id`, `team`, `address`) 
-            VALUES ('$fname','$mname','$lname','$email','$contact_no','$person_to_contact','$uname','$hashed_pass','$utype','$team', '$address')";
-    $query = mysqli_query($con, $sql);
+    // Check for duplicate email or username
+    $check_sql = "SELECT * FROM `user` WHERE `email` = '$email' OR `uname` = '$uname'";
+    $check_query = mysqli_query($con, $check_sql);
 
-    if ($query) {
-        $_SESSION["notify"] = "success";
+    if (mysqli_num_rows($check_query) > 0) {
+        // Email or username already exists
+        $_SESSION["notify"] = "duplicate";
         header("location: ../?users");
         return;
     } else {
-        $_SESSION["notify"] = "failed";
-        header("location: ../?users");
-        return;
+        // Insert into the database with the hashed password
+        $sql = "INSERT INTO `user`(`fname`, `mname`, `lname`, `email`, `contact_no`, `person_to_contact`, `uname`, `pass`, `user_type_id`, `team`, `address`) 
+                VALUES ('$fname','$mname','$lname','$email','$contact_no','$person_to_contact','$uname','$hashed_pass','$utype','$team', '$address')";
+        $query = mysqli_query($con, $sql);
+
+        if ($query) {
+            $_SESSION["notify"] = "success";
+            header("location: ../?users");
+            return;
+        } else {
+            $_SESSION["notify"] = "failed";
+            header("location: ../?users");
+            return;
+        }
     }
 }
+
 
 
 

@@ -2,6 +2,20 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<?php
+if (isset($_SESSION["notify"])) {
+    if ($_SESSION["notify"] == "duplicate") {
+        echo "<script>Swal.fire({ icon: 'warning', title: 'Duplicate Entry', text: 'A user with this email or username already exists.' });</script>";
+    } elseif ($_SESSION["notify"] == "success") {
+        echo "<script>Swal.fire({ icon: 'success', title: 'User Added', text: 'User has been successfully added.' });</script>";
+    } elseif ($_SESSION["notify"] == "failed") {
+        echo "<script>Swal.fire({ icon: 'error', title: 'Failed', text: 'An error occurred while adding the user.' });</script>";
+    }
+    unset($_SESSION["notify"]);
+}
+?>
+
+
 <!-- USERS ACCOUNT PAGE -->
 <?php
 if (isset($_GET["users"])) { ?>
