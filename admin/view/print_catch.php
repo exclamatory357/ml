@@ -144,27 +144,38 @@ if (isset($_SESSION["print_ready_team"]) && isset($_SESSION["added_ids"])) {
                     </tr>
                 </thead>
                 <tbody>
-                <?php
-                // Fetch and display data for printing
-                $catch_sql = "SELECT * FROM catch_records WHERE id IN ($ids_string)";
-                $catch_result = mysqli_query($con, $catch_sql);
-                if (mysqli_num_rows($catch_result) > 0) {
-                    while ($catch_row = mysqli_fetch_assoc($catch_result)) {
-                        $total = $catch_row['catch_amount'] * $catch_row['catch_kilo'];
-                        ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($catch_row['catch_item']); ?></td>
-                            <td>&#8369;<?php echo number_format($catch_row['catch_amount'], 2); ?></td>
-                            <td><?php echo htmlspecialchars($catch_row['catch_kilo']); ?> kg</td>
-                            <td>&#8369;<?php echo number_format($total, 2); ?></td>
-                        </tr>
-                    <?php }
-                } else { ?>
-                    <tr>
-                        <td colspan="4">No data found</td>
-                    </tr>
-                <?php } ?>
-                </tbody>
+<?php
+// Initialize the overall total
+$overall_total = 0;
+
+// Fetch and display data for printing
+$catch_sql = "SELECT * FROM catch_records WHERE id IN ($ids_string)";
+$catch_result = mysqli_query($con, $catch_sql);
+if (mysqli_num_rows($catch_result) > 0) {
+    while ($catch_row = mysqli_fetch_assoc($catch_result)) {
+        $total = $catch_row['catch_amount'] * $catch_row['catch_kilo'];
+        $overall_total += $total; // Add to overall total
+        ?>
+        <tr>
+            <td><?php echo htmlspecialchars($catch_row['catch_item']); ?></td>
+            <td>&#8369;<?php echo number_format($catch_row['catch_amount'], 2); ?></td>
+            <td><?php echo htmlspecialchars($catch_row['catch_kilo']); ?> kg</td>
+            <td>&#8369;<?php echo number_format($total, 2); ?></td>
+        </tr>
+    <?php }
+} else { ?>
+    <tr>
+        <td colspan="4">No data found</td>
+    </tr>
+<?php } ?>
+</tbody>
+<tfoot>
+    <tr>
+        <td colspan="3" style="text-align: right;"><strong>Overall Total:</strong></td>
+        <td><strong>&#8369;<?php echo number_format($overall_total, 2); ?></strong></td>
+    </tr>
+</tfoot>
+
             </table>
 
             <div class="footer">
