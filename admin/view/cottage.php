@@ -338,3 +338,38 @@ $(document).ready(function() {
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
 
+<?php
+// Check session notification
+if (isset($_SESSION["notify"])) {
+    if ($_SESSION["notify"] === "duplicate-name-agent") {
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Duplicate Name',
+                    text: 'An agent with this name already exists!',
+                    confirmButtonText: 'OK'
+                });
+              </script>";
+    } elseif ($_SESSION["notify"] === "success-add-agent") {
+        echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Agent added successfully!',
+                    confirmButtonText: 'Great!'
+                });
+              </script>";
+    } elseif ($_SESSION["notify"] === "failed-add-agent") {
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed',
+                    text: 'Failed to add agent. Please try again.',
+                    confirmButtonText: 'OK'
+                });
+              </script>";
+    }
+    // Unset the notification after displaying it
+    unset($_SESSION["notify"]);
+}
+?>

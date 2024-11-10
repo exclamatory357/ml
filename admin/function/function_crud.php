@@ -402,6 +402,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_cash_advance'])
 
 
 // Add agent
+// Add agent
 if (isset($_POST["btn-cottage-add"])) {
     $name = $_POST["name"];
     $type = $_POST["type"];
@@ -415,7 +416,7 @@ if (isset($_POST["btn-cottage-add"])) {
 
     if (mysqli_num_rows($check_query) > 0) {
         // Duplicate entry found
-        $_SESSION["notify"] = "duplicate-name";
+        $_SESSION["notify"] = "duplicate-name-agent";
         header("location: ../?cottage");
         return;
     }
@@ -426,14 +427,15 @@ if (isset($_POST["btn-cottage-add"])) {
     $query = mysqli_query($con, $sqlcott);
 
     if ($query) {
-        $_SESSION["notify"] = "success-add";
+        $_SESSION["notify"] = "success-add-agent";
         header("location: ../?cottage");
     } else {
-        $_SESSION["notify"] = "failed-add";
+        $_SESSION["notify"] = "failed-add-agent";
         error_log("Failed to insert into cottage/hall: " . mysqli_error($con));
         header("location: ../?cottage");
     }
 }
+
 
 
 
