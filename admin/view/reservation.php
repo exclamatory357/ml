@@ -12,6 +12,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
+    
+<?php
+if (isset($_SESSION["notify"])) {
+    echo "<script>";
+    if ($_SESSION["notify"] == "duplicate-add") {
+        echo "Swal.fire({ icon: 'warning', title: 'Duplicate Entry', text: 'A pumpboat with this license or pumpboat number already exists.' });";
+    } elseif ($_SESSION["notify"] == "success-add") {
+        echo "Swal.fire({ icon: 'success', title: 'Pumpboat Added', text: 'The pumpboat has been successfully added.' });";
+    } elseif ($_SESSION["notify"] == "failed-add") {
+        echo "Swal.fire({ icon: 'error', title: 'Failed', text: 'An error occurred while adding the pumpboat.' });";
+    }
+    echo "</script>";
+    unset($_SESSION["notify"]); // Clear the notification after displaying
+}
+?>
 
 <?php
 // Function to sanitize input (letters and numbers only)
@@ -97,6 +112,8 @@ if (isset($_GET["manage_pumpboats"])) { ?>
         </div>
     </section>
 <?php }
+
+
 
 // Pumpboat Add Section
 if (isset($_GET["pumpboat-add"])) { ?>

@@ -919,26 +919,38 @@ if (isset($_POST["btn-picture-edit"])) {
 
 
 
-        // Insert Operation PUMPBOATS
-        if (isset($_POST["btn-pumpboat-add"])) {
-            $license_no = $_POST["license_no"];
-            $pumpboat_no = $_POST["pumpboat_no"];
-            $type = $_POST["type"];
-            $team = $_POST["team"];
-        
-            $sqlPumpboat = "INSERT INTO `pumpboats`(`license_no`, `pumpboat_no`, `type`, `team`) 
-                            VALUES('$license_no','$pumpboat_no','$type','$team')";
-            $query = mysqli_query($con, $sqlPumpboat);
-        
-            if ($query) {
-                $_SESSION["notify"] = "success-add";
-                header("location: ../?manage_pumpboats");
-            } else {
-                $_SESSION["notify"] = "failed-add";
-                header("location: ../?manage_pumpboats");
-            }
-        }
-        // /Insert Operation PUMPBOATS
+       // Insert Operation PUMPBOATS
+if (isset($_POST["btn-pumpboat-add"])) {
+    $license_no = htmlspecialchars($_POST["license_no"], ENT_QUOTES, 'UTF-8');
+    $pumpboat_no = htmlspecialchars($_POST["pumpboat_no"], ENT_QUOTES, 'UTF-8');
+    $type = htmlspecialchars($_POST["type"], ENT_QUOTES, 'UTF-8');
+    $team = htmlspecialchars($_POST["team"], ENT_QUOTES, 'UTF-8');
+
+    // Check for duplicate license_no or pumpboat_no
+    $check_sql = "SELECT * FROM `pumpboats` WHERE `license_no` = '$license_no' OR `pumpboat_no` = '$pumpboat_no'";
+    $check_query = mysqli_query($con, $check_sql);
+
+    if (mysqli_num_rows($check_query) > 0) {
+        // Duplicate entry found
+        $_SESSION["notify"] = "duplicate-add";
+        header("location: ../?manage_pumpboats");
+        return;
+    }
+
+    // Insert into the pumpboats table
+    $sqlPumpboat = "INSERT INTO `pumpboats`(`license_no`, `pumpboat_no`, `type`, `team`) 
+                    VALUES('$license_no','$pumpboat_no','$type','$team')";
+    $query = mysqli_query($con, $sqlPumpboat);
+
+    if ($query) {
+        $_SESSION["notify"] = "success-add";
+        header("location: ../?manage_pumpboats");
+    } else {
+        $_SESSION["notify"] = "failed-add";
+        header("location: ../?manage_pumpboats");
+    }
+}
+
 
 
         //  Delete Operation PUMPBOATS
