@@ -1,3 +1,7 @@
+<!-- Include SweetAlert2 CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <!-- USERS ACCOUNT PAGE -->
 <?php
 if (isset($_GET["users"])) { ?>
@@ -20,38 +24,37 @@ if (isset($_GET["users"])) { ?>
     </section>
 
     <!-- Main content -->
-<section class="content container-fluid">
-    <div class="box box-default">
-        <div class="box-header with-border">
-            <h3 class="box-title"><a href="?users-add" class="btn btn-primary"><i class="fa fa-plus"></i> New User</a></h3>
-        </div>
-        <div class="box-body">
-            <div class="table-responsive"> <!-- Add responsive wrapper -->
-                <table id="users" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Middle Name</th>
-                            <th>Last Name</th>
-                            <th>Address</th>
-                            <th>Email</th>
-                            <th>Contact No</th>
-                            <th>Contact Person</th>
-                            <th>User Type</th>
-                            <th>Username</th>
-                        <!--    <th>Password</th> !-->
-                            <th><i class="fa fa-cogs"></i></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php get_users($con); ?>
-                    </tbody> <!-- Add single tbody tag here -->
-                </table>
+    <section class="content container-fluid">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title"><a href="?users-add" class="btn btn-primary"><i class="fa fa-plus"></i> New User</a></h3>
+            </div>
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table id="users" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>First Name</th>
+                                <th>Middle Name</th>
+                                <th>Last Name</th>
+                                <th>Address</th>
+                                <th>Email</th>
+                                <th>Contact No</th>
+                                <th>Contact Person</th>
+                                <th>User Type</th>
+                                <th>Username</th>
+                                <th><i class="fa fa-cogs"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php get_users($con); ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 <?php } ?>
 
 
@@ -142,19 +145,17 @@ if (isset($_GET["users-add"])) { ?>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">User Type</label>
                                 <div class="col-sm-8">
-                                    <select id="" class="form-control" name="utype" required>
+                                    <select class="form-control" name="utype" required>
                                         <option value="3">Agent</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label"></label>
-                                <div class="col-sm-8">
+                                <div class="col-sm-8 offset-sm-4">
                                     <button type="submit" class="btn btn-primary" name="btnAddUser">Submit</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6"></div>
                     </div>
                 </div>
             </form>
@@ -246,28 +247,20 @@ if (isset($_GET["users-edit"])) { ?>
                                     <input type="text" class="form-control" value="<?php echo $fetch["uname"]?>" name="uname" maxlength="15" required>
                                 </div>
                             </div>
-                          <!--  <div class="form-group">
-                                <label class="col-sm-4 control-label">Password</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" value="<?php echo $fetch["pass"]?>" name="pass" maxlength="30" required>
-                                </div>
-                            </div> !-->
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">User Type</label>
                                 <div class="col-sm-8">
-                                    <select id="" class="form-control" name="utype" required>
+                                    <select class="form-control" name="utype" required>
                                         <option value="3">Agent</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label"></label>
-                                <div class="col-sm-8">
+                                <div class="col-sm-8 offset-sm-4">
                                     <button type="submit" class="btn btn-primary" name="updateuser">Submit</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6"></div>
                     </div>
                 </div>
             </form>
@@ -275,72 +268,78 @@ if (isset($_GET["users-edit"])) { ?>
     </section>
 <?php } ?>
 
-<!-- Validation Scripts -->
+<!-- Validation Scripts with SweetAlert2 -->
 <script>
     function validatePhoneNumber(input) {
-        const phoneNumber = input.value;
+        const phoneNumber = input.value.replace(/\D/g, ''); // Only allow digits
+        input.value = phoneNumber;
 
-        // Allow typing but validate when length reaches 11 digits
         if (phoneNumber.length === 11) {
-            // Check if it starts with '09'
             if (!phoneNumber.startsWith('09')) {
-                alert("Phone number must start with '09'.");
-                input.value = '';
-                return;
-            }
-
-            // Check if it contains only digits
-            const regex = /^[0-9]+$/;
-            if (!regex.test(phoneNumber)) {
-                alert("Phone number must contain only digits.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Phone Number',
+                    text: "Phone number must start with '09'.",
+                });
                 input.value = '';
             }
-        }
-
-        // If the number is longer than 11 digits, trim it
-        if (phoneNumber.length > 11) {
+        } else if (phoneNumber.length > 11) {
             input.value = phoneNumber.slice(0, 11);
         }
     }
 
     function validateForm() {
-        const firstName = document.querySelector('input[name="fname"]').value;
-        const middleName = document.querySelector('input[name="mname"]').value;
-        const lastName = document.querySelector('input[name="lname"]').value;
-        const email = document.querySelector('input[name="email"]').value;
-        const address = document.querySelector('input[name="address"]').value;
+        const firstName = document.querySelector('input[name="fname"]').value.trim();
+        const middleName = document.querySelector('input[name="mname"]').value.trim();
+        const lastName = document.querySelector('input[name="lname"]').value.trim();
+        const email = document.querySelector('input[name="email"]').value.trim();
+        const address = document.querySelector('input[name="address"]').value.trim();
 
-        const nameRegex = /^[A-Za-z\s]+$/; // Letters and spaces only
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Valid email format
-        const addressRegex = /^[a-zA-Z\s]+,\s*[a-zA-Z\s]+,\s*[a-zA-Z\s]+$/; // Pattern for "part1, part2, part3" allowing letters and spaces with commas
+        const nameRegex = /^[A-Za-z\s]+$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const addressRegex = /^[a-zA-Z\s]+,\s*[a-zA-Z\s]+,\s*[a-zA-Z\s]+$/;
 
-        // Validate first, middle, and last names
         if (!nameRegex.test(firstName)) {
-            alert("First name can only contain letters.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid First Name',
+                text: 'First name can only contain letters and spaces.',
+            });
             return false;
         }
         if (!nameRegex.test(middleName)) {
-            alert("Middle name can only contain letters.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Middle Name',
+                text: 'Middle name can only contain letters and spaces.',
+            });
             return false;
         }
         if (!nameRegex.test(lastName)) {
-            alert("Last name can only contain letters.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Last Name',
+                text: 'Last name can only contain letters and spaces.',
+            });
             return false;
         }
-
-        // Validate email
         if (!emailRegex.test(email)) {
-            alert("Please enter a valid email address.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Email',
+                text: 'Please enter a valid email address.',
+            });
             return false;
         }
-
-        // Validate address for the pattern "part1, part2, part3"
         if (!addressRegex.test(address)) {
-            alert("Address must follow the format 'part1, part2, part3' (e.g., kagwangan, pili, bantayan).");
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Address',
+                text: "Address must follow the format 'part1, part2, part3' (e.g., kagwangan, pili, bantayan).",
+            });
             return false;
         }
 
-        // All checks passed
         return true;
     }
 </script>
