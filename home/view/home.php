@@ -172,7 +172,6 @@ if (isset($_GET["home"])) { ?>
                 <span class="sr-only">Next</span>
             </a> -->
         </div>
-
         <?php 
 session_start(); // Ensure session is started
 $login_disabled = false;
@@ -180,11 +179,7 @@ $remaining_time = 0;
 
 // Check if login button should be disabled
 if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
-    // Set a timeout if it doesn’t already exist
-    if (!isset($_SESSION['timeout'])) {
-        $_SESSION['timeout'] = time() + 300; // 5-minute timeout (300 seconds)
-    }
-    $remaining_time = $_SESSION['timeout'] - time(); // Calculate remaining time
+    $remaining_time = ($_SESSION['timeout'] + 300) - time(); // Set timeout for 5 minutes (300 seconds)
     if ($remaining_time > 0) {
         $login_disabled = true;
     } else {
@@ -214,7 +209,7 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
             <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin" 
                 <?php if ($login_disabled) echo 'disabled'; ?>>
                 <?php if ($login_disabled) {
-                    echo "Login disabled. Try again in " . ceil($remaining_time / 60) . " minute(s)";
+                    echo "Login disabled. Try again in " . max(1, ceil($remaining_time / 60)) . " minute(s)";
                 } else {
                     echo "Sign In";
                 } ?>
