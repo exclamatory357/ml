@@ -65,7 +65,7 @@ if (isset($_GET["users-add"])) { ?>
         <div class="container-fluid">
             <div class="row mb-2 align-items-center">
                 <div class="col-6">
-                    <h1><a href="?cottage">Back</a></h1>
+                    <h1><a href="?users">Back</a></h1>
                 </div>
                 <div class="col-6">
                     <nav aria-label="breadcrumb">
@@ -174,6 +174,7 @@ if (isset($_GET["users-edit"])) { ?>
                     <h1>Edit User</h1>
                 </div>
                 <div class="col-6">
+                <h1><a href="?users">Back</a></h1>
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="?users"><i class="fa fa-dashboard"></i> Home</a></li>
                         <li class="breadcrumb-item active">Edit User</li>
