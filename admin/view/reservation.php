@@ -172,7 +172,7 @@ if (isset($_GET["pumpboat-add"])) { ?>
                                     <select class="form-control" name="type" required>
                                         <option value="Pamo">Pamo</option>
                                         <option value="Panambahan">Panambahan</option>
-                                        <option value="Island Hopping">Island Hopping</option>
+                                        <option value="Lad-Lad">Lad-Lad</option>
                                     </select>
                                 </div>
                             </div>
