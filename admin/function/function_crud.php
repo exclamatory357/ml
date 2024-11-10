@@ -843,28 +843,36 @@ if (isset($_POST["updateuser"])) {
     $team  = htmlspecialchars($_POST["team"], ENT_QUOTES, 'UTF-8'); // Uncomment if using
     $address = htmlspecialchars($_POST["address"], ENT_QUOTES, 'UTF-8'); // Sanitize address
 
-    // Update the user information, including the address
-    $sql = "UPDATE `user` SET 
-            `fname`='$fname', 
-            `lname`='$lname', 
-            `uname`='$uname', 
-            `pass`='$pass', 
-            `user_type_id`='$utype', 
-            `address`='$address' 
-            WHERE user_id = '$id'";  // Include address in the SQL query
+    // Check if the username or email is taken by another user
+    $check_sql = "SELECT * FROM `user` WHERE (`uname` = '$uname' OR `email` = '$email') AND `user_id` != '$id'";
+    $check_query = mysqli_query($con, $check_sql);
 
-    $query = mysqli_query($con, $sql);
-
-    if (!$query) {
-        $_SESSION["notify"] = "failed";
+    if (mysqli_num_rows($check_query) > 0) {
+        // Username or email already exists for another user
+        $_SESSION["notify"] = "duplicate";
         header("location: ../?users");
         return;
     }
 
+    // Update the user information, including the address
+    $hashed_pass = password_hash($pass, PASSWORD_BCRYPT); // Use hashed password
+    $sql = "UPDATE `user` SET 
+            `fname`='$fname', 
+            `lname`='$lname', 
+            `uname`='$uname', 
+            `pass`='$hashed_pass', 
+            `user_type_id`='$utype', 
+            `address`='$address' 
+            WHERE `user_id` = '$id'";
+
+    $query = mysqli_query($con, $sql);
+
     if ($query) {
         $_SESSION["notify"] = "success";
         header("location: ../?users");
-        return;
+    } else {
+        $_SESSION["notify"] = "failed";
+        header("location: ../?users");
     }
 }
 
