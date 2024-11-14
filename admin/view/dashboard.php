@@ -448,10 +448,10 @@ body {
         </div>
         <!-- ./col -->
 
-        <!-- Unpaid Total Box -->
+       <!-- Unpaid Total Box -->
         <div class="dashboard-col">
             <!-- small box -->
-            <div class="small-box bg-info">
+            <a href="?manage_payment" class="small-box bg-info">
                 <div class="inner">
                     <h3><?= htmlspecialchars(unpaid_total($con)) ?></h3>
                     <p>Total Unpaid Cash Advances</p>
@@ -459,8 +459,9 @@ body {
                 <div class="icon">
                     <i class="fas fa-exclamation-circle"></i>
                 </div>
-            </div>
+            </a>
         </div>
+
         <!-- ./col -->
 
         <!-- Total Teams Box -->
