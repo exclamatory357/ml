@@ -465,17 +465,18 @@ body {
 
         <!-- Total Teams Box -->
         <div class="dashboard-col">
-            <!-- small box -->
-            <div class="small-box bg-secondary">
-                <div class="inner">
-                    <h3><?= htmlspecialchars(total_teams($con)) ?></h3>
-                    <p>Total Teams</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-users"></i>
-                </div>
+    <!-- small box -->
+        <a href="?manage_pumpboats" class="small-box bg-secondary">
+            <div class="inner">
+                <h3><?= htmlspecialchars(total_teams($con)) ?></h3>
+                <p>Total Teams</p>
             </div>
-        </div>
+            <div class="icon">
+                <i class="fas fa-users"></i>
+            </div>
+        </a>
+    </div>
+
         <!-- ./col -->
     </div>
 
