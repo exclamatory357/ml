@@ -18,10 +18,10 @@ if (isset($_POST["maintenance_request"])) {
     $query = mysqli_query($con, $sql);
 
     if ($query) {
-        $_SESSION["notify"] = "success-add";
+        $_SESSION["notify"] = "success";
         header("location: ../?request");
     } else {
-        $_SESSION["notify"] = "failed-add";
+        $_SESSION["notify"] = "failed";
         error_log("Failed to insert into maintenance_requests: " . mysqli_error($con));
         header("location: ../?request");
     }
@@ -37,10 +37,10 @@ if (isset($_POST["cash_advance"])) {
     $query = mysqli_query($con, $sql);
 
     if ($query) {
-        $_SESSION["notify"] = "success-add";
+        $_SESSION["notify"] = "success";
         header("location: ../?request");
     } else {
-        $_SESSION["notify"] = "failed-add";
+        $_SESSION["notify"] = "failed";
         error_log("Failed to insert into cash_advances: " . mysqli_error($con));
         header("location: ../?request");
     }
