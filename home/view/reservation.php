@@ -216,7 +216,7 @@ if (isset($_SESSION["username"])) {
                             </div>
                             <div class="mb-3">
                                 <label for="team">Team:</label>
-                                <input type="text" id="team" name="team" class="form-control" value="<?php echo $team; ?>" readonly>
+                                <input type="text" id="team" name="description" class="form-control" value="<?php echo $team; ?>" readonly>
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" name="maintenance_request" class="btn btn-primary">Submit</button>
