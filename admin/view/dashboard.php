@@ -420,17 +420,18 @@ body {
         </div>
         <!-- ./col -->
         <div class="dashboard-col">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-                <div class="inner">
-                    <h3><?= htmlspecialchars(count_me0($con, 'Fullypaid')) ?></h3>
-                    <p>User Accounts</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-user-circle"></i>
-                </div>
-            </div>
+    <!-- small box -->
+    <a href="?user" class="small-box bg-warning">
+        <div class="inner">
+            <h3><?= htmlspecialchars(count_me0($con, 'Fullypaid')) ?></h3>
+            <p>User Accounts</p>
         </div>
+        <div class="icon">
+            <i class="fas fa-user-circle"></i>
+        </div>
+    </a>
+</div>
+
         <!-- ./col -->
         <div class="dashboard-col">
             <!-- small box -->
