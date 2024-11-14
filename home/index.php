@@ -222,7 +222,7 @@ $(function () {
           case "invalid":
               echo "Swal.fire({
                       icon: 'error',
-                      title: 'Invalid  Username or Password!',
+                      title: 'Invalid  Credentials!',
                       text: 'Invalid.',
                       timer: 5000,
                       timerProgressBar: true,
