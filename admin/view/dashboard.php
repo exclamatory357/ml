@@ -407,17 +407,18 @@ body {
         </div>
         <!-- ./col -->
         <div class="dashboard-col">
-            <!-- small box -->
-            <div class="small-box bg-success">
-                <div class="inner">
-                    <h3><?= htmlspecialchars(count_pumpboats($con, 'Pending')) ?></h3>
-                    <p>Pumpboats</p>
-                </div>
-                <div class="icon">
-                    <i class="fa fa-sailboat"></i>
-                </div>
+        <!-- small box -->
+        <a href="?manage_pumpboats" class="small-box bg-success">
+            <div class="inner">
+                <h3><?= htmlspecialchars(count_pumpboats($con, 'Pending')) ?></h3>
+                <p>Pumpboats</p>
             </div>
-        </div>
+            <div class="icon">
+                <i class="fa fa-sailboat"></i>
+            </div>
+        </a>
+    </div>
+
         <!-- ./col -->
                 <div class="dashboard-col">
             <!-- small box -->
