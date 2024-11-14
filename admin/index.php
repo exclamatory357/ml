@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark/dark.css">
   <!-- Include SweetAlert2 JS -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 <body class="hold-transition skin-green-light sidebar-mini">
@@ -163,12 +164,14 @@ $(function () {
 
   // SWEETALERT NOTIFICATION
   document.addEventListener('DOMContentLoaded', (event) => {
-    <?php if (isset($_SESSION["notify"])) {
+    <?php
+    if (isset($_SESSION["notify"])) {
         $notify = $_SESSION["notify"];
-        unset($_SESSION["notify"]);
+        unset($_SESSION["notify"]); // Clear the notification after retrieving it
     ?>
     let notification = "<?php echo $notify; ?>";
-    switch(notification) {
+    switch (notification) {
+        // Existing cases
         case "success-add":
             Swal.fire({
                 title: 'Success Add!',
@@ -276,11 +279,89 @@ $(function () {
                 confirmButtonText: 'OK'
             });
             break;
+
+        // Integrated cases from the first code block
+        case "duplicate-edit-pumpboat":
+            Swal.fire({
+                icon: 'warning',
+                title: 'Duplicate Entry',
+                text: 'A pumpboat with this license or pumpboat number already exists.',
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "success-edit-pumpboat":
+            Swal.fire({
+                icon: 'success',
+                title: 'Pumpboat Updated',
+                text: 'The pumpboat has been successfully updated.',
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "failed-edit-pumpboat":
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed',
+                text: 'An error occurred while updating the pumpboat.',
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "success-add-pumpboat":
+            Swal.fire({
+                icon: 'success',
+                title: 'Pumpboat Added',
+                text: 'The pumpboat has been successfully added.',
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "failed-add-pumpboat":
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed',
+                text: 'An error occurred while adding the pumpboat.',
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "duplicate-add-pumpboat":
+            Swal.fire({
+                icon: 'warning',
+                title: 'Duplicate Entry',
+                text: 'A pumpboat with this license or pumpboat number already exists.',
+                confirmButtonText: 'OK'
+            });
+            break;
+
+        // Integrated cases from the second code block
+        case "duplicate-name-agent":
+            Swal.fire({
+                icon: 'error',
+                title: 'Duplicate Name',
+                text: 'An agent with this name already exists!',
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "success-add-agent":
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Agent added successfully!',
+                confirmButtonText: 'Great!'
+            });
+            break;
+        case "failed-add-agent":
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed',
+                text: 'Failed to add agent. Please try again.',
+                confirmButtonText: 'OK'
+            });
+            break;
+
         default:
+            // You can add a default case if needed
             break;
     }
     <?php } ?>
-  });
+});
 
   $("body").on("click", ".view", function(e) {
       e.preventDefault();
