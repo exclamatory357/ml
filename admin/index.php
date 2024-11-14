@@ -164,217 +164,124 @@ $(function () {
 
   // SWEETALERT NOTIFICATION
   document.addEventListener('DOMContentLoaded', (event) => {
-    <?php
-    // Start the session if not already started
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
-
-    if (isset($_SESSION["notify"])) {
+    <?php if (isset($_SESSION["notify"])) {
         $notify = $_SESSION["notify"];
-        unset($_SESSION["notify"]); // Clear the notification after retrieving it
-
-        // Initialize an empty array for Swal options
-        $swalOptions = [];
-
-        switch ($notify) {
-            // Existing cases
-            case "success-add":
-                $swalOptions = [
-                    'title' => 'Success Add!',
-                    'text' => 'Data successfully added.',
-                    'icon' => 'success',
-                    'timer' => 5000,
-                    'timerProgressBar' => true,
-                    'showConfirmButton' => true,
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "success-delete":
-                $swalOptions = [
-                    'title' => 'Success Delete!',
-                    'text' => 'Data successfully deleted.',
-                    'icon' => 'success',
-                    'timer' => 5000,
-                    'timerProgressBar' => true,
-                    'showConfirmButton' => true,
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "failed-add":
-                $swalOptions = [
-                    'title' => 'Failed!',
-                    'text' => 'Failed to add.',
-                    'icon' => 'error',
-                    'timer' => 5000,
-                    'timerProgressBar' => true,
-                    'showConfirmButton' => true,
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "confirm":
-                $swalOptions = [
-                    'title' => 'Confirmed!',
-                    'text' => 'Success confirm.',
-                    'icon' => 'success',
-                    'timer' => 5000,
-                    'timerProgressBar' => true,
-                    'showConfirmButton' => true,
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "failed-adds":
-                $swalOptions = [
-                    'title' => 'Failed!',
-                    'text' => 'Failed to Confirm.',
-                    'icon' => 'error',
-                    'timer' => 5000,
-                    'timerProgressBar' => true,
-                    'showConfirmButton' => true,
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "cancel":
-                $swalOptions = [
-                    'title' => 'Canceled!',
-                    'text' => 'Success cancel.',
-                    'icon' => 'success',
-                    'timer' => 5000,
-                    'timerProgressBar' => true,
-                    'showConfirmButton' => true,
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "cancel-failed":
-                $swalOptions = [
-                    'title' => 'Failed!',
-                    'text' => 'Failed to cancel.',
-                    'icon' => 'error',
-                    'timer' => 5000,
-                    'timerProgressBar' => true,
-                    'showConfirmButton' => true,
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "failed":
-                $swalOptions = [
-                    'title' => 'Failed!',
-                    'icon' => 'error',
-                    'timer' => 5000,
-                    'timerProgressBar' => true,
-                    'showConfirmButton' => true,
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "success":
-                $swalOptions = [
-                    'title' => 'Success!',
-                    'icon' => 'success',
-                    'timer' => 5000,
-                    'timerProgressBar' => true,
-                    'showConfirmButton' => true,
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "paid":
-                $swalOptions = [
-                    'title' => 'Fully paid!',
-                    'icon' => 'success',
-                    'timer' => 6000,
-                    'timerProgressBar' => true,
-                    'showConfirmButton' => true,
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-
-            // Integrated cases from your first code block
-            case "duplicate-edit-pumpboat":
-                $swalOptions = [
-                    'icon' => 'warning',
-                    'title' => 'Duplicate Entry',
-                    'text' => 'A pumpboat with this license or pumpboat number already exists.',
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "success-edit-pumpboat":
-                $swalOptions = [
-                    'icon' => 'success',
-                    'title' => 'Pumpboat Updated',
-                    'text' => 'The pumpboat has been successfully updated.',
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "failed-edit-pumpboat":
-                $swalOptions = [
-                    'icon' => 'error',
-                    'title' => 'Failed',
-                    'text' => 'An error occurred while updating the pumpboat.',
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "success-add-pumpboat":
-                $swalOptions = [
-                    'icon' => 'success',
-                    'title' => 'Pumpboat Added',
-                    'text' => 'The pumpboat has been successfully added.',
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "failed-add-pumpboat":
-                $swalOptions = [
-                    'icon' => 'error',
-                    'title' => 'Failed',
-                    'text' => 'An error occurred while adding the pumpboat.',
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "duplicate-add-pumpboat":
-                $swalOptions = [
-                    'icon' => 'warning',
-                    'title' => 'Duplicate Entry',
-                    'text' => 'A pumpboat with this license or pumpboat number already exists.',
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-
-            // Integrated cases from your second code block
-            case "duplicate-name-agent":
-                $swalOptions = [
-                    'icon' => 'error',
-                    'title' => 'Duplicate Name',
-                    'text' => 'An agent with this name already exists!',
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-            case "success-add-agent":
-                $swalOptions = [
-                    'icon' => 'success',
-                    'title' => 'Success',
-                    'text' => 'Agent added successfully!',
-                    'confirmButtonText' => 'Great!'
-                ];
-                break;
-            case "failed-add-agent":
-                $swalOptions = [
-                    'icon' => 'error',
-                    'title' => 'Failed',
-                    'text' => 'Failed to add agent. Please try again.',
-                    'confirmButtonText' => 'OK'
-                ];
-                break;
-
-            default:
-                // No action needed if no matching case
-                break;
-        }
-
-        if (!empty($swalOptions)) {
-            // Output the Swal.fire call with properly encoded options
-            echo "Swal.fire(" . json_encode($swalOptions) . ");";
-        }
-    }
+        unset($_SESSION["notify"]);
     ?>
-});
+    let notification = "<?php echo $notify; ?>";
+    switch(notification) {
+        case "success-add":
+            Swal.fire({
+                title: 'Success Add!',
+                text: 'Data successfully added.',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "success-delete":
+            Swal.fire({
+                title: 'Success Delete!',
+                text: 'Data successfully deleted.',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "failed-add":
+            Swal.fire({
+                title: 'Failed!',
+                text: 'Failed to add.',
+                icon: 'error',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "confirm":
+            Swal.fire({
+                title: 'Confirmed!',
+                text: 'Success confirm.',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "failed-adds":
+            Swal.fire({
+                title: 'Failed!',
+                text: 'Failed to Confirm.',
+                icon: 'error',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "cancel":
+            Swal.fire({
+                title: 'Canceled!',
+                text: 'Success cancel.',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "cancel-failed":
+            Swal.fire({
+                title: 'Failed!',
+                text: 'Failed to cancel.',
+                icon: 'error',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "failed":
+            Swal.fire({
+                title: 'Failed!',
+                icon: 'error',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "success":
+            Swal.fire({
+                title: 'Success!',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "paid":
+            Swal.fire({
+                title: 'Fully paid!',
+                icon: 'success',
+                timer: 6000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        default:
+            break;
+    }
+    <?php } ?>
+  });
 
   $("body").on("click", ".view", function(e) {
       e.preventDefault();
