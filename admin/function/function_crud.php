@@ -427,10 +427,10 @@ if (isset($_POST["btn-cottage-add"])) {
     $query = mysqli_query($con, $sqlcott);
 
     if ($query) {
-        $_SESSION["notify"] = "success-add-agent";
+        $_SESSION["notify"] = "success-add";
         header("location: ../?cottage");
     } else {
-        $_SESSION["notify"] = "failed-add-agent";
+        $_SESSION["notify"] = "failed-add";
         error_log("Failed to insert into cottage/hall: " . mysqli_error($con));
         header("location: ../?cottage");
     }
