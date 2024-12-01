@@ -28,7 +28,7 @@
 
 .p-absolute-login {
     position: absolute;
-    top: 40%;
+    top: 10%;
     left: 75%;
     transform: translate(-50%, -50%);
     width: 100%;
@@ -57,7 +57,7 @@
         @media (max-width: 768px) {
             .p-absolute-login {
                 position: absolute;
-                top: 5%; /* Adjusted for better mobile view */
+                top: 3%; /* Adjusted for better mobile view */
                 left: 50%;
                 transform: translate(-50%, -78%);
                 width: 90%; /* Set specific width for medium mobile screens */
