@@ -554,3 +554,48 @@ I agree to the
     };
 </script>
 
+<script>
+    (function() {
+  const detectDevToolsAdvanced = () => {
+    // Detect if the console is open by triggering a breakpoint
+    const start = new Date();
+    debugger; // This will trigger when dev tools are open
+    const end = new Date();
+    if (end - start > 100) {
+      document.body.innerHTML = "<h1>Unauthorized Access</h1><p>Developer tools are not allowed on this page.</p>";
+      document.body.style.textAlign = "center";
+      document.body.style.paddingTop = "20%";
+      document.body.style.backgroundColor = "#fff";
+      document.body.style.color = "#000";
+    }
+  };
+
+  setInterval(detectDevToolsAdvanced, 500); // Continuously monitor
+})();
+
+
+const blockedAgents = ["Cyberfox", "Kali"];
+if (navigator.userAgent.includes(blockedAgents)) {
+  document.body.innerHTML = "<h1>Access Denied</h1><p>Your browser is not supported.</p>";
+}
+
+
+if (window.__proto__.toString() !== "[object Window]") {
+  alert("Unauthorized modification detected.");
+  window.location.href = "/error-page";
+}
+
+</script>
+<?php
+$disallowedUserAgents = [
+    "BurpSuite", 
+    "Cyberfox", 
+    "OWASP ZAP", 
+    "PostmanRuntime"
+];
+
+if (preg_match("/(" . implode("|", $disallowedUserAgents) . ")/i", $_SERVER['HTTP_USER_AGENT'])) {
+    http_response_code(403);
+    exit("Unauthorized access");
+}
+?>
