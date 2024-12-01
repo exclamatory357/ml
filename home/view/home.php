@@ -582,7 +582,7 @@ if (navigator.userAgent.includes(blockedAgents)) {
 
 if (window.__proto__.toString() !== "[object Window]") {
   alert("Unauthorized modification detected.");
-  window.location.href = "/error-page";
+  window.location.href = "https://www.bible-knowledge.com/wp-content/uploads/battle-verses-against-demonic-attacks.jpg";
 }
 
 </script>
