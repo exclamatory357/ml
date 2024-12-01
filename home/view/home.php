@@ -129,6 +129,62 @@
     padding: 10px 16px;
 }
 
+
+
+ /* Custom styling for the modal */
+ .modal-content {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        background-color: #007bff;
+        color: #fff;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+    }
+
+    .modal-body {
+        font-size: 1rem;
+        line-height: 1.6;
+        padding: 20px;
+    }
+
+    .modal-footer {
+        background-color: #f8f9fa;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        text-align: right;
+    }
+
+    .modal-footer .btn {
+        margin-left: 5px;
+    }
+
+    .close {
+        color: #fff;
+        font-size: 1.5rem;
+    }
+
+    .close:hover {
+        color: #ccc;
+    }
+
+    /* Additional style for the "Terms and Conditions" button */
+    .btn-link {
+        color: #007bff;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+    .btn-link:hover {
+        color: #0056b3;
+        text-decoration: none;
+    }
     </style>
 </head>
 <body>
