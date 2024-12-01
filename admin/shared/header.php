@@ -18,7 +18,7 @@ if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
 }
 
 // Secure Session Settings
-ini_set('session.use_cookies', '1');        // Use cookies for session management
+//ini_set('session.use_cookies', '1');        // Use cookies for session management
 ini_set('session.cookie_secure', '1');     // Enforce HTTPS-only session cookies
 ini_set('session.cookie_httponly', '1');   // Prevent JavaScript access to session cookies
 ini_set('session.cookie_samesite', 'Strict'); // Prevent CSRF by limiting cross-site requests
