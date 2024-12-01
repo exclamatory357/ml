@@ -344,7 +344,7 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
 <p>By using DRFAMS, you acknowledge that you have read, understood, and agree to these Terms and Conditions.</p>
             </div>
             <div class="modal-footer">
-            <h3>
+            <h3 style="font-size: 5px;">
                 <p>DanRose Fishing Agency Management System         Copyright © 2024-2025 All rights reserved.</p>
             </h3>
             </div>
