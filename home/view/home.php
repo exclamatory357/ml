@@ -66,29 +66,27 @@
                 background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for readability on mobile */
             }
         }
-
+        
         @media (max-width: 576px) {
     .p-absolute-login {
         position: absolute;
-        top: 5%; /* Adjust further for smaller screens */
+        top: 10%; /* Adjust the top placement */
         left: 50%;
-        transform: translate(-50%, -40%);
-        width: 60%; /* Set specific width for small mobile screens */
-        max-width: 65%;
-        padding: 10px;
-        background: rgba(255, 255, 255, 0.9); /* Slightly more opaque for readability on mobile */
-        
-        /* Height adjustments */
-        height: auto; /* Ensures height adjusts based on content */
-        min-height: 200px; /* Optional: set a minimum height */
-        max-height: 400px; /* Optional: set a maximum height for scrolling */
-        overflow-y: auto; /* Enable scrolling if content exceeds max-height */
+        transform: translate(-50%, 0); /* Center horizontally */
+        width: 80%; /* Adjust width to fit smaller screens */
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.9); /* Maintain readability */
+        height: auto; /* Ensure the height grows with content */
+        min-height: 300px; /* Provide enough height */
+        max-height: 500px; /* Restrict excessive growth */
+        overflow-y: auto; /* Add scroll for content overflow */
     }
-
+    
     .login-box-body {
-        padding: 10px; /* Reduce padding on very small screens */
+        padding: 15px; /* Add padding for better spacing */
     }
 }
+
 
 
 
