@@ -194,23 +194,32 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
 <div class="login-box-body p-absolute-login container mt-5">
     <p class="login-box-msg text-center">Welcome back!</p>
     <form action="function/login.php" method="post">
-        <div class="form-group has-feedback">
-            <input type="text" class="form-control form-control-lg" placeholder="Enter Username" name="username" required autofocus>
-        </div>
-        <div class="form-group has-feedback">
-           <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required> 
-        </div>
+    <div class="form-group has-feedback">
+        <input type="text" class="form-control form-control-lg" placeholder="Enter Username" name="username" required autofocus>
+    </div>
+    <div class="form-group has-feedback">
+        <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required>
+    </div>
+    
+    <!-- Terms and Conditions Checkbox -->
+    <div class="form-group">
+        <label>
+            <input type="checkbox" name="terms" required>
+            I agree to the <a href="terms-and-conditions.html" target="_blank">Terms and Conditions</a>
+        </label>
+    </div>
 
-        <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin" 
-            <?php if ($login_disabled) echo 'disabled'; ?>>
-            <?php if ($login_disabled) {
-                echo "Login disabled. Try again in " . ceil($remaining_time / 60) . " minute(s)";
-            } else {
-                echo "Sign In";
-            } ?>
-        </button>
-        <button type="button" data-toggle="modal" data-target="#modal-forgot-password" class="btn btn-success btn-block btn-lg">Forgot password</button>
-    </form>
+    <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin" 
+        <?php if ($login_disabled) echo 'disabled'; ?>>
+        <?php if ($login_disabled) {
+            echo "Login disabled. Try again in " . ceil($remaining_time / 60) . " minute(s)";
+        } else {
+            echo "Sign In";
+        } ?>
+    </button>
+    <button type="button" data-toggle="modal" data-target="#modal-forgot-password" class="btn btn-success btn-block btn-lg">Forgot password</button>
+</form>
+
 </div>
 
 
