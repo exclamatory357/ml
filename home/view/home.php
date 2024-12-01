@@ -272,16 +272,80 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
                 </button>
             </div>
             <div class="modal-body">
-                <p>Here are the terms and conditions...</p>
-                <ul>
-                    <li>You must agree to these terms to use our service.</li>
-                    <li>Additional clause...</li>
-                    <li>Other relevant details...</li>
-                </ul>
+            <h1>Terms and Conditions for DanRose Fishing Agency Management System (DRFAMS)</h1>
+
+<h2>1. Acceptance of Terms</h2>
+<p>By accessing or using the DanRose Fishing Agency Management System (DRFAMS), you agree to comply with and be bound by these Terms and Conditions. If you do not agree with any part of these terms, please do not use the system.</p>
+
+<h2>2. Purpose of the System</h2>
+<p>DRFAMS is designed to optimize the operations of fishing agencies. It integrates various functionalities to manage and monitor the daily performance and records of agents involved in fishing operations. The system aims to enhance productivity and improve overall management, providing a user-friendly platform for all users, including administrators.</p>
+
+<h2>3. User Registration and Account Security</h2>
+<ol>
+    <li>Users must register and create an account to access certain features of DRFAMS. Admins will create and manage these accounts to ensure appropriate access levels and security.</li>
+    <li>The system includes different user roles, including administrators who have elevated privileges to manage system settings and user accounts. Admins are authorized only to request cash advances and manage maintenance requests within the system.</li>
+    <li>Users are responsible for maintaining the confidentiality of their login credentials and agree to notify the system administrator immediately if they suspect any unauthorized use of their account.</li>
+    <li>The system reserves the right to suspend or terminate an account that violates the terms outlined in this document.</li>
+</ol>
+
+<h2>4. Admin Account Responsibilities</h2>
+<ol>
+    <li>Admin accounts have access to system-wide settings and user management functionalities necessary for maintaining the system.</li>
+    <li>Admins are limited to requesting cash advances and managing maintenance requests only. Any other system functions and data access are restricted based on user roles.</li>
+    <li>Admins must ensure their account is secured and take appropriate measures to prevent unauthorized access.</li>
+</ol>
+
+<h2>5. System Usage</h2>
+<ol>
+    <li>DRFAMS must be used for legitimate business purposes related to the fishing agency's operations.</li>
+    <li>Users agree not to use the system for any unlawful, fraudulent, or harmful activities.</li>
+    <li>Users shall not disrupt, interfere, or engage in unauthorized access to the system’s network or servers.</li>
+</ol>
+
+<h2>6. Data Privacy and Protection</h2>
+<ol>
+    <li>DRFAMS takes user privacy and data protection seriously. Any data collected will be handled in accordance with applicable data protection laws and regulations.</li>
+    <li>Users consent to the collection and use of personal and operational data for the purposes of system functionality and improvement.</li>
+</ol>
+
+<h2>7. Intellectual Property</h2>
+<ol>
+    <li>All content, features, and functionalities within DRFAMS are the property of DanRose Fishing Agency Management System and are protected by copyright, trademark, and other intellectual property laws.</li>
+    <li>Users are prohibited from copying, modifying, distributing, or replicating any part of the system without prior written consent.</li>
+</ol>
+
+<h2>8. System Availability and Downtime</h2>
+<ol>
+    <li>While DRFAMS aims to provide continuous service, the system may experience interruptions or downtime for maintenance, updates, or unforeseen technical issues.</li>
+    <li>The system will make reasonable efforts to minimize any disruptions and notify users of scheduled maintenance in advance when possible.</li>
+</ol>
+
+<h2>9. Liability Disclaimer</h2>
+<ol>
+    <li>DRFAMS makes no guarantees or warranties regarding the accuracy, completeness, or performance of the system.</li>
+    <li>Users agree to use the system at their own risk. DanRose Fishing Agency Management System is not liable for any damages resulting from system use, including but not limited to data loss, financial losses, or operational disruptions.</li>
+</ol>
+
+<h2>10. Termination of Access</h2>
+<ol>
+    <li>DRFAMS reserves the right to terminate or suspend access to the system for users who violate these Terms and Conditions.</li>
+    <li>The system may also suspend access due to scheduled maintenance or technical reasons, with prior notice when feasible.</li>
+</ol>
+
+<h2>11. Amendments</h2>
+<p>DRFAMS reserves the right to modify or update these Terms and Conditions at any time. Users will be notified of any changes, and continued use of the system after such notifications constitutes acceptance of the revised terms.</p>
+
+<h2>12. Governing Law</h2>
+<p>These Terms and Conditions are governed by and construed in accordance with the laws applicable in the jurisdiction where DRFAMS operates.</p>
+
+<h2>13. Contact Information</h2>
+<p>For any questions or concerns regarding these Terms and Conditions, please contact our support team at [insert contact email/phone].</p>
+
+<p>By using DRFAMS, you acknowledge that you have read, understood, and agree to these Terms and Conditions.</p>
             </div>
             <div class="modal-footer">
             <h3 style="text-align: justify; margin: 20px;">
-                DanRose Fishing Agency Management System (DRFAMS) is designed to optimize the operations of fishing agencies. This system integrates various functionalities to manage and monitor the daily performance and record of agents involved in this agency. DRFAMS is to enhance productivity and improve the overall management of fishing and user-friendly platform.
+                
             </h3>
             </div>
         </div>
