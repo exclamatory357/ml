@@ -78,7 +78,7 @@ try {
     $dom = parseXMLSecurely($xmlString);
 
     // Continue processing $dom...
-    echo "XML processed successfully.";
+    echo " ";
 } catch (Exception $e) {
     // Handle XML processing errors securely
     echo 'Error processing XML: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
