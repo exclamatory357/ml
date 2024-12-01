@@ -23,8 +23,6 @@ ini_set('session.cookie_secure', '1');     // Enforce HTTPS-only session cookies
 ini_set('session.cookie_httponly', '1');   // Prevent JavaScript access to session cookies
 ini_set('session.cookie_samesite', 'Strict'); // Prevent CSRF by limiting cross-site requests
 
-// Start Secure Session
-session_start();
 
 // Disable XML External Entities (XXE) to secure XML processing
 libxml_disable_entity_loader(true); // Disable loading external entities
