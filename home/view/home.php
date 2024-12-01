@@ -345,7 +345,7 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
             </div>
             <div class="modal-footer">
             <h3>
-                <p>DanRose Fishing Agency Management SystemCopyright © 2024-2025 All rights reserved.</p>
+                <p>DanRose Fishing Agency Management System         Copyright © 2024-2025 All rights reserved.</p>
             </h3>
             </div>
         </div>
