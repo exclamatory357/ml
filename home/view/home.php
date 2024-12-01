@@ -66,13 +66,12 @@
                 background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for readability on mobile */
             }
         }
-        
-        @media (max-width: 576px) {
+@media (max-width: 576px) {
     .p-absolute-login {
         position: absolute;
         top: 10%; /* Adjust the top placement */
         left: 50%;
-        transform: translate(-50%, 0); /* Center horizontally */
+        transform: translate(-50%, -55); /* Center horizontally */
         width: 80%; /* Adjust width to fit smaller screens */
         padding: 20px;
         background: rgba(255, 255, 255, 0.9); /* Maintain readability */
