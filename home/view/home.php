@@ -28,8 +28,8 @@
 
 .p-absolute-login {
     position: absolute;
-    top: 50%;
-    left: 75%;
+    top: 70%; /* Adjusted to move the login form down */
+    left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
     max-width: 400px; /* Adjust width as needed */
