@@ -1,64 +1,65 @@
 <?php
-// Ensure headers are sent before any output
-header("Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-scripts.com; frame-ancestors 'none';");
-header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Pragma: no-cache");
-header("Expires: 0");
-header("X-Content-Type-Options: nosniff");
-header("X-Frame-Options: DENY");
-header("X-XSS-Protection: 1; mode=block");
+// Security Headers
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-scripts.com;");
+header("Content-Security-Policy: frame-ancestors 'none';"); // Prevent framing
+header("X-Frame-Options: DENY"); // Deny all framing attempts
+header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"); // Enforce HTTPS
+header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
+header("X-XSS-Protection: 1; mode=block"); // Enable XSS protection in legacy browsers
+
+// Add Missing Security Headers
+header("Referrer-Policy: no-referrer"); // Prevent sending referrer information
+header("Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=()"); // Restrict browser permissions
 
 // Redirect HTTP to HTTPS
-if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
-    header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
+    header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], true, 301);
     exit();
 }
 
-// Set secure session cookie parameters before starting the session
-ini_set('session.cookie_secure', '1');    // Enforces HTTPS-only session cookies
-ini_set('session.cookie_httponly', '1');  // Prevents JavaScript from accessing session cookies
-ini_set('session.cookie_samesite', 'Strict'); // Prevents CSRF by limiting cross-site cookie usage
+// Secure Session Settings
+ini_set('session.use_cookies', '1');        // Use cookies for session management
+ini_set('session.cookie_secure', '1');     // Enforce HTTPS-only session cookies
+ini_set('session.cookie_httponly', '1');   // Prevent JavaScript access to session cookies
+ini_set('session.cookie_samesite', 'Strict'); // Prevent CSRF by limiting cross-site requests
 
-// Set cookie parameters for session
-session_set_cookie_params([
-    'lifetime' => 0,  // Session cookie
-    'path' => '/',     // Available across the whole site
-    'domain' => $_SERVER['HTTP_HOST'], // Ensure cookie is scoped to the domain
-    'secure' => true,  // Only sent over HTTPS
-    'httponly' => true, // Accessible only via HTTP (not JavaScript)
-    'samesite' => 'Strict', // Strict SameSite policy
-]);
-
-// Start the session after setting the secure session parameters
+// Start Secure Session
 session_start();
 
-// Anti-XXE: Secure XML parsing
-libxml_disable_entity_loader(true); // Disable loading of external entities
-libxml_use_internal_errors(true);   // Suppress libxml errors for better handling
+// Disable XML External Entities (XXE) to secure XML processing
+libxml_disable_entity_loader(true); // Disable loading external entities
+libxml_use_internal_errors(true);   // Suppress XML errors for better handling
 
+/**
+ * Securely parse an XML string.
+ *
+ * @param string $xmlString The XML string to parse.
+ * @return DOMDocument The parsed XML document.
+ * @throws Exception If the XML fails to load.
+ */
 function parseXMLSecurely($xmlString) {
     $dom = new DOMDocument();
     
-    // Load the XML string securely
-    if (!$dom->loadXML($xmlString, LIBXML_NOENT | LIBXML_DTDLOAD | LIBXML_DTDATTR | LIBXML_NOCDATA)) {
+    // Load XML securely with minimal risky flags
+    if (!$dom->loadXML($xmlString, LIBXML_NOENT | LIBXML_NONET | LIBXML_NOCDATA)) {
         throw new Exception('Error loading XML');
     }
     
-    // Process the XML content safely
     return $dom;
 }
 
-// Example usage
+// Example Usage of XML Parsing
 try {
     $xmlString = '<root><element>Sample</element></root>'; // Replace with actual XML input
     $dom = parseXMLSecurely($xmlString);
-    // Continue processing $dom...
+    // Further processing of the $dom object...
 } catch (Exception $e) {
-    // Handle errors securely
-    echo 'Error processing XML: ' . $e->getMessage();
+    // Secure error handling
+    error_log('XML Parsing Error: ' . $e->getMessage()); // Log the error for debugging
+    echo 'An error occurred while processing your request.';
 }
 ?>
+
 
 <header class="main-header">
     <!-- Logo -->
