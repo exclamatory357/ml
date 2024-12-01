@@ -194,25 +194,23 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
 <div class="login-box-body p-absolute-login container mt-5">
     <p class="login-box-msg text-center">Welcome back!</p>
     <form action="function/login.php" method="post">
-    <div class="form-group has-feedback">
-        <input type="text" class="form-control form-control-lg" placeholder="Enter Username" name="username" required autofocus>
-    </div>
-    <div class="form-group has-feedback">
-        <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required>
-    </div>
-    <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
+        <div class="form-group has-feedback">
+            <input type="text" class="form-control form-control-lg" placeholder="Enter Username" name="username" required autofocus>
+        </div>
+        <div class="form-group has-feedback">
+           <input type="password" class="form-control form-control-lg" placeholder="Enter Password" name="password" required> 
+        </div>
 
-    <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin"
-        <?php if ($login_disabled) echo 'disabled'; ?>>
-        <?php if ($login_disabled): ?>
-            Login disabled. Try again in <?= ceil($remaining_time / 60) ?> minute(s).
-        <?php else: ?>
-            Sign In
-        <?php endif; ?>
-    </button>
-    <button type="button" data-toggle="modal" data-target="#modal-forgot-password" class="btn btn-success btn-block btn-lg">Forgot password</button>
-</form>
-
+        <button type="submit" class="btn btn-primary btn-block btn-lg" name="btnlogin" 
+            <?php if ($login_disabled) echo 'disabled'; ?>>
+            <?php if ($login_disabled) {
+                echo "Login disabled. Try again in " . ceil($remaining_time / 60) . " minute(s)";
+            } else {
+                echo "Sign In";
+            } ?>
+        </button>
+        <button type="button" data-toggle="modal" data-target="#modal-forgot-password" class="btn btn-success btn-block btn-lg">Forgot password</button>
+    </form>
 </div>
 
 
@@ -376,10 +374,3 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
     };
 </script>
 
-<script>
-  grecaptcha.ready(function() {
-    grecaptcha.execute('6LdDXo8qAAAAAH1-5iAjDN6HEDN17Tly-GwxcrjZ', { action: 'login' }).then(function(token) {
-      document.getElementById('recaptchaResponse').value = token;
-    });
-  });
-</script>

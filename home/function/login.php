@@ -175,37 +175,3 @@ if (isset($_POST["btnlogin"])) {
     }
 }
 ?>
-<?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $recaptchaResponse = $_POST['recaptcha_response'];
-    $secretKey = '6LdDXo8qAAAAAGqXCz1aWC3sRbxwc-ZTU8wfW2D-';
-
-    $verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
-    $data = [
-        'secret' => $secretKey,
-        'response' => $recaptchaResponse,
-        'remoteip' => $_SERVER['REMOTE_ADDR']
-    ];
-
-    $options = [
-        'http' => [
-            'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-            'method' => 'POST',
-            'content' => http_build_query($data)
-        ]
-    ];
-
-    $context = stream_context_create($options);
-    $response = file_get_contents($verifyUrl, false, $context);
-    $result = json_decode($response, true);
-
-    if ($result['success'] && $result['score'] >= 0.5) {
-        // Proceed with login logic
-        echo "reCAPTCHA verified. Proceeding with login...";
-    } else {
-        // Handle failed reCAPTCHA verification
-        echo "reCAPTCHA failed. Please try again.";
-        exit;
-    }
-}
-?>
