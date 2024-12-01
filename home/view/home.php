@@ -131,60 +131,39 @@
 
 
 
- /* Custom styling for the modal */
- .modal-content {
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+/* Center modal */
+.modal-dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px;
+    margin: auto;
+}
 
-    .modal-header {
-        background-color: #007bff;
-        color: #fff;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-    }
+/* Modal content styling */
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
-    .modal-title {
-        font-size: 1.5rem;
-    }
+/* Modal header */
+.modal-header {
+    background-color: #007bff;
+    color: white;
+}
 
-    .modal-body {
-        font-size: 1rem;
-        line-height: 1.6;
-        padding: 20px;
-    }
+/* Modal footer */
+.modal-footer {
+    justify-content: flex-end;
+}
 
-    .modal-footer {
-        background-color: #f8f9fa;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-        text-align: right;
-    }
+/* Add a background color and padding to the modal body */
+.modal-body {
+    padding: 20px;
+    font-size: 1rem;
+    line-height: 1.6;
+}
 
-    .modal-footer .btn {
-        margin-left: 5px;
-    }
-
-    .close {
-        color: #fff;
-        font-size: 1.5rem;
-    }
-
-    .close:hover {
-        color: #ccc;
-    }
-
-    /* Additional style for the "Terms and Conditions" button */
-    .btn-link {
-        color: #007bff;
-        font-weight: bold;
-        text-decoration: underline;
-    }
-
-    .btn-link:hover {
-        color: #0056b3;
-        text-decoration: none;
-    }
     </style>
 </head>
 <body>
@@ -280,8 +259,9 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
     </button>
     <button type="button" data-toggle="modal" data-target="#modal-forgot-password" class="btn btn-success btn-block btn-lg">Forgot password</button>
 </form>
+</div>
 
-<!-- Terms and Conditions Modal -->
+<!-- Modal Structure -->
 <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -293,20 +273,19 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
             </div>
             <div class="modal-body">
                 <p>Here are the terms and conditions...</p>
-                <!-- Replace this with your actual terms and conditions content -->
-                <p>1. You must agree to these terms to use our service.</p>
-                <p>2. Additional clause...</p>
-                <p>3. Other relevant details...</p>
+                <ul>
+                    <li>You must agree to these terms to use our service.</li>
+                    <li>Additional clause...</li>
+                    <li>Other relevant details...</li>
+                </ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Agree</button>
             </div>
         </div>
     </div>
 </div>
-
-</div>
-
 
         
         
