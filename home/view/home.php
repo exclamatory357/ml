@@ -280,8 +280,9 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
                 </ul>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Agree</button>
+            <h3 style="text-align: justify; margin: 20px;">
+                DanRose Fishing Agency Management System (DRFAMS) is designed to optimize the operations of fishing agencies. This system integrates various functionalities to manage and monitor the daily performance and record of agents involved in this agency. DRFAMS is to enhance productivity and improve the overall management of fishing and user-friendly platform.
+            </h3>
             </div>
         </div>
     </div>
