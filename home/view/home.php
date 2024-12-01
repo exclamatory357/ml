@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="https://www.google.com/recaptcha/api.js?render=your_site_key"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=6LdDXo8qAAAAAH1-5iAjDN6HEDN17Tly-GwxcrjZ"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
