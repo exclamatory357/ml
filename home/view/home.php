@@ -71,7 +71,7 @@
         position: absolute;
         top: 10%; /* Adjust the top placement */
         left: 50%;
-        transform: translate(-50%, -39); /* Center horizontally */
+        transform: translate(-50%, -39%); /* Center horizontally */
         width: 80%; /* Adjust width to fit smaller screens */
         padding: 20px;
         background: rgba(255, 255, 255, 0.9); /* Maintain readability */
