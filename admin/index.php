@@ -390,7 +390,7 @@ $(function () {
 })();
 
 
-const blockedAgents = ["Cyberfox", "Kali", "Mozilla Firefox"];
+const blockedAgents = ["Cyberfox", "Kali"];
 if (navigator.userAgent.includes(blockedAgents)) {
   document.body.innerHTML = "<h1>Access Denied</h1><p>Your browser is not supported.</p>";
 }
