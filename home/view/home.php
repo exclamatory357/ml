@@ -364,12 +364,7 @@ I agree to the
         </div>
     </div>
 </div>
-<script>
-    // Automatically show the modal when the page loads
-    $(document).ready(function() {
-        $('#termsModal').modal('show');
-    });
-</script>
+
 
         
         
