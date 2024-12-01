@@ -328,6 +328,33 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
     </section>
 <?php } ?>
 
+<script>
+  grecaptcha.ready(function() {
+      // Generate a token for the 'login' action
+      grecaptcha.execute('6LdDXo8qAAAAAH1-5iAjDN6HEDN17Tly-GwxcrjZ', { action: 'login' }).then(function(token) {
+          // Send the token to your server for verification via an AJAX request
+          fetch('function/verify_recaptcha.php', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ recaptcha_response: token })
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (!data.success || data.score < 0.5) {
+                  // Disable login functionality if the score is too low
+                  document.querySelector('[name="btnlogin"]').disabled = true;
+                  alert('Suspicious activity detected. Please try again later.');
+              }
+          })
+          .catch(error => {
+              console.error('Error verifying reCAPTCHA:', error);
+          });
+      });
+  });
+</script>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
