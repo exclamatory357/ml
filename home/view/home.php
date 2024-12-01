@@ -243,9 +243,7 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
     <!-- Terms and Conditions Checkbox -->
     <div class="form-group">
         <label>
-            <input type="checkbox" name="terms" required>
-            I agree to the 
-            <input type="checkbox" id="agreeCheckbox" class="form-check-input"> I agree to the terms and conditions
+        <input type="checkbox" id="agreeCheckbox" class="form-check-input"> I agree to the terms and conditions
 
 <script>
 $(document).ready(function() {
