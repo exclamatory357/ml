@@ -1,48 +1,58 @@
 <?php
 // Security Headers
 header("Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-scripts.com;");
-header("Content-Security-Policy: frame-ancestors 'none';"); // Combines CSP directives for frame restrictions
-header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"); // Enforces HTTPS
-header("X-Content-Type-Options: nosniff"); // Prevents MIME-type sniffing
-header("X-Frame-Options: DENY"); // Prevents clickjacking
-header("X-XSS-Protection: 1; mode=block"); // Basic XSS protection (deprecated but harmless)
+header("Content-Security-Policy: frame-ancestors 'none';"); // Prevent framing
+header("X-Frame-Options: DENY"); // Deny all framing attempts
+header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"); // Enforce HTTPS
+header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
+header("X-XSS-Protection: 1; mode=block"); // Enable XSS protection in legacy browsers
 
-// Redirect to HTTPS if not already on HTTPS
+// Redirect HTTP to HTTPS
 if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
     header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], true, 301);
     exit();
 }
 
-// Secure session cookie settings
-ini_set('session.cookie_secure', '1');    // Enforces HTTPS-only session cookies
-ini_set('session.cookie_httponly', '1');  // Prevents JavaScript from accessing session cookies
-ini_set('session.cookie_samesite', 'Strict'); // Prevents CSRF by limiting cross-site cookie usage
+// Secure Session Settings
+ini_set('session.use_cookies', '1');        // Use cookies for session management
+ini_set('session.cookie_secure', '1');     // Enforce HTTPS-only session cookies
+ini_set('session.cookie_httponly', '1');   // Prevent JavaScript access to session cookies
+ini_set('session.cookie_samesite', 'Strict'); // Prevent CSRF by limiting cross-site requests
 
-// Anti-XXE: Secure XML Parsing Settings
-libxml_disable_entity_loader(true); // Disable loading of external entities
-libxml_use_internal_errors(true);   // Suppress libxml errors for better handling
+// Start Secure Session
+session_start();
 
-// Secure XML Parsing Function
+// Disable XML External Entities (XXE) to secure XML processing
+libxml_disable_entity_loader(true); // Disable loading external entities
+libxml_use_internal_errors(true);   // Suppress XML errors for better handling
+
+/**
+ * Securely parse an XML string.
+ *
+ * @param string $xmlString The XML string to parse.
+ * @return DOMDocument The parsed XML document.
+ * @throws Exception If the XML fails to load.
+ */
 function parseXMLSecurely($xmlString) {
     $dom = new DOMDocument();
     
-    // Load the XML string securely with safe options
-    if (!$dom->loadXML($xmlString, LIBXML_NOENT | LIBXML_DTDLOAD | LIBXML_DTDATTR | LIBXML_NOCDATA)) {
+    // Load XML securely with minimal risky flags
+    if (!$dom->loadXML($xmlString, LIBXML_NOENT | LIBXML_NONET | LIBXML_NOCDATA)) {
         throw new Exception('Error loading XML');
     }
     
-    return $dom; // Safely return the DOMDocument object
+    return $dom;
 }
 
-// Example usage of the XML parsing function
+// Example Usage of XML Parsing
 try {
     $xmlString = '<root><element>Sample</element></root>'; // Replace with actual XML input
     $dom = parseXMLSecurely($xmlString);
-    // Continue processing $dom...
+    // Further processing of the $dom object...
 } catch (Exception $e) {
-    // Securely handle errors
-    error_log('XML Parsing Error: ' . $e->getMessage()); // Log errors instead of exposing them to users
-    echo 'An error occurred while processing the XML.';
+    // Secure error handling
+    error_log('XML Parsing Error: ' . $e->getMessage()); // Log the error for debugging
+    echo 'An error occurred while processing your request.';
 }
 ?>
 
