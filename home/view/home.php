@@ -30,7 +30,7 @@
     position: absolute;
     top: 10%;
     left: 75%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -45%);
     width: 100%;
     max-width: 400px; /* Adjust width as needed */
     height: auto; /* Ensures height adjusts to content */
@@ -74,7 +74,7 @@
         transform: translate(-50%, -39%); /* Center horizontally */
         width: 80%; /* Adjust width to fit smaller screens */
         padding: 20px;
-        background: rgba(255, 255, 255, 0.9); /* Maintain readability */
+        background: rgba(255, 255, 255, 0.7); /* Maintain readability */
         height: auto; /* Ensure the height grows with content */
         min-height: 300px; /* Provide enough height */
         max-height: 420px; /* Restrict excessive growth */
