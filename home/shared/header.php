@@ -24,7 +24,7 @@ ini_set('session.cookie_samesite', 'Strict'); // Prevents CSRF by limiting cross
 session_set_cookie_params([
     'lifetime' => 0,  // Session cookie
     'path' => '/',     // Available across the whole site
-    'domain' => $_SERVER['HTTP_HOST'], // Ensure cookie is scoped to the domain
+    'domain' => $_SERVER['HTTPS_HOST'], // Ensure cookie is scoped to the domain
     'secure' => true,  // Only sent over HTTPS
     'httponly' => true, // Accessible only via HTTP (not JavaScript)
     'samesite' => 'Strict', // Strict SameSite policy
