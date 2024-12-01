@@ -245,7 +245,18 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
         <label>
             <input type="checkbox" name="terms" required>
             I agree to the 
-            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#termsModal">Terms and Conditions</button>
+            <input type="checkbox" id="agreeCheckbox" class="form-check-input"> I agree to the terms and conditions
+
+<script>
+$(document).ready(function() {
+    $('#agreeCheckbox').on('change', function() {
+        if ($(this).is(':checked')) {
+            $('#termsModal').modal('hide');
+        }
+    });
+});
+</script>
+
         </label>
     </div>
 
@@ -352,6 +363,12 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
         </div>
     </div>
 </div>
+<script>
+    // Automatically show the modal when the page loads
+    $(document).ready(function() {
+        $('#termsModal').modal('show');
+    });
+</script>
 
         
         
