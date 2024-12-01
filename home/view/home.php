@@ -71,13 +71,13 @@
         position: absolute;
         top: 10%; /* Adjust the top placement */
         left: 50%;
-        transform: translate(-50%, -55); /* Center horizontally */
+        transform: translate(-50%, -46); /* Center horizontally */
         width: 80%; /* Adjust width to fit smaller screens */
         padding: 20px;
         background: rgba(255, 255, 255, 0.9); /* Maintain readability */
         height: auto; /* Ensure the height grows with content */
         min-height: 300px; /* Provide enough height */
-        max-height: 500px; /* Restrict excessive growth */
+        max-height: 420px; /* Restrict excessive growth */
         overflow-y: auto; /* Add scroll for content overflow */
     }
     
