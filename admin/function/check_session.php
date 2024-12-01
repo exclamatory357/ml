@@ -1,6 +1,6 @@
 <?php
 session_start();
-$user_type_id = $_SESSION['user_type_id'];
+$user_id = $_SESSION['user_id'];
 $session_token = $_SESSION['session_token'];
 $session_file = "../../sessions/{$user_id}.txt";
 
