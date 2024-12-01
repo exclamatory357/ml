@@ -1,13 +1,27 @@
 <?php
 session_start();
 include "../../config/db.php";
-include "../../includes/sesyon_timeout.php"; // Include session timeout logic
+
+// Function to start a new session entry
+function start_user_session($trans_no, $child, $con) {
+    $sql = "INSERT INTO reservation (trans_no, child, adult, balance) VALUES (?, ?, 1, NOW())";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param("is", $trans_no, $child);
+    $stmt->execute();
+}
+
+// Function to remove a specific session entry
+function remove_user_session($child, $con) {
+    $sql = "DELETE FROM reservation WHERE child = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param("s", $child);
+    $stmt->execute();
+}
 
 // Define maximum attempts and lockout duration
 $max_attempts = 3;
 $lockout_duration = 300; // 5 minutes in seconds
 
-// Function to handle login logic
 if (isset($_POST["btnlogin"])) {
     // Check if the user is locked out
     if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= $max_attempts) {
@@ -48,7 +62,7 @@ if (isset($_POST["btnlogin"])) {
         $get_password_hash = $res["pass"];
 
         if (password_verify($password, $get_password_hash)) {
-            session_regenerate_id(true); // Regenerate session ID for security
+            session_regenerate_id(true);
 
             // Reset login attempts on successful login
             $_SESSION['login_attempts'] = 0;
@@ -57,9 +71,8 @@ if (isset($_POST["btnlogin"])) {
             // OTP generation and sending via PHPMailer
             $otp = rand(100000, 999999);
             $_SESSION["otp"] = $otp;
-            $_SESSION["otp_expiration"] = time() + 300; // OTP valid for 5 minutes
+            $_SESSION["otp_expiration"] = time() + 300;
 
-            // Set session variables
             $_SESSION["user_id"] = $res["user_id"];
             $_SESSION["username"] = $res["uname"];
             $_SESSION["role"] = $res["user_type_name"];
