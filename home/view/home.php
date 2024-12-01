@@ -76,6 +76,7 @@
                 width: 95%; /* Set specific width for small mobile screens */
                 max-width: 95%;
                 padding: 10px;
+                opacity: 80%;
                 background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for readability on mobile */
             }
 
