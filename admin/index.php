@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://www.google.com/recaptcha/api.js?render=6LdDXo8qAAAAAH1-5iAjDN6HEDN17Tly-GwxcrjZ"></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>DRFAMS</title>
@@ -298,6 +299,32 @@ $(function () {
 
   $(".btnhide").on("click", function() {
       $(".hideme").modal('hide');
+  });
+</script>
+<script>
+  grecaptcha.ready(function() {
+      // Generate a token for the 'login' action
+      grecaptcha.execute('6LdDXo8qAAAAAH1-5iAjDN6HEDN17Tly-GwxcrjZ', { action: 'login' }).then(function(token) {
+          // Send the token to your server for verification via an AJAX request
+          fetch('function/verify_recaptcha.php', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ recaptcha_response: token })
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (!data.success || data.score < 0.5) {
+                  // Disable login functionality if the score is too low
+                  document.querySelector('[name="btnlogin"]').disabled = true;
+                  alert('Suspicious activity detected. Please try again later.');
+              }
+          })
+          .catch(error => {
+              console.error('Error verifying reCAPTCHA:', error);
+          });
+      });
   });
 </script>
 
