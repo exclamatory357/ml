@@ -1,51 +1,90 @@
 <?php
+// ==============================
 // Security Headers
-header("Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-scripts.com; frame-ancestors 'none';");
-header("X-Frame-Options: DENY"); // Prevents clickjacking
-header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"); // Enforces HTTPS
-header("X-Content-Type-Options: nosniff"); // Prevents MIME sniffing
-header("X-XSS-Protection: 1; mode=block"); // XSS protection for older browsers
-header("Referrer-Policy: no-referrer-when-downgrade"); // Controls referrer information sent
-header("Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=()"); // Restricts browser APIs
+// ==============================
 
+// Content Security Policy: Restricts sources for content, scripts, and frames
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-scripts.com; frame-ancestors 'none';");
+
+// Prevent clickjacking by disallowing framing
+header("X-Frame-Options: DENY");
+
+// Enforce HTTPS using Strict-Transport-Security
+header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+
+// Prevent MIME type sniffing
+header("X-Content-Type-Options: nosniff");
+
+// Enable basic XSS protection for older browsers
+header("X-XSS-Protection: 1; mode=block");
+
+// Control referrer information sent with requests
+header("Referrer-Policy: no-referrer-when-downgrade");
+
+// Restrict usage of certain browser features and APIs
+header("Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=()");
+
+// ==============================
 // Redirect HTTP to HTTPS
+// ==============================
 if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
     header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
     exit();
 }
 
-// Secure session cookie settings
+// ==============================
+// Secure Session Cookie Settings
+// ==============================
 ini_set('session.cookie_secure', '1');          // Enforces HTTPS-only session cookies
 ini_set('session.cookie_httponly', '1');        // Prevents JavaScript access to session cookies
 ini_set('session.cookie_samesite', 'Strict');   // Mitigates CSRF by limiting cross-site cookie usage
-session_start();                                // Start session to apply secure cookie settings
 
-// Anti-XXE: Secure XML parsing
-libxml_disable_entity_loader(true); // Disable loading of external entities
-libxml_use_internal_errors(true);   // Suppress libxml errors for better handling
+// Start a session securely
+session_start();                                
 
+// ==============================
+// Anti-XXE: Secure XML Parsing
+// ==============================
+
+// Disable loading of external entities to prevent XXE attacks
+libxml_disable_entity_loader(true);
+
+// Suppress libxml errors to allow custom handling
+libxml_use_internal_errors(true);
+
+/**
+ * Securely parses XML strings to prevent XXE vulnerabilities.
+ *
+ * @param string $xmlString The XML input as a string.
+ * @return DOMDocument The parsed DOMDocument object.
+ * @throws Exception If parsing fails.
+ */
 function parseXMLSecurely($xmlString) {
     $dom = new DOMDocument();
-    
-    // Securely load the XML string
+
+    // Load the XML string securely
     if (!$dom->loadXML($xmlString, LIBXML_NOENT | LIBXML_DTDLOAD | LIBXML_DTDATTR | LIBXML_NOCDATA)) {
         throw new Exception('Error loading XML');
     }
-    
-    // Return the processed DOMDocument
+
     return $dom;
 }
 
+// ==============================
 // Example Usage
+// ==============================
 try {
     $xmlString = '<root><element>Sample</element></root>'; // Replace with actual XML input
     $dom = parseXMLSecurely($xmlString);
+
     // Continue processing $dom...
+    echo "XML processed successfully.";
 } catch (Exception $e) {
-    // Handle errors securely
-    echo 'Error processing XML: ' . $e->getMessage();
+    // Handle XML processing errors securely
+    echo 'Error processing XML: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
 }
 ?>
+
 
 <header class="main-header">
     <nav class="navbar navbar-static-top">
