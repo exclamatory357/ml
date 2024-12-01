@@ -7,6 +7,10 @@ header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"
 header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
 header("X-XSS-Protection: 1; mode=block"); // Enable XSS protection in legacy browsers
 
+// Add Missing Security Headers
+header("Referrer-Policy: no-referrer"); // Prevent sending referrer information
+header("Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=()"); // Restrict browser permissions
+
 // Redirect HTTP to HTTPS
 if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
     header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], true, 301);
