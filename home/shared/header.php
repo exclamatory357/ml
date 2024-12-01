@@ -1,29 +1,24 @@
 <?php
-header("Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-scripts.com;");
-header("X-Frame-Options: DENY");
-header("Content-Security-Policy: frame-ancestors 'none';");
-header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+// Security Headers
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-scripts.com; frame-ancestors 'none';");
+header("X-Frame-Options: DENY"); // Prevents clickjacking
+header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"); // Enforces HTTPS
+header("X-Content-Type-Options: nosniff"); // Prevents MIME sniffing
+header("X-XSS-Protection: 1; mode=block"); // XSS protection for older browsers
+header("Referrer-Policy: no-referrer-when-downgrade"); // Controls referrer information sent
+header("Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=()"); // Restricts browser APIs
 
-
-// Redirect all HTTP requests to HTTPS if not already using HTTPS
+// Redirect HTTP to HTTPS
 if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
-  header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-  exit();
+    header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+    exit();
 }
 
-
-
 // Secure session cookie settings
-ini_set('session.cookie_secure', '1');    // Enforces HTTPS-only session cookies
-ini_set('session.cookie_httponly', '1');  // Prevents JavaScript from accessing session cookies
-ini_set('session.cookie_samesite', 'Strict'); // Prevents CSRF by limiting cross-site cookie usage
-
-
-// Additional security headers
-header("X-Content-Type-Options: nosniff");
-header("X-Frame-Options: DENY");
-header("X-XSS-Protection: 1; mode=block");
-
+ini_set('session.cookie_secure', '1');          // Enforces HTTPS-only session cookies
+ini_set('session.cookie_httponly', '1');        // Prevents JavaScript access to session cookies
+ini_set('session.cookie_samesite', 'Strict');   // Mitigates CSRF by limiting cross-site cookie usage
+session_start();                                // Start session to apply secure cookie settings
 
 // Anti-XXE: Secure XML parsing
 libxml_disable_entity_loader(true); // Disable loading of external entities
@@ -32,16 +27,16 @@ libxml_use_internal_errors(true);   // Suppress libxml errors for better handlin
 function parseXMLSecurely($xmlString) {
     $dom = new DOMDocument();
     
-    // Load the XML string securely
+    // Securely load the XML string
     if (!$dom->loadXML($xmlString, LIBXML_NOENT | LIBXML_DTDLOAD | LIBXML_DTDATTR | LIBXML_NOCDATA)) {
         throw new Exception('Error loading XML');
     }
     
-    // Process the XML content safely
+    // Return the processed DOMDocument
     return $dom;
 }
 
-// Example usage
+// Example Usage
 try {
     $xmlString = '<root><element>Sample</element></root>'; // Replace with actual XML input
     $dom = parseXMLSecurely($xmlString);
@@ -51,6 +46,7 @@ try {
     echo 'Error processing XML: ' . $e->getMessage();
 }
 ?>
+
 <header class="main-header">
     <nav class="navbar navbar-static-top">
       <div class="container">
