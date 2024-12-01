@@ -72,7 +72,7 @@
                 position: absolute;
                 top: 5%; /* Adjust further for smaller screens */
                 left: 50%;
-                transform: translate(-50%, -78%);
+                transform: translate(-30%, -60%);
                 width: 95%; /* Set specific width for small mobile screens */
                 max-width: 95%;
                 padding: 10px;
