@@ -30,7 +30,7 @@
     position: absolute;
     top: 10%;
     left: 75%;
-    transform: translate(-50%, -45%);
+    transform: translate(-50%, -42%);
     width: 100%;
     max-width: 400px; /* Adjust width as needed */
     height: auto; /* Ensures height adjusts to content */
