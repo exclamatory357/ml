@@ -205,7 +205,8 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
     <div class="form-group">
         <label>
             <input type="checkbox" name="terms" required>
-            I agree to the <a href="terms-and-conditions.html" target="_blank">Terms and Conditions</a>
+            I agree to the 
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#termsModal">Terms and Conditions</button>
         </label>
     </div>
 
@@ -219,6 +220,30 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
     </button>
     <button type="button" data-toggle="modal" data-target="#modal-forgot-password" class="btn btn-success btn-block btn-lg">Forgot password</button>
 </form>
+
+<!-- Terms and Conditions Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Here are the terms and conditions...</p>
+                <!-- Replace this with your actual terms and conditions content -->
+                <p>1. You must agree to these terms to use our service.</p>
+                <p>2. Additional clause...</p>
+                <p>3. Other relevant details...</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </div>
 
