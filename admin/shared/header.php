@@ -12,6 +12,10 @@ if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
 }
 
 
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 
 // Secure session cookie settings
 ini_set('session.cookie_secure', '1');    // Enforces HTTPS-only session cookies
