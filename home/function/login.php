@@ -62,6 +62,12 @@ if (isset($_POST["btnlogin"])) {
             $_SESSION["role"] = $res["user_type_name"];
             $_SESSION["type_id"] = $res["user_type_id"];
 
+            // Update login status to 1 (logged in)
+            $update_status_sql = "UPDATE user SET reset_token = 1 WHERE user_id = ?";
+            $status_stmt = $con->prepare($update_status_sql);
+            $status_stmt->bind_param("i", $res["user_id"]);
+            $status_stmt->execute();
+
             // Set up PHPMailer to send OTP
             require 'phpmailer/PHPMailerAutoload.php';
             $mail = new PHPMailer;
@@ -152,6 +158,7 @@ if (isset($_POST["btnlogin"])) {
             header("Location: otp_verification.php");
             exit();
         } else {
+            // Increment login attempts on invalid password
             $_SESSION['login_attempts'] = isset($_SESSION['login_attempts']) ? $_SESSION['login_attempts'] + 1 : 1;
 
             if ($_SESSION['login_attempts'] >= $max_attempts) {
