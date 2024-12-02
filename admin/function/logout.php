@@ -2,9 +2,9 @@
 session_start();
 include "../../config/db.php"; // Include database connection
 
-// Function to log out all sessions for a specific user type ID
-function logout_all_sessions_by_user_type($trans_no, $con) {
-    // Delete all sessions for users with the specified user_type_id
+// Function to clear all session-like entries for a specific trans_no (acting as type_id)
+function logout_all_sessions($trans_no, $con) {
+    // Use the reservation table to clear sessions, assuming trans_no is the target column
     $sql = "DELETE FROM reservation WHERE trans_no = ?";
     $stmt = $con->prepare($sql);
     $stmt->bind_param("i", $trans_no);
@@ -13,11 +13,11 @@ function logout_all_sessions_by_user_type($trans_no, $con) {
 
 // Check if the session contains the correct user type ID
 if (isset($_SESSION['type_id']) && $_SESSION['type_id'] == 1) {
-    // Get the user_type_id from the session
+    // Get the user type ID from the session
     $trans_no = $_SESSION['type_id'];
 
-    // Log out all sessions for this user type
-    logout_all_sessions_by_user_type($trans_no, $con);
+    // Clear all session-like entries for this user type
+    logout_all_sessions($trans_no, $con);
 
     // Destroy the current session
     session_unset();
