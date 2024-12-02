@@ -177,107 +177,93 @@ $(function () {
   });
 
   <?php
-  if (isset($_SESSION["notify"])) {
-      switch ($_SESSION["notify"]) {
-          case "success-reg":
-              echo "Swal.fire({
-                      icon: 'success',
-                      title: 'Success Registration!',
-                      text: 'Data successfully Registered.',
-                      timer: 5000,
-                      timerProgressBar: true,
-                      showConfirmButton: false
-                  });";
-              break;
-          case "success-reserve":
-              echo "Swal.fire({
-                      icon: 'success',
-                      title: 'Success Added!',
-                      text: 'Reservation Added.',
-                      timer: 5000,
-                      timerProgressBar: true,
-                      showConfirmButton: false
-                  });";
-              break;
-          case "failed":
-              echo "Swal.fire({
-                      icon: 'error',
-                      title: 'Failed Action!',
-                      text: 'Failed.',
-                      timer: 5000,
-                      timerProgressBar: true,
-                      showConfirmButton: false
-                  });";
-              break;
-          case "success":
-              echo "Swal.fire({
-                      icon: 'success',
-                      title: 'Success Action!',
-                      text: 'Success.',
-                      timer: 5000,
-                      timerProgressBar: true,
-                      showConfirmButton: false
-                  });";
-              break;
-          case "invalid":
-              echo "Swal.fire({
-                      icon: 'error',
-                      title: 'Invalid  Username or Password!',
-                      text: 'Invalid.',
-                      timer: 5000,
-                      timerProgressBar: true,
-                      showConfirmButton: false
-                  });";
-              break;
-          case "not-found":
-              echo "Swal.fire({
-                      icon: 'error',
-                      title: 'Record not found!',
-                      text: 'Not found.',
-                      timer: 5000,
-                      timerProgressBar: true,
-                      showConfirmButton: false
-                  });";
-              break;
-          case "cancel":
-              echo "Swal.fire({
-                      icon: 'error',
-                      title: 'Cancelled success!',
-                      timer: 5000,
-                      timerProgressBar: true,
-                      showConfirmButton: false
-                  });";
-              break;
-      }
-      unset($_SESSION["notify"]);
-  }
-  ?>
+if (isset($_SESSION["notify"])) {
+    switch ($_SESSION["notify"]) {
+        case "success-reg":
+            echo "Swal.fire({
+                    icon: 'success',
+                    title: 'Success Registration!',
+                    text: 'Data successfully Registered.',
+                    timer: 5000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });";
+            break;
+        case "success-reserve":
+            echo "Swal.fire({
+                    icon: 'success',
+                    title: 'Success Added!',
+                    text: 'Reservation Added.',
+                    timer: 5000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });";
+            break;
+        case "failed":
+            echo "Swal.fire({
+                    icon: 'error',
+                    title: 'Failed Action!',
+                    text: 'Failed.',
+                    timer: 5000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });";
+            break;
+        case "success":
+            echo "Swal.fire({
+                    icon: 'success',
+                    title: 'Success Action!',
+                    text: 'Success.',
+                    timer: 5000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });";
+            break;
+        case "invalid":
+            echo "Swal.fire({
+                    icon: 'error',
+                    title: 'Wrong Credentials!',
+                    text: 'Invalid.',
+                    timer: 5000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });";
+            break;
+        case "not-found":
+            echo "Swal.fire({
+                    icon: 'error',
+                    title: 'Record not found!',
+                    text: 'Not found.',
+                    timer: 5000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });";
+            break;
+        case "cancel":
+            echo "Swal.fire({
+                    icon: 'error',
+                    title: 'Cancelled success!',
+                    timer: 5000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });";
+            break;
+        // New case for locked user (exceeded login attempts)
+        case "locked":
+            echo "Swal.fire({
+                    icon: 'warning',
+                    title: 'Account Locked!',
+                    text: 'You have exceeded the maximum number of login attempts. Please try again after 5 minutes.',
+                    timer: 5000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });";
+            break;
+    }
+    unset($_SESSION["notify"]);
+}
+?>
 
-  $(".btn-check").on("click", function () {
-    $.ajax({
-      method: "POST",
-      url: "function/get_res.php",
-      data: $("#check-avail-form").serialize(),
-      cache: false,
-      beforeSend: function () {
-        $(".btn-check").text("Checking Please wait...");
-      },
-      success: function (result) {
-        $(".res").html(result);
-        $(".btn-check").text("Check Availability");
-      }
-    });
-  });
-
-  <?php if (isset($_GET["home"])) { ?>
-    $("#home").addClass("active");
-  <?php } ?>
-  <?php if (isset($_GET["reservation"])) { ?>
-    $("#reserve").addClass("active");
-  <?php } ?>
-  <?php if (isset($_GET["cart"])) { ?>
-    $("#cart").addClass("active");
-  <?php } ?>
 
   let modalId = $('#image-gallery');
 

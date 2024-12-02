@@ -1,11 +1,6 @@
 <?php
 session_start(); // Start session
-
-// Check if the user is authenticated
-if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
-    header("Location: ../?home"); // Redirect to login page if not authenticated
-    exit();
-}
+include "check_login1.php";
 
 // Proceed to load the admin dashboard
 ?>
@@ -16,11 +11,10 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
 -->
 <?php
 session_start();
-include 'auth.php';
-checkAdmin();
 
 
-include 'admin_check.php'; // Include the admin check
+
+
 // Check if the user is logged in
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
     header("Location: ../?home"); // Redirect to login if session is not set

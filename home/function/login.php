@@ -32,7 +32,7 @@ if (isset($_POST["btnlogin"])) {
     }
 
     // Prepared statement to prevent SQL injection
-    $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id, user.email 
+    $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id, user.email, user.reset_token 
             FROM user 
             INNER JOIN user_type ON user.user_type_id = user_type.user_type_id 
             WHERE uname = ?";
@@ -44,6 +44,14 @@ if (isset($_POST["btnlogin"])) {
     if ($result->num_rows > 0) {
         $res = $result->fetch_assoc();
         $get_password_hash = $res["pass"];
+        $reset_token = $res["reset_token"];
+
+        // Check if the user is already logged in (using reset_token as an indicator)
+        if ($reset_token !== NULL && $reset_token !== '') {
+            $_SESSION["notify"] = "locked";
+            header("Location: ../?home");
+            exit();
+        }
 
         if (password_verify($password, $get_password_hash)) {
             session_regenerate_id(true);
@@ -52,21 +60,22 @@ if (isset($_POST["btnlogin"])) {
             $_SESSION['login_attempts'] = 0;
             unset($_SESSION['timeout']);
 
-            // OTP generation and sending via PHPMailer
-            $otp = rand(100000, 999999);
-            $_SESSION["otp"] = $otp;
-            $_SESSION["otp_expiration"] = time() + 300;
-
             $_SESSION["user_id"] = $res["user_id"];
             $_SESSION["username"] = $res["uname"];
             $_SESSION["role"] = $res["user_type_name"];
             $_SESSION["type_id"] = $res["user_type_id"];
 
-            // Update login status to 1 (logged in)
-            $update_status_sql = "UPDATE user SET reset_token = 1 WHERE user_id = ?";
-            $status_stmt = $con->prepare($update_status_sql);
-            $status_stmt->bind_param("i", $res["user_id"]);
-            $status_stmt->execute();
+            // Set reset_token to indicate that the user has logged in
+            $new_reset_token = bin2hex(random_bytes(32)); // Generate a new unique token
+            $update_token_sql = "UPDATE user SET reset_token = ? WHERE user_id = ?";
+            $stmt_update = $con->prepare($update_token_sql);
+            $stmt_update->bind_param("si", $new_reset_token, $res["user_id"]);
+            $stmt_update->execute();
+
+            // OTP generation and sending via PHPMailer
+            $otp = rand(100000, 999999);
+            $_SESSION["otp"] = $otp;
+            $_SESSION["otp_expiration"] = time() + 300;
 
             // Set up PHPMailer to send OTP
             require 'phpmailer/PHPMailerAutoload.php';
@@ -158,7 +167,6 @@ if (isset($_POST["btnlogin"])) {
             header("Location: otp_verification.php");
             exit();
         } else {
-            // Increment login attempts on invalid password
             $_SESSION['login_attempts'] = isset($_SESSION['login_attempts']) ? $_SESSION['login_attempts'] + 1 : 1;
 
             if ($_SESSION['login_attempts'] >= $max_attempts) {
