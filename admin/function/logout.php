@@ -10,7 +10,7 @@ if (isset($_SESSION['user_type_id']) && $_SESSION['user_type_id'] == 1) {
     exit(); // Ensure no further code is executed
 } else {
     // Optional: Handle cases where user_type_id is not 1
-    echo "Unauthorized logout attempt or no session found.";
+    echo "You are not authorized to perform this action.";
     exit();
 }
 ?>
