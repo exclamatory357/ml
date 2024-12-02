@@ -253,7 +253,7 @@ if (isset($_SESSION["notify"])) {
             echo "Swal.fire({
                     icon: 'warning',
                     title: 'Account Locked!',
-                    text: 'You have exceeded the maximum number of login attempts. Please try again after 5 minutes.',
+                    text: 'You have exceeded the maximum number of login attempts. Please try again later!',
                     timer: 5000,
                     timerProgressBar: true,
                     showConfirmButton: false
