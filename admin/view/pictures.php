@@ -133,7 +133,7 @@
 
                             <div class="col-sm-8">
 
-                                <input type="file" accept=".jpg,.jpeg,.png" name="img" id="fileInput1" required>
+                                <input type="file" accept=".jpg,.jpeg,.png" name="img" id="fileInput" required>
                                 
                             </div>
 
@@ -198,7 +198,7 @@
 <script>
   // Validate image file before form submission
   document.getElementById('uploadForm').onsubmit = function(event) {
-    var fileInput = document.getElementById('fileInput1');
+    var fileInput = document.getElementById('fileInput');
     var file = fileInput.files[0];
 
     if (file) {
