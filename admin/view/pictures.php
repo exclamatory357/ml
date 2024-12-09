@@ -133,7 +133,7 @@
 
                             <div class="col-sm-8">
 
-                                <input type="file" accept=".jpg,.jpeg,.png" name="img" id="fileinput1" required>
+                                <input type="file" accept=".jpg,.jpeg,.png" name="img" id="fileInput1" required>
                                 
                             </div>
 
