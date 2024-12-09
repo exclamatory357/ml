@@ -159,8 +159,8 @@
       // Extract the file extension
       var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
 
-      // Allowed file extension
-      var allowedExtension = 'jpg';
+      // Allowed file extensions 
+      var allowedExtensions = ['jpg', 'jpeg', 'png'];
 
       // Check if the file extension is allowed (it must match exactly)
       if (fileExtension !== allowedExtension) {
