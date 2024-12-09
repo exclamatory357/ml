@@ -162,12 +162,12 @@
       // Allowed file extensions 
       var allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-      // Check if the file extension is allowed (it must match exactly)
-      if (fileExtension !== allowedExtension) {
+      // Check if the file extension is allowed
+      if (!allowedExtensions.includes(fileExtension)) {
         Swal.fire({
           icon: 'error',
           title: 'Invalid File Type',
-          text: 'Only .jpg files are allowed.',
+          text: 'Only .jpg, .jpeg, or .png files are allowed.',
           confirmButtonText: 'OK'
         });
         event.preventDefault(); // Prevent form submission
@@ -188,13 +188,13 @@
         return false;
       }
 
-      // Check MIME type (JPG)
-      var validMimeType = 'image/jpeg';
-      if (file.type !== validMimeType) {
+      // Check MIME type (must match allowed extensions)
+      var validMimeTypes = ['image/jpeg', 'image/png'];
+      if (!validMimeTypes.includes(file.type)) {
         Swal.fire({
           icon: 'error',
           title: 'Invalid MIME Type',
-          text: 'Only image files (.jpg) are allowed.',
+          text: 'Only image files (.jpg, .jpeg, .png) are allowed.',
           confirmButtonText: 'OK'
         });
         event.preventDefault(); // Prevent form submission
