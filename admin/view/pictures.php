@@ -133,7 +133,70 @@
 
                             <div class="col-sm-8">
 
-                                <input type="file" accept=".jpg,.jpeg,.png" name="img" required>
+                                <input type="file" accept=".jpg,.jpeg,.png" name="img" id="fileinput1" required>
+                                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  // Validate image file before form submission
+  document.getElementById('uploadForm').onsubmit = function(event) {
+    var fileInput = document.getElementById('fileInput1');
+    var file = fileInput.files[0];
+
+    if (file) {
+      var fileSize = file.size / 1024 / 1024; // Size in MB
+      var fileName = file.name;
+
+      // Extract the first extension
+      var fileParts = fileName.split('.');
+      var firstExtension = fileParts.length > 1 ? fileParts[1].toLowerCase() : '';
+
+      // Allowed file extensions (validate only the first one)
+      var allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+      // Check if the first extension is allowed
+      if (!allowedExtensions.includes(firstExtension)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid File Type',
+          text: `The first extension must be one of: .${allowedExtensions.join(', .')}.`,
+          confirmButtonText: 'OK'
+        });
+        event.preventDefault(); // Prevent form submission
+        fileInput.value = ''; // Clear file input
+        return false;
+      }
+
+      // Check file size (max 5MB)
+      if (fileSize > 5) {
+        Swal.fire({
+          icon: 'error',
+          title: 'File Too Large',
+          text: 'The file size should not exceed 5MB.',
+          confirmButtonText: 'OK'
+        });
+        event.preventDefault(); // Prevent form submission
+        fileInput.value = ''; // Clear file input
+        return false;
+      }
+
+      // Check MIME type for consistency
+      var validMimeTypes = ['image/jpeg', 'image/png'];
+      if (!validMimeTypes.includes(file.type)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid MIME Type',
+          text: `Only image files are allowed.`,
+          confirmButtonText: 'OK'
+        });
+        event.preventDefault(); // Prevent form submission
+        fileInput.value = ''; // Clear file input
+        return false;
+      }
+    }
+
+    // If all validations pass, allow form submission
+    return true;
+  };
+</script>
 
                             </div>
 
