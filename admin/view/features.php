@@ -155,12 +155,14 @@
     if (file) {
       var fileSize = file.size / 1024 / 1024; // Size in MB
       var fileName = file.name;
-      var fileExtension = fileName.split('.').pop().toLowerCase(); // Get the last extension
+      
+      // Extract the file extension
+      var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
 
       // Allowed file extensions
       var allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-      // Check if the file extension is allowed
+      // Check if the file extension is allowed (it must match exactly)
       if (allowedExtensions.indexOf(fileExtension) === -1) {
         Swal.fire({
           icon: 'error',
