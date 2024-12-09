@@ -138,8 +138,8 @@
 <script>
   // Validate image file before form submission
   document.getElementById('uploadForm').onsubmit = function(event) {
-    var fileInput = document.getElementById('fileInput1');
-    var file = fileInput.files[0];
+    var fileInput1 = document.getElementById('fileInput1');
+    var file = fileInput1.files[0];
 
     if (file) {
       var fileSize = file.size / 1024 / 1024; // Size in MB
@@ -161,7 +161,7 @@
           confirmButtonText: 'OK'
         });
         event.preventDefault(); // Prevent form submission
-        fileInput.value = ''; // Clear file input
+        fileInput1.value = ''; // Clear file input
         return false;
       }
 
@@ -174,7 +174,7 @@
           confirmButtonText: 'OK'
         });
         event.preventDefault(); // Prevent form submission
-        fileInput.value = ''; // Clear file input
+        fileInput1.value = ''; // Clear file input
         return false;
       }
 
@@ -188,7 +188,7 @@
           confirmButtonText: 'OK'
         });
         event.preventDefault(); // Prevent form submission
-        fileInput.value = ''; // Clear file input
+        fileInput1.value = ''; // Clear file input
         return false;
       }
     }
