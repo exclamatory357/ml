@@ -103,94 +103,109 @@
 
 
 <!-- Main content -->
-
 <section class="content container-fluid">
 
+  <div class="box box-default">
 
+    <div class="box-header with-border">
+      <h3 class="box-title">Add Feature</h3>
+    </div>
 
-<div class="box box-default">
+    <form action="function/function_crud.php" method="post" enctype="multipart/form-data" class="form-horizontal" id="uploadForm">
+      <div class="box-body">
+        <div class="row">
 
-            <div class="box-header with-border">
+          <div class="col-md-6">
 
-              <h3 class="box-title">Add Feature</h3>
-
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Upload Image</label>
+              <div class="col-sm-8">
+                <input type="file" accept=".jpg,.jpeg,.png" name="img" id="fileInput" required>
+              </div>
             </div>
 
-            <form action="function/function_crud.php" method="post" enctype="multipart/form-data" class="form-horizontal">
-
-              <div class="box-body">
-
-                <div class="row">
-
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-
-                            <label class="col-sm-4 control-label">Upload Image</label>
-
-                            <div class="col-sm-8">
-
-                                <input type="file" accept=".jpg,.jpeg,.png" name="img" required>
-
-                            </div>
-
-                        </div>
-
-                    <!--    <div class="form-group">
-
-                            <label class="col-sm-4 control-label">Name</label>
-
-                            <div class="col-sm-8">
-
-                                <input type="text" class="form-control" name="name" required>
-
-                            </div>
-
-                        </div> 
-
-                        <div class="form-group">
-
-                        <label class="col-sm-4 control-label">Description</label>                       
-
-                        <div class="col-sm-8">
-
-                           <textarea class="form-control" rows="3" placeholder="" name="desc" required></textarea>
-
-                         </div>
-
-                        </div>  !-->
-
-                        <div class="form-group">
-
-                            <label class="col-sm-4 control-label"></label>
-
-                            <div class="col-sm-8">
-
-                                <button type="submit" class="btn btn-primary" name="btn-feature-add">Submit</button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-6">
-
-
-
-                    </div>
-
-                </div>
-
+            <div class="form-group">
+              <label class="col-sm-4 control-label"></label>
+              <div class="col-sm-8">
+                <button type="submit" class="btn btn-primary" name="btn-feature-add">Submit</button>
               </div>
-
-            </form>
+            </div>
 
           </div>
 
+          <div class="col-md-6">
+            <!-- You can add additional content here if needed -->
+          </div>
 
+        </div>
+      </div>
+    </form>
+
+  </div>
 
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  // Validate image file before form submission
+  document.getElementById('uploadForm').onsubmit = function(event) {
+    var fileInput = document.getElementById('fileInput');
+    var file = fileInput.files[0];
+
+    if (file) {
+      var fileSize = file.size / 1024 / 1024; // Size in MB
+      var fileName = file.name;
+      var fileExtension = fileName.split('.').pop().toLowerCase();
+
+      // Allowed file extensions
+      var allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+      // Check if the file extension is allowed
+      if (allowedExtensions.indexOf(fileExtension) === -1) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid File Type',
+          text: 'Only JPG, JPEG, and PNG files are allowed.',
+          confirmButtonText: 'OK'
+        });
+        event.preventDefault(); // Prevent form submission
+        fileInput.value = ''; // Clear file input
+        return false;
+      }
+
+      // Check file size (max 5MB)
+      if (fileSize > 5) {
+        Swal.fire({
+          icon: 'error',
+          title: 'File Too Large',
+          text: 'The file size should not exceed 5MB.',
+          confirmButtonText: 'OK'
+        });
+        event.preventDefault(); // Prevent form submission
+        fileInput.value = ''; // Clear file input
+        return false;
+      }
+
+      // Check MIME type (JPG, JPEG, PNG)
+      var validMimeTypes = ['image/jpeg', 'image/png'];
+      if (!validMimeTypes.includes(file.type)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid MIME Type',
+          text: 'Only image files (.jpg, .jpeg, .png) are allowed.',
+          confirmButtonText: 'OK'
+        });
+        event.preventDefault(); // Prevent form submission
+        fileInput.value = ''; // Clear file input
+        return false;
+      }
+    }
+
+    // If all validations pass, allow form submission
+    return true;
+  };
+</script>
+
 
  <?php } ?>
 
