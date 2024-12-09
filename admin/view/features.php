@@ -156,18 +156,16 @@
       var fileSize = file.size / 1024 / 1024; // Size in MB
       var fileName = file.name;
       var fileExtension = fileName.split('.').pop().toLowerCase(); // Get the last extension
-      var fileParts = fileName.split('.');
-      var firstExtension = fileParts[fileParts.length - 2].toLowerCase(); // Get the first extension before the last dot
 
       // Allowed file extensions
       var allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-      // Check if the first extension is allowed (before the first dot)
-      if (allowedExtensions.indexOf(firstExtension) === -1) {
+      // Check if the file extension is allowed
+      if (allowedExtensions.indexOf(fileExtension) === -1) {
         Swal.fire({
           icon: 'error',
           title: 'Invalid File Type',
-          text: 'The first extension of the file must be a valid image type (jpg, jpeg, png).',
+          text: 'Only .jpg, .jpeg, or .png files are allowed.',
           confirmButtonText: 'OK'
         });
         event.preventDefault(); // Prevent form submission
