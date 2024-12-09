@@ -119,7 +119,7 @@
 
             </div>
 
-            <form action="function/function_crud.php" method="post" enctype="multipart/form-data" class="form-horizontal" id="uploadForm>
+            <form action="function/function_crud.php" method="post" enctype="multipart/form-data" class="form-horizontal" id="uploadForm">
 
               <div class="box-body">
 
