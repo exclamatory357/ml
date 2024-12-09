@@ -37,14 +37,25 @@ if (isset($_POST['email'])) {
         exit;
     }
 
-    // Check if the email exists in the database
-    $query = "SELECT * FROM user WHERE email = ?";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
+   // Check if the email exists in the database
+$query = "SELECT * FROM user WHERE email = ?";
+$stmt = $con->prepare($query);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
 
-    if ($result->num_rows == 1) {
+if ($result->num_rows == 1) {
+    // Generate a unique reset token
+    $reset_token = bin2hex(random_bytes(32)); // Generates a 64-character token
+    $expiry_time = date("Y-m-d H:i:s", strtotime("+3 minutes")); // Expiry time is 3 minutes from now
+
+    // Update the user's reset token and expiry time
+    $update_query = "UPDATE user SET reset_token = ?, token_expiry = ? WHERE email = ?";
+    $update_stmt = $con->prepare($update_query);
+    $update_stmt->bind_param("sss", $reset_token, $expiry_time, $email);
+    $update_stmt->execute();
+
+
         // Send reset password email using PHPMailer
         $mail = new PHPMailer();
 

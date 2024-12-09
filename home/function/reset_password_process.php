@@ -58,12 +58,25 @@ if (
     $user = $result->fetch_assoc();
 
     if ($user) {
+        // Check if the reset token and expiry date exist
+        if ($user['reset_token'] === NULL || $user['token_expiry'] === NULL) {
+            echo "<script>Swal.fire({
+                icon: 'error',
+                title: 'Invalid Request',
+                text: 'No reset request found for this email.',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.href = '../?home';
+            });</script>";
+            exit;
+        }
+
         // Hash the new password using bcrypt
         $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        // Update the password in the database
-        $query = "UPDATE user SET pass = ? WHERE email = ?";
-        $stmt = $con->prepare($query);
+        // Update the password in the database and reset the token and expiry
+        $update_query = "UPDATE user SET pass = ?, reset_token = NULL, token_expiry = NULL WHERE email = ?";
+        $stmt = $con->prepare($update_query);
         $stmt->bind_param("ss", $newHashedPassword, $email);
         if ($stmt->execute()) {
             // Password reset successful
@@ -158,7 +171,7 @@ if (
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Invalid request.',
+                text: 'Invalid request. Please try again.',
                 confirmButtonText: 'OK'
             }).then(() => {
                 window.location.href = '../?home';
