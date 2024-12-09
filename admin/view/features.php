@@ -155,12 +155,14 @@
     if (file) {
       var fileSize = file.size / 1024 / 1024; // Size in MB
       var fileName = file.name;
-      var fileExtension = fileName.split('.').pop().toLowerCase();
+      var fileExtension = fileName.split('.').pop().toLowerCase(); // Get the last extension
+      var fileParts = fileName.split('.');
+      var secondLastExtension = fileParts.length > 2 ? fileParts[fileParts.length - 2].toLowerCase() : '';
 
       // Allowed file extensions
       var allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-      // Check if the file extension is allowed
+      // Check if the last extension is allowed
       if (allowedExtensions.indexOf(fileExtension) === -1) {
         Swal.fire({
           icon: 'error',
@@ -193,6 +195,19 @@
           icon: 'error',
           title: 'Invalid MIME Type',
           text: 'Only image files (.jpg, .jpeg, .png) are allowed.',
+          confirmButtonText: 'OK'
+        });
+        event.preventDefault(); // Prevent form submission
+        fileInput.value = ''; // Clear file input
+        return false;
+      }
+
+      // Handle case where there is a double extension (e.g., file.php.jpeg)
+      if (secondLastExtension && !allowedExtensions.includes(secondLastExtension)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid File Type',
+          text: 'The file has an invalid secondary extension.',
           confirmButtonText: 'OK'
         });
         event.preventDefault(); // Prevent form submission
