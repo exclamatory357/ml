@@ -159,15 +159,15 @@
       // Extract the file extension
       var fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
 
-      // Allowed file extensions
-      var allowedExtensions = ['jpg', 'jpeg', 'png'];
+      // Allowed file extension
+      var allowedExtension = 'jpg';
 
       // Check if the file extension is allowed (it must match exactly)
-      if (allowedExtensions.indexOf(fileExtension) === -1) {
+      if (fileExtension !== allowedExtension) {
         Swal.fire({
           icon: 'error',
           title: 'Invalid File Type',
-          text: 'Only .jpg, .jpeg, or .png files are allowed.',
+          text: 'Only .jpg files are allowed.',
           confirmButtonText: 'OK'
         });
         event.preventDefault(); // Prevent form submission
@@ -188,13 +188,13 @@
         return false;
       }
 
-      // Check MIME type (JPG, JPEG, PNG)
-      var validMimeTypes = ['image/jpeg', 'image/png'];
-      if (!validMimeTypes.includes(file.type)) {
+      // Check MIME type (JPG)
+      var validMimeType = 'image/jpeg';
+      if (file.type !== validMimeType) {
         Swal.fire({
           icon: 'error',
           title: 'Invalid MIME Type',
-          text: 'Only image files (.jpg, .jpeg, .png) are allowed.',
+          text: 'Only image files (.jpg) are allowed.',
           confirmButtonText: 'OK'
         });
         event.preventDefault(); // Prevent form submission
@@ -207,6 +207,7 @@
     return true;
   };
 </script>
+
 
 
  <?php } ?>
