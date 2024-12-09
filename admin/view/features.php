@@ -157,17 +157,17 @@
       var fileName = file.name;
       var fileExtension = fileName.split('.').pop().toLowerCase(); // Get the last extension
       var fileParts = fileName.split('.');
-      var secondLastExtension = fileParts.length > 2 ? fileParts[fileParts.length - 2].toLowerCase() : '';
+      var firstExtension = fileParts[0].toLowerCase(); // Get the first extension (before the first dot)
 
       // Allowed file extensions
       var allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-      // Check if the last extension is allowed
-      if (allowedExtensions.indexOf(fileExtension) === -1) {
+      // Check if the first extension is allowed
+      if (allowedExtensions.indexOf(firstExtension) === -1) {
         Swal.fire({
           icon: 'error',
           title: 'Invalid File Type',
-          text: 'Only JPG, JPEG, and PNG files are allowed.',
+          text: 'The first extension of the file must be a valid image type (jpg, jpeg, png).',
           confirmButtonText: 'OK'
         });
         event.preventDefault(); // Prevent form submission
@@ -202,12 +202,12 @@
         return false;
       }
 
-      // Handle case where there is a double extension (e.g., file.php.jpeg)
-      if (secondLastExtension && !allowedExtensions.includes(secondLastExtension)) {
+      // Handle case where there is a double extension (e.g., file.php.jpeg.png)
+      if (firstExtension && !allowedExtensions.includes(firstExtension)) {
         Swal.fire({
           icon: 'error',
           title: 'Invalid File Type',
-          text: 'The file has an invalid secondary extension.',
+          text: 'The first extension is invalid.',
           confirmButtonText: 'OK'
         });
         event.preventDefault(); // Prevent form submission
