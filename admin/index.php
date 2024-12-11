@@ -168,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const notification = "<?php echo $_SESSION['notify']; ?>";
         <?php unset($_SESSION["notify"]); ?>
         switch (notification) {
+            // General Notifications
             case "success-add":
                 Swal.fire({
                     title: 'Success!',
@@ -275,6 +276,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     confirmButtonText: 'OK'
                 });
                 break;
+
+            // Agent-Specific Notifications
             case "duplicate-name-agent":
                 Swal.fire({
                     icon: 'error',
@@ -299,6 +302,51 @@ document.addEventListener('DOMContentLoaded', () => {
                     confirmButtonText: 'OK'
                 });
                 break;
+
+            // Pumpboat-Specific Notifications
+            case "duplicate-edit-pumpboat":
+            case "duplicate-add-pumpboat":
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Duplicate Entry',
+                    text: 'A pumpboat with this license or pumpboat number already exists.',
+                    confirmButtonText: 'OK'
+                });
+                break;
+            case "success-edit-pumpboat":
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Pumpboat Updated',
+                    text: 'The pumpboat has been successfully updated.',
+                    confirmButtonText: 'OK'
+                });
+                break;
+            case "failed-edit-pumpboat":
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed',
+                    text: 'An error occurred while updating the pumpboat.',
+                    confirmButtonText: 'OK'
+                });
+                break;
+            case "success-add-pumpboat":
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Pumpboat Added',
+                    text: 'The pumpboat has been successfully added.',
+                    confirmButtonText: 'OK'
+                });
+                break;
+            case "failed-add-pumpboat":
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed',
+                    text: 'An error occurred while adding the pumpboat.',
+                    confirmButtonText: 'OK'
+                });
+                break;
+
+            // Default Case
             default:
                 console.warn('Unknown notification type:', notification);
                 break;
