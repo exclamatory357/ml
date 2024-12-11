@@ -341,43 +341,179 @@ $(document).ready(function() {
 <?php
 // Check session notification
 if (isset($_SESSION["notify"])) {
-    if ($_SESSION["notify"] === "duplicate-name-agent") {
-        echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Duplicate Name',
-                    text: 'An agent with this name already exists!',
-                    confirmButtonText: 'OK'
-                });
-              </script>";
-    } elseif ($_SESSION["notify"] === "success-add-agent") {
-        echo "<script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Agent added successfully!',
-                    confirmButtonText: 'Great!'
-                });
-              </script>";
-    } elseif ($_SESSION["notify"] === "failed-add-agent") {
-        echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Failed',
-                    text: 'Failed to add agent. Please try again.',
-                    confirmButtonText: 'OK'
-                });
-              </script>";
-    } elseif ($_SESSION["notify"] === "success-add") {
-        echo "<script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Data successfully added.',
-                    confirmButtonText: 'OK'
-                });
-              </script>";
+    switch ($_SESSION["notify"]) {
+        case "duplicate-name-agent":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Duplicate Name',
+                        text: 'An agent with this name already exists!',
+                        confirmButtonText: 'OK'
+                    });
+                  </script>";
+            break;
+
+        case "success-add-agent":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Agent added successfully!',
+                        confirmButtonText: 'Great!'
+                    });
+                  </script>";
+            break;
+
+        case "failed-add-agent":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed',
+                        text: 'Failed to add agent. Please try again.',
+                        confirmButtonText: 'OK'
+                    });
+                  </script>";
+            break;
+
+        case "success-add":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Data successfully added.',
+                        confirmButtonText: 'OK'
+                    });
+                  </script>";
+            break;
+
+        case "failed-add":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed',
+                        text: 'Failed to add data.',
+                        confirmButtonText: 'OK'
+                    });
+                  </script>";
+            break;
+
+        case "success":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Operation completed successfully.',
+                        confirmButtonText: 'OK'
+                    });
+                  </script>";
+            break;
+
+        case "confirm-failed":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed',
+                        text: 'Failed to confirm the action.',
+                        confirmButtonText: 'OK'
+                    });
+                  </script>";
+            break;
+
+        case "success-delete":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted',
+                        text: 'Data successfully deleted.',
+                        confirmButtonText: 'OK'
+                    });
+                  </script>";
+            break;
+
+        case "failed-delete":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed',
+                        text: 'Failed to delete data.',
+                        confirmButtonText: 'OK'
+                    });
+                  </script>";
+            break;
+
+        case "success-sale":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sale Completed',
+                        text: 'The sale was successfully processed.',
+                        confirmButtonText: 'Great!'
+                    });
+                  </script>";
+            break;
+
+        case "failed-sale":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed',
+                        text: 'Failed to process the sale.',
+                        confirmButtonText: 'OK'
+                    });
+                  </script>";
+            break;
+
+        case "invalid-input":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Invalid Input',
+                        text: 'Please check the input fields.',
+                        confirmButtonText: 'OK'
+                    });
+                  </script>";
+            break;
+
+        case "success-payment":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Payment Successful',
+                        text: 'Payment has been processed successfully.',
+                        confirmButtonText: 'OK'
+                    });
+                  </script>";
+            break;
+
+        case "success-update":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Updated',
+                        text: 'Data has been updated successfully.',
+                        confirmButtonText: 'OK'
+                    });
+                  </script>";
+            break;
+
+        case "failed-update":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed',
+                        text: 'Failed to update data.',
+                        confirmButtonText: 'OK'
+                    });
+                  </script>";
+            break;
+
+        default:
+            echo "<script>
+                    console.warn('Unknown notification type: {$_SESSION['notify']}');
+                  </script>";
+            break;
     }
+
     // Unset the notification after displaying it
     unset($_SESSION["notify"]);
 }
