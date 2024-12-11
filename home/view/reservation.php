@@ -357,21 +357,30 @@ if (isset($_SESSION["username"])) {
 <?php if (isset($_SESSION["notify"])): ?>
 <script>
     const notifyType = "<?php echo $_SESSION['notify']; ?>";
+
     switch (notifyType) {
         case "success-add":
             Swal.fire({
                 icon: 'success',
                 title: 'Success!',
                 text: 'Your request was successfully added.',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false
             });
             break;
+
         case "failed-add":
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
                 text: 'There was a problem adding your request. Please try again.',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false
             });
             break;
+
         case "failed":
             Swal.fire({
                 icon: 'error',
@@ -382,6 +391,7 @@ if (isset($_SESSION["username"])) {
                 showConfirmButton: false
             });
             break;
+
         case "success":
             Swal.fire({
                 icon: 'success',
@@ -392,6 +402,7 @@ if (isset($_SESSION["username"])) {
                 showConfirmButton: false
             });
             break;
+
         case "invalid":
             Swal.fire({
                 icon: 'error',
@@ -402,6 +413,7 @@ if (isset($_SESSION["username"])) {
                 showConfirmButton: false
             });
             break;
+
         case "not-found":
             Swal.fire({
                 icon: 'error',
@@ -412,6 +424,7 @@ if (isset($_SESSION["username"])) {
                 showConfirmButton: false
             });
             break;
+
         case "cancel":
             Swal.fire({
                 icon: 'error',
@@ -421,18 +434,21 @@ if (isset($_SESSION["username"])) {
                 showConfirmButton: false
             });
             break;
+
         case "locked":
             Swal.fire({
                 icon: 'warning',
                 title: 'Account Locked!',
-                text: 'You have exceeded the maximum number of login attempts. Please try again later!',
+                text: 'You have exceeded the maximum number of login. Please try again later!',
                 timer: 5000,
                 timerProgressBar: true,
                 showConfirmButton: false
             });
             break;
+
         default:
-            console.warn('Unknown notify type:', notifyType);
+            console.warn("Unknown notification type:", notifyType);
+            break;
     }
 </script>
 <?php unset($_SESSION["notify"]); ?>
