@@ -368,6 +368,15 @@ if (isset($_SESSION["notify"])) {
                     confirmButtonText: 'OK'
                 });
               </script>";
+    } elseif ($_SESSION["notify"] === "success-add") {
+        echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Data successfully added.',
+                    confirmButtonText: 'OK'
+                });
+              </script>";
     }
     // Unset the notification after displaying it
     unset($_SESSION["notify"]);
