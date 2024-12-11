@@ -163,197 +163,125 @@ $(function () {
 });
 
   // SWEETALERT NOTIFICATION
-document.addEventListener('DOMContentLoaded', () => {
-    <?php if (isset($_SESSION["notify"])): ?>
-        const notification = "<?php echo $_SESSION['notify']; ?>";
-        <?php unset($_SESSION["notify"]); ?>
-        switch (notification) {
-            // General Notifications
-            case "success-add":
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'Data successfully added.',
-                    icon: 'success',
-                    timer: 5000,
-                    timerProgressBar: true,
-                    showConfirmButton: true,
-                    confirmButtonText: 'OK'
-                });
-                break;
-            case "success-delete":
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'Data successfully deleted.',
-                    icon: 'success',
-                    timer: 5000,
-                    timerProgressBar: true,
-                    showConfirmButton: true,
-                    confirmButtonText: 'OK'
-                });
-                break;
-            case "failed-add":
-                Swal.fire({
-                    title: 'Failed!',
-                    text: 'Failed to add data.',
-                    icon: 'error',
-                    timer: 5000,
-                    timerProgressBar: true,
-                    showConfirmButton: true,
-                    confirmButtonText: 'OK'
-                });
-                break;
-            case "confirm":
-                Swal.fire({
-                    title: 'Confirmed!',
-                    text: 'Action successfully confirmed.',
-                    icon: 'success',
-                    timer: 5000,
-                    timerProgressBar: true,
-                    showConfirmButton: true,
-                    confirmButtonText: 'OK'
-                });
-                break;
-            case "failed-adds":
-                Swal.fire({
-                    title: 'Failed!',
-                    text: 'Failed to confirm action.',
-                    icon: 'error',
-                    timer: 5000,
-                    timerProgressBar: true,
-                    showConfirmButton: true,
-                    confirmButtonText: 'OK'
-                });
-                break;
-            case "cancel":
-                Swal.fire({
-                    title: 'Canceled!',
-                    text: 'Action successfully canceled.',
-                    icon: 'success',
-                    timer: 5000,
-                    timerProgressBar: true,
-                    showConfirmButton: true,
-                    confirmButtonText: 'OK'
-                });
-                break;
-            case "cancel-failed":
-                Swal.fire({
-                    title: 'Failed!',
-                    text: 'Failed to cancel action.',
-                    icon: 'error',
-                    timer: 5000,
-                    timerProgressBar: true,
-                    showConfirmButton: true,
-                    confirmButtonText: 'OK'
-                });
-                break;
-            case "failed":
-                Swal.fire({
-                    title: 'Failed!',
-                    icon: 'error',
-                    timer: 5000,
-                    timerProgressBar: true,
-                    showConfirmButton: true,
-                    confirmButtonText: 'OK'
-                });
-                break;
-            case "success":
-                Swal.fire({
-                    title: 'Success!',
-                    icon: 'success',
-                    timer: 5000,
-                    timerProgressBar: true,
-                    showConfirmButton: true,
-                    confirmButtonText: 'OK'
-                });
-                break;
-            case "paid":
-                Swal.fire({
-                    title: 'Fully Paid!',
-                    icon: 'success',
-                    timer: 6000,
-                    timerProgressBar: true,
-                    showConfirmButton: true,
-                    confirmButtonText: 'OK'
-                });
-                break;
-
-            // Agent-Specific Notifications
-            case "duplicate-name-agent":
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Duplicate Name',
-                    text: 'An agent with this name already exists!',
-                    confirmButtonText: 'OK'
-                });
-                break;
-            case "success-add-agent":
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Agent added successfully!',
-                    confirmButtonText: 'Great!'
-                });
-                break;
-            case "failed-add-agent":
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Failed',
-                    text: 'Failed to add agent. Please try again.',
-                    confirmButtonText: 'OK'
-                });
-                break;
-
-            // Pumpboat-Specific Notifications
-            case "duplicate-edit-pumpboat":
-            case "duplicate-add-pumpboat":
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Duplicate Entry',
-                    text: 'A pumpboat with this license or pumpboat number already exists.',
-                    confirmButtonText: 'OK'
-                });
-                break;
-            case "success-edit-pumpboat":
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Pumpboat Updated',
-                    text: 'The pumpboat has been successfully updated.',
-                    confirmButtonText: 'OK'
-                });
-                break;
-            case "failed-edit-pumpboat":
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Failed',
-                    text: 'An error occurred while updating the pumpboat.',
-                    confirmButtonText: 'OK'
-                });
-                break;
-            case "success-add-pumpboat":
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Pumpboat Added',
-                    text: 'The pumpboat has been successfully added.',
-                    confirmButtonText: 'OK'
-                });
-                break;
-            case "failed-add-pumpboat":
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Failed',
-                    text: 'An error occurred while adding the pumpboat.',
-                    confirmButtonText: 'OK'
-                });
-                break;
-
-            // Default Case
-            default:
-                console.warn('Unknown notification type:', notification);
-                break;
-        }
-    <?php endif; ?>
-});
-
+  document.addEventListener('DOMContentLoaded', (event) => {
+    <?php if (isset($_SESSION["notify"])) {
+        $notify = $_SESSION["notify"];
+        unset($_SESSION["notify"]);
+    ?>
+    let notification = "<?php echo $notify; ?>";
+    switch(notification) {
+        case "success-add":
+            Swal.fire({
+                title: 'Success Add!',
+                text: 'Data successfully added.',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "success-delete":
+            Swal.fire({
+                title: 'Success Delete!',
+                text: 'Data successfully deleted.',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "failed-add":
+            Swal.fire({
+                title: 'Failed!',
+                text: 'Failed to add.',
+                icon: 'error',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "confirm":
+            Swal.fire({
+                title: 'Confirmed!',
+                text: 'Success confirm.',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "failed-adds":
+            Swal.fire({
+                title: 'Failed!',
+                text: 'Failed to Confirm.',
+                icon: 'error',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "cancel":
+            Swal.fire({
+                title: 'Canceled!',
+                text: 'Success cancel.',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "cancel-failed":
+            Swal.fire({
+                title: 'Failed!',
+                text: 'Failed to cancel.',
+                icon: 'error',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "failed":
+            Swal.fire({
+                title: 'Failed!',
+                icon: 'error',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "success":
+            Swal.fire({
+                title: 'Success!',
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        case "paid":
+            Swal.fire({
+                title: 'Fully paid!',
+                icon: 'success',
+                timer: 6000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonText: 'OK'
+            });
+            break;
+        default:
+            break;
+    }
+    <?php } ?>
+  });
 
   $("body").on("click", ".view", function(e) {
       e.preventDefault();
