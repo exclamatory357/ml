@@ -556,46 +556,38 @@ if (isset($_POST["btn-feature-add"])) {
 //add picture
 
 if (isset($_POST["btn-picture-add"])) {
-
+    // Set the target directory for uploads
     $target_dir_pic = "uploads/";
-
     $target_file_pic = $target_dir_pic . basename($_FILES["img"]["name"]);
 
+    $namepic = $_POST["name"];
+    $descpic = $_POST["desc"];
 
-
-    $namepic         = $_POST["name"];
-
-    $descpic         = $_POST["desc"];
-
-
-
-
-
-    $sql2 = "INSERT INTO `picture`(`img`, `name`, `des`) VALUES ('$target_file_pic','$namepic','$descpic')"; 
-
-
+    // SQL query to insert the picture details
+    $sql2 = "INSERT INTO `picture`(`img`, `name`, `des`) VALUES ('$target_file_pic', '$namepic', '$descpic')";
 
     $query2 = mysqli_query($con, $sql2);
 
-
-
     if ($query2) {
-
+        // Move the uploaded file to the target directory
         move_uploaded_file($_FILES["img"]["tmp_name"], $target_file_pic);
 
+        // Set the notification session variable
         $_SESSION["notify"] = "success-add";
 
+        // Redirect to pictures page
         header("location: ../?pictures");
-
-    }else {
-
+        exit();
+    } else {
+        // Set the failure notification
         $_SESSION["notify"] = "failed-add";
 
+        // Redirect to pictures page
         header("location: ../?pictures");
-
+        exit();
     }
-
 }
+
 
 
 //confirmation reservation
