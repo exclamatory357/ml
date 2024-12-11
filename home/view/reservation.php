@@ -352,3 +352,27 @@ if (isset($_SESSION["username"])) {
 } else {
     echo " ";
 }
+?>
+
+<?php if (isset($_SESSION["notify"])): ?>
+<script>
+    const notifyType = "<?php echo $_SESSION['notify']; ?>";
+    if (notifyType === "success-add") {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Your request was successfully added.',
+        });
+    } else if (notifyType === "failed-add") {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'There was a problem adding your request. Please try again.',
+        });
+    }
+</script>
+<?php unset($_SESSION["notify"]); ?>
+<?php endif; ?>
+
+
+
