@@ -357,22 +357,87 @@ if (isset($_SESSION["username"])) {
 <?php if (isset($_SESSION["notify"])): ?>
 <script>
     const notifyType = "<?php echo $_SESSION['notify']; ?>";
-    if (notifyType === "success-add") {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: 'Your request was successfully added.',
-        });
-    } else if (notifyType === "failed-add") {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: 'There was a problem adding your request. Please try again.',
-        });
+    switch (notifyType) {
+        case "success-add":
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Your request was successfully added.',
+            });
+            break;
+        case "failed-add":
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'There was a problem adding your request. Please try again.',
+            });
+            break;
+        case "failed":
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed Action!',
+                text: 'Failed.',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            break;
+        case "success":
+            Swal.fire({
+                icon: 'success',
+                title: 'Success Action!',
+                text: 'Success.',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            break;
+        case "invalid":
+            Swal.fire({
+                icon: 'error',
+                title: 'Wrong Credentials!',
+                text: 'Invalid.',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            break;
+        case "not-found":
+            Swal.fire({
+                icon: 'error',
+                title: 'Record not found!',
+                text: 'Not found.',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            break;
+        case "cancel":
+            Swal.fire({
+                icon: 'error',
+                title: 'Cancelled success!',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            break;
+        case "locked":
+            Swal.fire({
+                icon: 'warning',
+                title: 'Account Locked!',
+                text: 'You have exceeded the maximum number of login attempts. Please try again later!',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            break;
+        default:
+            console.warn('Unknown notify type:', notifyType);
     }
 </script>
 <?php unset($_SESSION["notify"]); ?>
 <?php endif; ?>
+
 
 
 
