@@ -342,6 +342,7 @@ $(document).ready(function() {
 // Check session notification
 if (isset($_SESSION["notify"])) {
     switch ($_SESSION["notify"]) {
+        // Agent Notifications
         case "duplicate-name-agent":
             echo "<script>
                     Swal.fire({
@@ -352,7 +353,6 @@ if (isset($_SESSION["notify"])) {
                     });
                   </script>";
             break;
-
         case "success-add-agent":
             echo "<script>
                     Swal.fire({
@@ -363,7 +363,6 @@ if (isset($_SESSION["notify"])) {
                     });
                   </script>";
             break;
-
         case "failed-add-agent":
             echo "<script>
                     Swal.fire({
@@ -375,6 +374,7 @@ if (isset($_SESSION["notify"])) {
                   </script>";
             break;
 
+        // General Notifications
         case "success-add":
             echo "<script>
                     Swal.fire({
@@ -385,7 +385,6 @@ if (isset($_SESSION["notify"])) {
                     });
                   </script>";
             break;
-
         case "failed-add":
             echo "<script>
                     Swal.fire({
@@ -441,72 +440,53 @@ if (isset($_SESSION["notify"])) {
                   </script>";
             break;
 
-        case "success-sale":
-            echo "<script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Sale Completed',
-                        text: 'The sale was successfully processed.',
-                        confirmButtonText: 'Great!'
-                    });
-                  </script>";
-            break;
-
-        case "failed-sale":
-            echo "<script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Failed',
-                        text: 'Failed to process the sale.',
-                        confirmButtonText: 'OK'
-                    });
-                  </script>";
-            break;
-
-        case "invalid-input":
+        // Pumpboat Notifications
+        case "duplicate-edit-pumpboat":
+        case "duplicate-add-pumpboat":
             echo "<script>
                     Swal.fire({
                         icon: 'warning',
-                        title: 'Invalid Input',
-                        text: 'Please check the input fields.',
+                        title: 'Duplicate Entry',
+                        text: 'A pumpboat with this license or pumpboat number already exists.',
                         confirmButtonText: 'OK'
                     });
                   </script>";
             break;
 
-        case "success-payment":
+        case "success-edit-pumpboat":
             echo "<script>
                     Swal.fire({
                         icon: 'success',
-                        title: 'Payment Successful',
-                        text: 'Payment has been processed successfully.',
+                        title: 'Pumpboat Updated',
+                        text: 'The pumpboat has been successfully updated.',
                         confirmButtonText: 'OK'
                     });
                   </script>";
             break;
 
-        case "success-update":
-            echo "<script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Updated',
-                        text: 'Data has been updated successfully.',
-                        confirmButtonText: 'OK'
-                    });
-                  </script>";
-            break;
-
-        case "failed-update":
+        case "failed-edit-pumpboat":
             echo "<script>
                     Swal.fire({
                         icon: 'error',
                         title: 'Failed',
-                        text: 'Failed to update data.',
+                        text: 'An error occurred while updating the pumpboat.',
                         confirmButtonText: 'OK'
                     });
                   </script>";
             break;
 
+        case "success-add-pumpboat":
+            echo "<script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Pumpboat Added',
+                        text: 'The pumpboat has been successfully added.',
+                        confirmButtonText: 'OK'
+                    });
+                  </script>";
+            break;
+
+        // Default Case
         default:
             echo "<script>
                     console.warn('Unknown notification type: {$_SESSION['notify']}');
