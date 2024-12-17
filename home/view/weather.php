@@ -20,7 +20,7 @@ if (isset($_GET["weather"])) {
     $apiKey = "TJGXYEV6GQSNC8BELQNZG8NCG"; // Replace with your actual API key
 
     // Build the API URL
-    $api_url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/forecast?aggregateHours=24&combinationMethod=aggregate&sendAsDatasource=true&contentType=json&unitGroup=metric&locationMode=single&key=TJGXYEV6GQSNC8BELQNZG8NCG&dataElements=default&sourceDatasourceTable=%7B%22name%22%3A%22WxSourceData1%22%2C%22id%22%3A%22WxSourceData1%22%2C%22isPrimary%22%3Atrue%2C%22analyzeLevels%22%3Afalse%2C%22rowDateTimeColumnIndex%22%3A-1%2C%22defaultDateTimeFormat%22%3A%22yyyy-M-d'T'H%3Am%3As%22%2C%22columns%22%3A%5B%7B%22isKey%22%3Atrue%2C%22name%22%3A%22ID%22%2C%22id%22%3A%22id%22%2C%22type%22%3A%22string%22%7D%2C%7B%22isKey%22%3Afalse%2C%22name%22%3A%22Name%22%2C%22id%22%3A%22name%22%2C%22type%22%3A%22string%22%7D%2C%7B%22isKey%22%3Afalse%2C%22name%22%3A%22Address%22%2C%22id%22%3A%22address%22%2C%22type%22%3A%22string%22%7D%5D%2C%22rows%22%3A%5B%5B%228207ff760d%22%2C%22Bantayan%20Island%22%2C%22Bantayan%20Island%22%5D%5D%2C%22layerDataContext%22%3A%7B%22FieldJoins%22%3A%22%7B%7D%22%2C%22useGeoJsonGeometry%22%3A%22true%22%2C%22attributeId%22%3A%22id%22%2C%22shapeType%22%3A%221%22%2C%22onDemandTileGeneration%22%3A%22true%22%2C%22joinLayerColumns%22%3A%22address%22%2C%22contextType%22%3A%226%22%2C%22attributeName%22%3A%22%22%2C%22FieldValues%22%3A%22%7B%7D%22%2C%22addressFields%22%3A%22address%22%7D%7D";
+    $api_url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Bantayan%20Island?unitGroup=metric&key=$apiKey&contentType=json";
 
     // Fetch weather data from the API
     $json_data = file_get_contents($api_url);
