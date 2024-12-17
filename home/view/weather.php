@@ -20,14 +20,14 @@ if (isset($_GET["weather"])) {
     $apiKey = "TJGXYEV6GQSNC8BELQNZG8NCG"; // Replace with your actual API key
 
     // Build the API URL
-    $api_url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/$location?unitGroup=$unitGroup&key=$apiKey&contentType=json";
+    $api_url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Bantayan%20Island?unitGroup=metric&key=$apiKey&contentType=json";
 
     // Fetch weather data from the API
-    $json_data = @file_get_contents($api_url);
+    $json_data = file_get_contents($api_url);
 
     // Handle API errors
     if ($json_data === false) {
-        die("Error fetching weather data. Please try again later.");
+        die("Error fetching weather data.");
     }
 
     // Decode the JSON response
@@ -41,247 +41,127 @@ if (isset($_GET["weather"])) {
     // Extract the resolved address and weather details
     $resolvedAddress = $response_data->resolvedAddress;
     $days = $response_data->days;
-    $current_conditions = $response_data->currentConditions;
+    ?>
 
-    // Function to map conditions to free icon classes from Weather Icons
-    function getWeatherIconClass($condition) {
-        // Mapping from condition description to Weather Icons library class
-        switch (strtolower($condition)) {
-            case 'clear':
-            case 'clear sky':
-                return 'wi-day-sunny'; // Daytime clear
-            case 'cloudy':
-                return 'wi-cloudy';
-            case 'partly cloudy':
-                return 'wi-day-cloudy';
-            case 'rain':
-                return 'wi-rain';
-            case 'snow':
-                return 'wi-snow';
-            case 'storm':
-                return 'wi-thunderstorm';
-            case 'fog':
-                return 'wi-fog';
-            case 'haze':
-                return 'wi-day-haze';
-            default:
-                return 'wi-na'; // Default fallback icon (Not Available)
-        }
-    }
-?>
-
-<!-- Main content -->
-<section class="content">
-    <div class="container">
-        <!-- Current Weather -->
-        <div class="current-weather">
-            <h2>Current Weather in <?php echo htmlspecialchars($resolvedAddress); ?></h2>
-            <div class="current-info">
-                <div class="weather-icon">
-                    <!-- Using free Weather Icons -->
-                    <i class="wi <?php echo getWeatherIconClass($current_conditions->conditions); ?>"></i>
-                </div>
-                <div class="temp-details">
-                    <p class="temp"><?php echo $current_conditions->temp; ?>°C</p>
-                    <p class="condition"><?php echo $current_conditions->conditions; ?></p>
-                    <p class="wind-speed">Wind: <?php echo $current_conditions->windspeed; ?> km/h</p>
-                    <p class="humidity">Humidity: <?php echo $current_conditions->humidity; ?>%</p>
-                </div>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container">
+            <h1>Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?></h1>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover weather-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th><i class="fas fa-temperature-high table-icon"></i> Max Temp (°C)</th>
+                            <th><i class="fas fa-temperature-low table-icon"></i> Min Temp (°C)</th>
+                            <th><i class="fas fa-cloud-rain table-icon"></i> Precipitation (mm)</th>
+                            <th><i class="fas fa-wind table-icon"></i> Wind Speed (km/h)</th>
+                            <th><i class="fas fa-wind table-icon"></i> Wind Gust (km/h)</th>
+                            <th><i class="fas fa-cloud table-icon"></i> Cloud Cover (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($days as $day) { ?>
+                        <tr>
+                            <td data-label="Date"><?php echo htmlspecialchars($day->datetime); ?></td>
+                            <td data-label="Max Temp"><?php echo htmlspecialchars($day->tempmax); ?>(°C)</td>
+                            <td data-label="Min Temp"><?php echo htmlspecialchars($day->tempmin); ?>(°C)</td>
+                            <td data-label="Precipitation"><?php echo htmlspecialchars($day->precip); ?>(mm)</td>
+                            <td data-label="Wind Speed"><?php echo htmlspecialchars($day->windspeed); ?>(km/h)</td>
+                            <td data-label="Wind Gust"><?php echo htmlspecialchars($day->windgust); ?>(km/h)</td>
+                            <td data-label="Cloud Cover"><?php echo htmlspecialchars($day->cloudcover); ?>(%)</td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </section>
 
-        <!-- 7-Day Forecast -->
-        <h3>7-Day Forecast</h3>
-        <div class="forecast">
-            <?php foreach ($days as $day) { ?>
-            <div class="forecast-card">
-                <div class="forecast-icon">
-                    <!-- Dynamic icon for each day -->
-                    <i class="wi <?php echo getWeatherIconClass($day->conditions); ?>"></i>
-                </div>
-                <p class="date"><?php echo htmlspecialchars($day->datetime); ?></p>
-                <p class="temp"><?php echo $day->tempmax; ?>°C / <?php echo $day->tempmin; ?>°C</p>
-                <p class="precip">Precip: <?php echo $day->precip; ?>mm</p>
-                <p class="windspeed">Wind: <?php echo $day->windspeed; ?> km/h</p>
-            </div>
-            <?php } ?>
-        </div>
-
-        <!-- Temperature Analytics Graph -->
-        <h3>Temperature Over the Next 7 Days</h3>
-        <canvas id="temperatureChart" width="400" height="200"></canvas>
-    </div>
-</section>
-
-<!-- Styles -->
-<style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-
-    h2, h3 {
-        text-align: center;
-        color: #333;
-        font-size: 28px;
-    }
-
-    .current-weather {
-        display: flex;
-        justify-content: center;
-        background: #fff;
-        padding: 30px;
-        margin-bottom: 30px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .current-info {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .weather-icon i {
-        font-size: 80px;
-        color: #4a90e2;
-    }
-
-    .temp-details {
-        margin-left: 20px;
-    }
-
-    .temp {
-        font-size: 48px;
-        color: #4a90e2;
-    }
-
-    .condition {
-        font-size: 20px;
-        color: #555;
-    }
-
-    .wind-speed, .humidity {
-        font-size: 14px;
-        color: #888;
-    }
-
-    .forecast {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        margin-top: 20px;
-    }
-
-    .forecast-card {
-        width: 180px;
-        background: #fff;
-        padding: 15px;
-        margin: 10px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        transition: transform 0.3s ease;
-    }
-
-    .forecast-card:hover {
-        transform: scale(1.05);
-    }
-
-    .forecast-icon i {
-        font-size: 40px;
-        color: #4a90e2;
-    }
-
-    .date {
-        font-weight: bold;
-        margin-top: 10px;
-    }
-
-    .temp {
-        font-size: 16px;
-        margin: 5px 0;
-    }
-
-    .precip, .windspeed {
-        font-size: 12px;
-        color: #666;
-    }
-
-    @media (max-width: 767px) {
-        .forecast {
-            flex-direction: column;
+    <!-- Styles -->
+    <style>
+        /* Modern and detailed styles for the weather table */
+     /*   .content {
+            margin-top: 30px;
+            font-family: 'Roboto', sans-serif;
+        } */
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 300;
+            color: #333;
         }
-    }
-</style>
-
-<!-- JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Prepare data for the chart
-    var daysData = <?php echo json_encode($days); ?>;
-    var labels = daysData.map(function(day) {
-        return day.datetime;
-    });
-    var temperatures = daysData.map(function(day) {
-        return day.tempmax;
-    });
-
-    // Create the chart
-    var ctx = document.getElementById('temperatureChart').getContext('2d');
-    var temperatureChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Max Temperature (°C)',
-                data: temperatures,
-                borderColor: '#FF5733',
-                fill: false
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return tooltipItem.raw + ' °C';
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Date'
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Temperature (°C)'
-                    }
-                }
+        .weather-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .weather-table thead {
+            background-color: #4a90e2;
+            color: #fff;
+        }
+        .weather-table th, .weather-table td {
+            padding: 15px;
+            text-align: center;
+            vertical-align: middle;
+            border-bottom: 1px solid #ddd;
+        }
+        .weather-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .weather-table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .table-icon {
+            margin-right: 5px;
+            color: #4a90e2;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 767px) {
+            .weather-table thead {
+                display: none;
+            }
+            .weather-table, .weather-table tbody, .weather-table tr, .weather-table td {
+                display: block;
+                width: 100%;
+            }
+            .weather-table tr {
+                margin-bottom: 15px;
+            }
+            .weather-table td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+            }
+            .weather-table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: calc(50% - 30px);
+                padding-right: 10px;
+                text-align: left;
+                font-weight: bold;
             }
         }
-    });
-</script>
+        
+    </style>
 
-<?php
+    <!-- JavaScript -->
+   
+
+    <?php
 } else {
-    echo "";
+    echo " ";
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kwe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    
+</body>
+</html>
