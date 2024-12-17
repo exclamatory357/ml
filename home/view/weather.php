@@ -52,8 +52,8 @@ if (isset($_GET["weather"])) {
             <h2>Current Weather in <?php echo htmlspecialchars($resolvedAddress); ?></h2>
             <div class="current-info">
                 <div class="weather-icon">
-                    <!-- Dynamic weather icon for current conditions -->
-                    <img src="https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/icons/<?php echo $current_conditions->icon; ?>.png" alt="<?php echo htmlspecialchars($current_conditions->conditions); ?>">
+                    <!-- Using open-source icons for weather condition -->
+                    <img src="https://openweathermap.org/img/wn/<?php echo $current_conditions->icon; ?>@2x.png" alt="<?php echo htmlspecialchars($current_conditions->conditions); ?>">
                 </div>
                 <div class="temp-details">
                     <p class="temp"><?php echo $current_conditions->temp; ?>°C</p>
@@ -71,7 +71,7 @@ if (isset($_GET["weather"])) {
             <div class="forecast-card">
                 <div class="forecast-icon">
                     <!-- Dynamic icon for each day -->
-                    <img src="https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/icons/<?php echo $day->icon; ?>.png" alt="<?php echo htmlspecialchars($day->conditions); ?>">
+                    <img src="https://openweathermap.org/img/wn/<?php echo $day->icon; ?>@2x.png" alt="<?php echo htmlspecialchars($day->conditions); ?>">
                 </div>
                 <p class="date"><?php echo htmlspecialchars($day->datetime); ?></p>
                 <p class="temp"><?php echo $day->tempmax; ?>°C / <?php echo $day->tempmin; ?>°C</p>
@@ -80,6 +80,10 @@ if (isset($_GET["weather"])) {
             </div>
             <?php } ?>
         </div>
+
+        <!-- Temperature Analytics Graph -->
+        <h3>Temperature Over the Next 7 Days</h3>
+        <canvas id="temperatureChart" width="400" height="200"></canvas>
     </div>
 </section>
 
@@ -194,8 +198,60 @@ if (isset($_GET["weather"])) {
 </style>
 
 <!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Optionally, add interactivity or animations here
+    // Prepare data for the chart
+    var daysData = <?php echo json_encode($days); ?>;
+    var labels = daysData.map(function(day) {
+        return day.datetime;
+    });
+    var temperatures = daysData.map(function(day) {
+        return day.tempmax;
+    });
+
+    // Create the chart
+    var ctx = document.getElementById('temperatureChart').getContext('2d');
+    var temperatureChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Max Temperature (°C)',
+                data: temperatures,
+                borderColor: '#FF5733',
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.raw + ' °C';
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Temperature (°C)'
+                    }
+                }
+            }
+        }
+    });
 </script>
 
 <?php
@@ -203,15 +259,3 @@ if (isset($_GET["weather"])) {
     echo " ";
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Forecast</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-<body>
-    
-</body>
-</html>
