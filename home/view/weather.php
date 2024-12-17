@@ -78,7 +78,9 @@ if (isset($_GET["weather"])) {
             </table>
         </div>
 <!-- Embed PAGASA High Seas Forecast in an iframe -->
-<iframe src="https://bagong.pagasa.dost.gov.ph/marine/high-seas-forecast" width="100%" height="600px" frameborder="0"></iframe>
+<div class="iframe-container">
+        <iframe src="https://bagong.pagasa.dost.gov.ph/regional-forecast/visprsd" frameborder="0"></iframe>
+    </div>
 
         <!-- Chart for analytical graphs -->
         <div class="chart-container">
@@ -89,6 +91,20 @@ if (isset($_GET["weather"])) {
 
 <!-- Styles -->
 <style>
+      /* Make iframe responsive */
+      .iframe-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+        }
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
     /* Modern and detailed styles for the weather table */
     h1 {
         text-align: center;
