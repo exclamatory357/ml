@@ -4,11 +4,11 @@
 // ==============================
 
 // Content Security Policy: Restricts sources for content, scripts, and frames
-//header("Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-scripts.com; frame-ancestors 'none';");
-//header("Content-Security-Policy: script-src 'self'; object-src 'none';");
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-scripts.com; frame-ancestors 'none';");
+header("Content-Security-Policy: script-src 'self'; object-src 'none';");
 
 // Prevent clickjacking by disallowing framing
-//header("X-Frame-Options: DENY");
+header("X-Frame-Options: DENY");
 
 // Enforce HTTPS using Strict-Transport-Security
 header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
