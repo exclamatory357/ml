@@ -231,7 +231,7 @@ function generateReceiptPDFFunction($advance_id, $user_id) {
     // Title header
     $pdf->SetFont('Arial', 'B', 16);
     $pdf->Cell(0, 13, 'DanRose Fishing Management System', 0, 1, 'C');
-    $pdf->Ln();
+
 
     // System Name Header
     $pdf->SetFont('Arial', 'B', 12);
