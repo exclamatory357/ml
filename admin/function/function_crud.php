@@ -231,6 +231,14 @@ function generateReceiptPDFFunction($advance_id, $user_id) {
     // Title header
     $pdf->SetFont('Arial', 'B', 16);
     $pdf->Cell(0, 13, 'DanRose Fishing Management System', 0, 1, 'C');
+    $pdf->Ln();
+
+    // Add address, contact number, and Gmail information
+    $pdf->SetFont('Arial', '', 12);
+    $pdf->Cell(0, 10, 'Address: Sitio Kabay-ot, Hilantagaan, Santa Fe, Cebu', 0, 1, 'C');
+    $pdf->Cell(0, 10, 'Contact Number: 09123456789', 0, 1, 'C');
+    $pdf->Cell(0, 10, 'Gmail: danrosefishing30@gmail.com', 0, 1, 'C');
+    $pdf->Ln();
 
 
     // System Name Header
