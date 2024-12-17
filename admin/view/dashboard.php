@@ -694,39 +694,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </body>
 </html>
 <?php } ?>
-<script type="text/javascript">
-    // Disable F12 key and Inspect Element keyboard shortcuts with alerts
-    document.onkeydown = function(e) {
-        // F12
-        if (e.key === "F12") {
-            alert("F12 (DevTools) is disabled.");
-            e.preventDefault(); // Prevent default action
-            return false;
-        }
-        
-        // Ctrl + Shift + I (Inspect)
-        if (e.ctrlKey && e.shiftKey && e.key === "I") {
-            alert("Inspect Element is disabled.");
-            e.preventDefault();
-            return false;
-        }
-        
-        // Ctrl + Shift + J (Console)
-        if (e.ctrlKey && e.shiftKey && e.key === "J") {
-            alert("Console is disabled.");
-            e.preventDefault();
-            return false;
-        }
-        
-       
-         // Ctrl + U or Ctrl + u (View Source)
-         if (e.ctrlKey && (e.key === "U" || e.key === "u" || e.keyCode === 85)) {
-            alert("Viewing page source is disabled.");
-            e.preventDefault();
-            return false;
-        }
-    };
-</script>
+
 
 <script>
     (function() {
