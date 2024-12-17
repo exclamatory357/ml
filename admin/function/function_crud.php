@@ -235,7 +235,7 @@ function generateReceiptPDFFunction($advance_id, $user_id) {
 
     // System Name Header
     $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(0, 10, 'Receipt for Cash Advance', 0, 1, 'C');
+    $pdf->Cell(0, 12, 'Receipt for Cash Advance', 0, 1, 'C');
 
     // Details Section
     $pdf->SetFont('Arial', '', 10);
