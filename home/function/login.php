@@ -1,8 +1,4 @@
 <?php
- use Infobip\Configuration;
- use Infobip\Api\SmsApi;
- use Infobip\Api\Model\SmsMessage;
- use Infobip\Api\Model\SmsAdvancedTextualRequest;
 session_start();
 include "../../config/db.php";
 
@@ -76,47 +72,98 @@ if (isset($_POST["btnlogin"])) {
             $stmt_update->bind_param("si", $new_reset_token, $res["user_id"]);
             $stmt_update->execute();
 
-            // Generate OTP and store in session
+            // OTP generation and sending via PHPMailer
             $otp = rand(100000, 999999);
             $_SESSION["otp"] = $otp;
-            $_SESSION["otp_expiration"] = time() + 300;  // 5 minutes validity
+            $_SESSION["otp_expiration"] = time() + 300;
 
-            // Infobip API configuration
-            require '../vendor/autoload.php';  // Make sure the Infobip client is autoloaded
+            // Set up PHPMailer to send OTP
+            require 'phpmailer/PHPMailerAutoload.php';
+            $mail = new PHPMailer;
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'danrosefishing30@gmail.com';
+            $mail->Password = 'meyj axmh socg tivf';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
 
-            // Place `use` statements here, inside the PHP block, after `require` or `include`
-           
-            
-            // Set up Infobip configuration (replace with your actual credentials)
-            $apiKey = '736c23f2e17c91957df713ee3df4b868-bcc4e894-94a1-49b6-85ec-099e707629f3';
-            $baseUrl = 'https://8kzy19.api.infobip.com';  // Make sure the base URL starts with "https://"
-            $config = new Configuration();
-            $config->setApiKey($apiKey);
-            $config->setBaseUrl($baseUrl);
-            
-            // Create the SMS API client
-            $smsApi = new SmsApi($config);
-            
-            // Prepare SMS message
-            $message = new SmsMessage();
-            $message->setFrom('DRFAMS');  // Replace with your approved sender ID
-            $message->setTo($res["09665581572"]);  // User's phone number
-            $message->setText("Your OTP code for login is: $otp. This code is valid for 5 minutes.");
-            
-            // Create the request
-            $request = new SmsAdvancedTextualRequest();
-            $request->setMessages([$message]);
-            
-            // Send SMS via Infobip API
-            try {
-                $response = $smsApi->sendSmsMessage($request);
-                echo "OTP sent successfully!";
-            } catch (Exception $e) {
+            $mail->setFrom('noreply-danrosefishing30@gmail.com', 'Danrose Fishing Management System');
+            $mail->addAddress($res["email"]);
+            $mail->isHTML(true);
+            $mail->Subject = 'Your OTP for Login';
+            $mail->Body = "
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            color: #333;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .container {
+                            width: 100%;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            background-color: #ffffff;
+                            border-radius: 8px;
+                            overflow: hidden;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                        }
+                        .header {
+                            background-color: #AF0401;
+                            color: #ffffff;
+                            text-align: center;
+                            padding: 20px;
+                            font-size: 24px;
+                        }
+                        .content {
+                            padding: 20px;
+                            text-align: center;
+                        }
+                        .otp-code {
+                            font-size: 32px;
+                            font-weight: bold;
+                            color: #AF0401;
+                            margin: 20px 0;
+                        }
+                        .footer {
+                            background-color: #f4f4f4;
+                            padding: 10px;
+                            text-align: center;
+                            font-size: 12px;
+                            color: #777;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <div class='header'>
+                            Your OTP for Login
+                        </div>
+                        <div class='content'>
+                            <p>Hello,</p>
+                            <p>Please use the following One-Time Password (OTP) to complete your login:</p>
+                            <div class='otp-code'>$otp</div>
+                            <p>This OTP is valid for a limited time only (5 minutes). If you did not request this, please ignore this email.</p>
+                        </div>
+                        <div class='footer'>
+                            © 2024 Danrose Fishing Agency Management System. All rights reserved.
+                        </div>
+                    </div>
+                </body>
+                </html>
+            ";
+
+            if (!$mail->send()) {
                 $_SESSION["notify"] = "otp_failed";
                 header("Location: ../?home");
                 exit();
             }
-            
+
             header("Location: otp_verification.php");
             exit();
         } else {
