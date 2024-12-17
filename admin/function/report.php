@@ -21,19 +21,31 @@ $pdf->Image('uploads/icon.png', 240, 10, 30); // Adjust the path and position as
 $pdf->SetFont('Arial', 'B', 25);
 $pdf->SetX(90);
 $pdf->Cell(90, 10, 'DanRose Fishing Agency Management System', '', 0, 'C');
-$pdf->Ln();
-$pdf->SetX(90); 
+$pdf->Ln(10);  // Break line with 10mm space
+
 $pdf->SetFont('Arial', 'B', 16);
+$pdf->SetX(90);
 $pdf->Cell(90, 10, 'Generate Report C/A', '', 0, 'C');
-$pdf->Ln(10);
+$pdf->Ln(10);  // Break line with 10mm space
+
+$pdf->SetX(90);
 $pdf->Cell(90, 10, 'Address: Sitio Kabay-ot, Hilantagaan, Santa Fe, Cebu', '', 0, 'C');
-$pdf->Ln();
+$pdf->Ln(10);  // Break line with 10mm space
+
+$pdf->SetX(90);
+$pdf->Cell(90, 10, 'Contact Number: 09123456789', '', 0, 'C');
+$pdf->Ln(10);  // Break line with 10mm space
+
+$pdf->SetX(90);
+$pdf->Cell(90, 10, 'Gmail: danrosefishing30@gmail.com', '', 0, 'C');
+$pdf->Ln(10);  // Break line with 10mm space
 
 $pdf->SetFont('Arial', 'B', 10);
 $pdf->SetX(90);
 $pdf->Cell(85, 0, 'FROM: ' . date("M d, Y", strtotime($from)) . '  ' . 'TO: ' . date("M d, Y", strtotime($to)), '', 0, 'C');
-$pdf->Ln();
+$pdf->Ln(10);  // Break line with 10mm space
 
+// Reset Y and Left margin settings
 $pdf->SetY(40);
 $pdf->SetLeftMargin(20);
 
