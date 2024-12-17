@@ -41,216 +41,188 @@ if (isset($_GET["weather"])) {
     // Extract the resolved address and weather details
     $resolvedAddress = $response_data->resolvedAddress;
     $days = $response_data->days;
+?>
 
-    // Prepare data for the chart
-    $dates = [];
-    $maxTemps = [];
-    $minTemps = [];
-    $precipitations = [];
-    $windSpeeds = [];
+<!-- Main content -->
+<section class="content">
+    <div class="container">
+        <h1>Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?></h1>
 
-    foreach ($days as $day) {
-        $dates[] = $day->datetime;
-        $maxTemps[] = $day->tempmax;
-        $minTemps[] = $day->tempmin;
-        $precipitations[] = $day->precip;
-        $windSpeeds[] = $day->windspeed;
-    }
-    ?>
-
-    <!-- Main content -->
-    <section class="content">
-        <div class="container">
-            <h1><i class="fas fa-sun"></i> Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?> <i class="fas fa-cloud-sun"></i></h1>
-
-            <!-- Table of weather data -->
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover weather-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th><i class="fas fa-temperature-high table-icon"></i> Max Temp (°C)</th>
-                            <th><i class="fas fa-temperature-low table-icon"></i> Min Temp (°C)</th>
-                            <th><i class="fas fa-cloud-rain table-icon"></i> Precipitation (mm)</th>
-                            <th><i class="fas fa-wind table-icon"></i> Wind Speed (km/h)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($days as $day) { ?>
-                        <tr>
-                            <td data-label="Date"><?php echo htmlspecialchars($day->datetime); ?></td>
-                            <td data-label="Max Temp"><?php echo htmlspecialchars($day->tempmax); ?>(°C)</td>
-                            <td data-label="Min Temp"><?php echo htmlspecialchars($day->tempmin); ?>(°C)</td>
-                            <td data-label="Precipitation"><?php echo htmlspecialchars($day->precip); ?>(mm)</td>
-                            <td data-label="Wind Speed"><?php echo htmlspecialchars($day->windspeed); ?>(km/h)</td>
-                        </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Graphs -->
-            <div class="chart-container">
-                <canvas id="tempChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <canvas id="precipChart"></canvas>
-            </div>
+        <!-- Table with animations and icons -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover weather-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th><i class="fas fa-temperature-high table-icon"></i> Max Temp (°C)</th>
+                        <th><i class="fas fa-temperature-low table-icon"></i> Min Temp (°C)</th>
+                        <th><i class="fas fa-cloud-rain table-icon"></i> Precipitation (mm)</th>
+                        <th><i class="fas fa-wind table-icon"></i> Wind Speed (km/h)</th>
+                        <th><i class="fas fa-wind table-icon"></i> Wind Gust (km/h)</th>
+                        <th><i class="fas fa-cloud table-icon"></i> Cloud Cover (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($days as $day) { ?>
+                    <tr class="table-row">
+                        <td data-label="Date"><?php echo htmlspecialchars($day->datetime); ?></td>
+                        <td data-label="Max Temp"><?php echo htmlspecialchars($day->tempmax); ?>(°C)</td>
+                        <td data-label="Min Temp"><?php echo htmlspecialchars($day->tempmin); ?>(°C)</td>
+                        <td data-label="Precipitation"><?php echo htmlspecialchars($day->precip); ?>(mm)</td>
+                        <td data-label="Wind Speed"><?php echo htmlspecialchars($day->windspeed); ?>(km/h)</td>
+                        <td data-label="Wind Gust"><?php echo htmlspecialchars($day->windgust); ?>(km/h)</td>
+                        <td data-label="Cloud Cover"><?php echo htmlspecialchars($day->cloudcover); ?>(%)</td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
         </div>
-    </section>
 
-    <!-- Styles -->
-    <style>
-        .content {
-            margin-top: 30px;
-            font-family: 'Roboto', sans-serif;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 40px;
-            font-weight: 300;
-            color: #333;
-        }
-        .weather-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+        <!-- Chart for analytical graphs -->
+        <div class="chart-container">
+            <canvas id="weatherChart"></canvas>
+        </div>
+    </div>
+</section>
+
+<!-- Styles -->
+<style>
+    /* Modern and detailed styles for the weather table */
+    h1 {
+        text-align: center;
+        margin-bottom: 40px;
+        font-weight: 300;
+        color: #333;
+    }
+    .weather-table {
+        width: 100%;
+        border-collapse: collapse;
+        animation: fadeIn 1s ease-in-out;
+    }
+    .weather-table thead {
+        background-color: rgb(235, 8, 0);
+        color: #fff;
+    }
+    .weather-table th, .weather-table td {
+        padding: 15px;
+        text-align: center;
+        vertical-align: middle;
+        border-bottom: 1px solid #ddd;
+    }
+    .weather-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    .weather-table tbody tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+        transform: scale(1.05);
+        transition: transform 0.2s ease;
+    }
+    .table-icon {
+        margin-right: 5px;
+        color: rgb(15, 115, 228);
+    }
+    .table-row {
+        animation: slideIn 0.5s ease-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    @keyframes slideIn {
+        from { transform: translateX(-100%); }
+        to { transform: translateX(0); }
+    }
+
+    /* Chart styling */
+    .chart-container {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 767px) {
         .weather-table thead {
-            background-color: rgb(235, 8, 0);
-            color: #fff;
+            display: none;
         }
-        .weather-table th, .weather-table td {
-            padding: 15px;
-            text-align: center;
-            vertical-align: middle;
-            border-bottom: 1px solid #ddd;
-        }
-        .weather-table tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .weather-table tbody tr:hover {
-            background-color: #f1f1f1;
-        }
-        .table-icon {
-            margin-right: 5px;
-            color: rgb(15, 115, 228);
-        }
-        .chart-container {
+        .weather-table, .weather-table tbody, .weather-table tr, .weather-table td {
+            display: block;
             width: 100%;
-            max-width: 800px;
-            margin: 0 auto 50px;
-            padding: 20px;
-            background-color: #f4f4f4;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            animation: fadeIn 1s forwards;
         }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        .weather-table tr {
+            margin-bottom: 15px;
         }
-
-        /* Responsive adjustments */
-        @media (max-width: 767px) {
-            .weather-table thead {
-                display: none;
-            }
-            .weather-table, .weather-table tbody, .weather-table tr, .weather-table td {
-                display: block;
-                width: 100%;
-            }
-            .weather-table tr {
-                margin-bottom: 15px;
-            }
-            .weather-table td {
-                text-align: right;
-                padding-left: 50%;
-                position: relative;
-            }
-            .weather-table td::before {
-                content: attr(data-label);
-                position: absolute;
-                left: 15px;
-                width: calc(50% - 30px);
-                padding-right: 10px;
-                text-align: left;
-                font-weight: bold;
-            }
+        .weather-table td {
+            text-align: right;
+            padding-left: 50%;
+            position: relative;
         }
-    </style>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css" rel="stylesheet">
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Data for the charts
-        var dates = <?php echo json_encode($dates); ?>;
-        var maxTemps = <?php echo json_encode($maxTemps); ?>;
-        var minTemps = <?php echo json_encode($minTemps); ?>;
-        var precipitations = <?php echo json_encode($precipitations); ?>;
-        var windSpeeds = <?php echo json_encode($windSpeeds); ?>;
+        .weather-table td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 15px;
+            width: calc(50% - 30px);
+            padding-right: 10px;
+            text-align: left;
+            font-weight: bold;
+        }
+    }
+</style>
 
-        // Max and Min Temperature Chart
-        var tempCtx = document.getElementById('tempChart').getContext('2d');
-        var tempChart = new Chart(tempCtx, {
-            type: 'line',
-            data: {
-                labels: dates,
-                datasets: [{
-                    label: 'Max Temp (°C)',
-                    data: maxTemps,
-                    borderColor: 'rgb(255, 99, 132)',
-                    fill: false,
-                    tension: 0.4
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Prepare data for chart
+    const labels = <?php echo json_encode(array_map(function($day) { return $day->datetime; }, $days)); ?>;
+    const maxTemps = <?php echo json_encode(array_map(function($day) { return $day->tempmax; }, $days)); ?>;
+    const minTemps = <?php echo json_encode(array_map(function($day) { return $day->tempmin; }, $days)); ?>;
+
+    // Create chart
+    const ctx = document.getElementById('weatherChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Max Temp (°C)',
+                data: maxTemps,
+                borderColor: 'rgb(255, 99, 132)',
+                fill: false
+            }, {
+                label: 'Min Temp (°C)',
+                data: minTemps,
+                borderColor: 'rgb(54, 162, 235)',
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: { 
+                    beginAtZero: true 
                 },
-                {
-                    label: 'Min Temp (°C)',
-                    data: minTemps,
-                    borderColor: 'rgb(54, 162, 235)',
-                    fill: false,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                animation: {
-                    duration: 1000,
-                    easing: 'easeOutBounce'
+                y: {
+                    min: 0,
                 }
             }
-        });
-
-        // Precipitation Chart
-        var precipCtx = document.getElementById('precipChart').getContext('2d');
-        var precipChart = new Chart(precipCtx, {
-            type: 'bar',
-            data: {
-                labels: dates,
-                datasets: [{
-                    label: 'Precipitation (mm)',
-                    data: precipitations,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                animation: {
-                    duration: 1000,
-                    easing: 'easeInOutQuad'
-                }
-            }
-        });
-    </script>
+        }
+    });
+</script>
 
 <?php
 } else {
     echo " ";
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    
+</body>
+</html>
