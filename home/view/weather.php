@@ -41,12 +41,29 @@ if (isset($_GET["weather"])) {
     // Extract the resolved address and weather details
     $resolvedAddress = $response_data->resolvedAddress;
     $days = $response_data->days;
+
+    // Prepare data for the chart
+    $dates = [];
+    $maxTemps = [];
+    $minTemps = [];
+    $precipitations = [];
+    $windSpeeds = [];
+
+    foreach ($days as $day) {
+        $dates[] = $day->datetime;
+        $maxTemps[] = $day->tempmax;
+        $minTemps[] = $day->tempmin;
+        $precipitations[] = $day->precip;
+        $windSpeeds[] = $day->windspeed;
+    }
     ?>
 
     <!-- Main content -->
     <section class="content">
         <div class="container">
-            <h1>Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?></h1>
+            <h1><i class="fas fa-sun"></i> Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?> <i class="fas fa-cloud-sun"></i></h1>
+
+            <!-- Table of weather data -->
             <div class="table-responsive">
                 <table class="table table-bordered table-hover weather-table">
                     <thead>
@@ -56,8 +73,6 @@ if (isset($_GET["weather"])) {
                             <th><i class="fas fa-temperature-low table-icon"></i> Min Temp (°C)</th>
                             <th><i class="fas fa-cloud-rain table-icon"></i> Precipitation (mm)</th>
                             <th><i class="fas fa-wind table-icon"></i> Wind Speed (km/h)</th>
-                            <th><i class="fas fa-wind table-icon"></i> Wind Gust (km/h)</th>
-                            <th><i class="fas fa-cloud table-icon"></i> Cloud Cover (%)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -68,23 +83,28 @@ if (isset($_GET["weather"])) {
                             <td data-label="Min Temp"><?php echo htmlspecialchars($day->tempmin); ?>(°C)</td>
                             <td data-label="Precipitation"><?php echo htmlspecialchars($day->precip); ?>(mm)</td>
                             <td data-label="Wind Speed"><?php echo htmlspecialchars($day->windspeed); ?>(km/h)</td>
-                            <td data-label="Wind Gust"><?php echo htmlspecialchars($day->windgust); ?>(km/h)</td>
-                            <td data-label="Cloud Cover"><?php echo htmlspecialchars($day->cloudcover); ?>(%)</td>
                         </tr>
                         <?php } ?>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Graphs -->
+            <div class="chart-container">
+                <canvas id="tempChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="precipChart"></canvas>
             </div>
         </div>
     </section>
 
     <!-- Styles -->
     <style>
-        /* Modern and detailed styles for the weather table */
-     /*   .content {
+        .content {
             margin-top: 30px;
             font-family: 'Roboto', sans-serif;
-        } */
+        }
         h1 {
             text-align: center;
             margin-bottom: 40px;
@@ -96,7 +116,7 @@ if (isset($_GET["weather"])) {
             border-collapse: collapse;
         }
         .weather-table thead {
-            background-color:rgb(235, 8, 0);
+            background-color: rgb(235, 8, 0);
             color: #fff;
         }
         .weather-table th, .weather-table td {
@@ -113,8 +133,29 @@ if (isset($_GET["weather"])) {
         }
         .table-icon {
             margin-right: 5px;
-            color:rgb(15, 115, 228);
+            color: rgb(15, 115, 228);
         }
+        .chart-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
         /* Responsive adjustments */
         @media (max-width: 767px) {
             .weather-table thead {
@@ -142,26 +183,74 @@ if (isset($_GET["weather"])) {
                 font-weight: bold;
             }
         }
-        
     </style>
 
     <!-- JavaScript -->
-   
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Data for the charts
+        var dates = <?php echo json_encode($dates); ?>;
+        var maxTemps = <?php echo json_encode($maxTemps); ?>;
+        var minTemps = <?php echo json_encode($minTemps); ?>;
+        var precipitations = <?php echo json_encode($precipitations); ?>;
+        var windSpeeds = <?php echo json_encode($windSpeeds); ?>;
 
-    <?php
+        // Max and Min Temperature Chart
+        var tempCtx = document.getElementById('tempChart').getContext('2d');
+        var tempChart = new Chart(tempCtx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Max Temp (°C)',
+                    data: maxTemps,
+                    borderColor: 'rgb(255, 99, 132)',
+                    fill: false,
+                    tension: 0.4
+                },
+                {
+                    label: 'Min Temp (°C)',
+                    data: minTemps,
+                    borderColor: 'rgb(54, 162, 235)',
+                    fill: false,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                animation: {
+                    duration: 1000,
+                    easing: 'easeOutBounce'
+                }
+            }
+        });
+
+        // Precipitation Chart
+        var precipCtx = document.getElementById('precipChart').getContext('2d');
+        var precipChart = new Chart(precipCtx, {
+            type: 'bar',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Precipitation (mm)',
+                    data: precipitations,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                animation: {
+                    duration: 1000,
+                    easing: 'easeInOutQuad'
+                }
+            }
+        });
+    </script>
+
+<?php
 } else {
     echo " ";
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kwe</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-<body>
-    
-</body>
-</html>
