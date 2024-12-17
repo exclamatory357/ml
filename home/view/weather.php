@@ -77,6 +77,8 @@ if (isset($_GET["weather"])) {
                 </tbody>
             </table>
         </div>
+<!-- Embed PAGASA High Seas Forecast in an iframe -->
+<iframe src="https://bagong.pagasa.dost.gov.ph/marine/high-seas-forecast" width="100%" height="600px" frameborder="0"></iframe>
 
         <!-- Chart for analytical graphs -->
         <div class="chart-container">
