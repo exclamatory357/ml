@@ -29,15 +29,15 @@ $pdf->Cell(90, 10, 'Generate Report C/A', '', 0, 'C');
 $pdf->Ln(5);  // Break line with 10mm space
 
 $pdf->SetX(90);
-$pdf->Cell(90, 10, 'Address: Sitio Kabay-ot, Hilantagaan, Santa Fe, Cebu', '', 0, 'C');
+$pdf->Cell(88, 10, 'Address: Sitio Kabay-ot, Hilantagaan, Santa Fe, Cebu', '', 0, 'C');
 $pdf->Ln(5);  // Break line with 10mm space
 
 $pdf->SetX(90);
-$pdf->Cell(90, 10, 'Contact Number: 09123456789', '', 0, 'C');
+$pdf->Cell(87, 10, 'Contact Number: 09123456789', '', 0, 'C');
 $pdf->Ln(5);  // Break line with 10mm space
 
 $pdf->SetX(90);
-$pdf->Cell(90, 10, 'Gmail: danrosefishing30@gmail.com', '', 0, 'C');
+$pdf->Cell(86, 10, 'Gmail: danrosefishing30@gmail.com', '', 0, 'C');
 $pdf->Ln(10);  // Break line with 10mm space
 
 $pdf->SetFont('Arial', 'B', 10);
