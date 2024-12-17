@@ -52,8 +52,8 @@ if (isset($_GET["weather"])) {
             <h2>Current Weather in <?php echo htmlspecialchars($resolvedAddress); ?></h2>
             <div class="current-info">
                 <div class="weather-icon">
-                    <!-- Dynamic weather icon -->
-                    <img src="https://openweathermap.org/img/wn/<?php echo $current_conditions->icon; ?>.png" alt="<?php echo htmlspecialchars($current_conditions->conditions); ?>">
+                    <!-- Dynamic weather icon for current conditions -->
+                    <img src="https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/icons/<?php echo $current_conditions->icon; ?>.png" alt="<?php echo htmlspecialchars($current_conditions->conditions); ?>">
                 </div>
                 <div class="temp-details">
                     <p class="temp"><?php echo $current_conditions->temp; ?>°C</p>
@@ -71,7 +71,7 @@ if (isset($_GET["weather"])) {
             <div class="forecast-card">
                 <div class="forecast-icon">
                     <!-- Dynamic icon for each day -->
-                    <img src="https://openweathermap.org/img/wn/<?php echo $day->icon; ?>.png" alt="<?php echo htmlspecialchars($day->conditions); ?>">
+                    <img src="https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/icons/<?php echo $day->icon; ?>.png" alt="<?php echo htmlspecialchars($day->conditions); ?>">
                 </div>
                 <p class="date"><?php echo htmlspecialchars($day->datetime); ?></p>
                 <p class="temp"><?php echo $day->tempmax; ?>°C / <?php echo $day->tempmin; ?>°C</p>
