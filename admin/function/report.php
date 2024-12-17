@@ -38,7 +38,7 @@ $pdf->Ln(5);  // Break line with 10mm space
 
 $pdf->SetX(90);
 $pdf->Cell(90, 10, 'Gmail: danrosefishing30@gmail.com', '', 0, 'C');
-$pdf->Ln(5);  // Break line with 10mm space
+$pdf->Ln(10);  // Break line with 10mm space
 
 $pdf->SetFont('Arial', 'B', 10);
 $pdf->SetX(90);
