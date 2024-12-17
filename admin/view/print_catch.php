@@ -128,9 +128,9 @@ if (isset($_SESSION["print_ready_team"]) && isset($_SESSION["added_ids"])) {
             <!-- Logo only in print area -->
             <img src="../function/uploads/icon.png" alt="Logo" class="header-logo">
             <h1>Danrose Fishing Agency Management System</h1>
-            <h2>Address: Sitio Kabay-ot, Hilantagaan, Santa Fe, Cebu</h2>
-                <h2>Contact Number: 09123456789</h2>
-                <h2>Gmail: danrosefishing30@gmail.com</h2>
+            <h5>Address: Sitio Kabay-ot, Hilantagaan, Santa Fe, Cebu</h5>
+                <h5>Contact Number: 09123456789</h5>
+                <h5>Gmail: danrosefishing30@gmail.com</h5>
             <div class="content-info">
                 <p>Date: <?php echo date('Y-m-d'); ?></p>
                 <p>Team: <?php echo $team; ?></p>
