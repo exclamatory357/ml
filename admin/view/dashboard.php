@@ -695,12 +695,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </html>
 <?php } ?>
 <script type="text/javascript">
-    // Disable right-click with an alert
-    document.addEventListener('contextmenu', function(event) {
-        event.preventDefault();
-        alert("Right-click is disabled on this page.");
-    });
-
     // Disable F12 key and Inspect Element keyboard shortcuts with alerts
     document.onkeydown = function(e) {
         // F12
