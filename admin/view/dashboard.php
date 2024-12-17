@@ -604,19 +604,41 @@ body {
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const ctxCatchRecords = document.getElementById('catchRecordsChart').getContext('2d');
-    const catchRecordsChart = new Chart(ctxCatchRecords, {
-        type: 'bar', // Bar chart type
+document.addEventListener('DOMContentLoaded', function () {
+    const ctx = document.getElementById('catchRecordsChart').getContext('2d');
+    
+    const catchRecordsChart = new Chart(ctx, {
+        type: 'bar',
         data: {
-            labels: <?= $chart_labels ?>, // Unique dates from PHP
-            datasets: <?= $chart_datasets ?> // Catch items grouped by catch_date
+            labels: <?= $chart_labels ?>, // PHP-generated JSON for labels (catch dates)
+            datasets: <?= $chart_datasets ?> // PHP-generated JSON for datasets (catch items and kilos)
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function (tooltipItem) {
+                            return `${tooltipItem.dataset.label}: ${tooltipItem.raw} kilos`;
+                        }
+                    }
+                },
+                legend: {
+                    display: true,
+                    position: 'top',
+                }
+            },
             scales: {
                 x: {
+                    type: 'time', // Time-based x-axis
+                    time: {
+                        unit: 'day',
+                        tooltipFormat: 'MMM d, yyyy',
+                        displayFormats: {
+                            day: 'MMM d'
+                        }
+                    },
                     title: {
                         display: true,
                         text: 'Catch Date'
@@ -633,7 +655,6 @@ body {
         }
     });
 });
-
 </script>
 
 <!-- Weather Forecast 
