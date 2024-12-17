@@ -230,12 +230,12 @@ function generateReceiptPDFFunction($advance_id, $user_id) {
 
     // Title header
     $pdf->SetFont('Arial', 'B', 16);
-    $pdf->Cell(0, 13, 'Receipt for Cash Advance', 0, 1, 'C');
+    $pdf->Cell(0, 13, 'DanRose Fishing Management System', 0, 1, 'C');
     $pdf->Ln();
 
     // System Name Header
     $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(0, 10, 'DanRose Fishing Management System', 0, 1, 'C');
+    $pdf->Cell(0, 10, 'Receipt for Cash Advance', 0, 1, 'C');
 
     // Details Section
     $pdf->SetFont('Arial', '', 10);
