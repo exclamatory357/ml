@@ -564,10 +564,8 @@ body {
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    // Existing Cash Advances Chart Code...
 
+<script>
     // New Chart: Fish Catches
     const ctxNewChart = document.getElementById('newChart').getContext('2d');
     const newChart = new Chart(ctxNewChart, {
