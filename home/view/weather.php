@@ -41,126 +41,161 @@ if (isset($_GET["weather"])) {
     // Extract the resolved address and weather details
     $resolvedAddress = $response_data->resolvedAddress;
     $days = $response_data->days;
+    $current_conditions = $response_data->currentConditions;
 ?>
 
 <!-- Main content -->
 <section class="content">
     <div class="container">
-        <h1>Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?></h1>
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover weather-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th><i class="fas fa-temperature-high table-icon"></i> Max Temp (°C)</th>
-                        <th><i class="fas fa-temperature-low table-icon"></i> Min Temp (°C)</th>
-                        <th><i class="fas fa-cloud-rain table-icon"></i> Precipitation (mm)</th>
-                        <th><i class="fas fa-wind table-icon"></i> Wind Speed (km/h)</th>
-                        <th><i class="fas fa-wind table-icon"></i> Wind Gust (km/h)</th>
-                        <th><i class="fas fa-cloud table-icon"></i> Cloud Cover (%)</th>
-                        <th><i class="fas fa-sun table-icon"></i> UV Index</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($days as $day) { ?>
-                    <tr>
-                        <td data-label="Date"><?php echo htmlspecialchars($day->datetime); ?></td>
-                        <td data-label="Max Temp"><?php echo htmlspecialchars($day->tempmax); ?> (°C)</td>
-                        <td data-label="Min Temp"><?php echo htmlspecialchars($day->tempmin); ?> (°C)</td>
-                        <td data-label="Precipitation"><?php echo htmlspecialchars($day->precip); ?> (mm)</td>
-                        <td data-label="Wind Speed"><?php echo htmlspecialchars($day->windspeed); ?> (km/h)</td>
-                        <td data-label="Wind Gust"><?php echo htmlspecialchars($day->windgust); ?> (km/h)</td>
-                        <td data-label="Cloud Cover"><?php echo htmlspecialchars($day->cloudcover); ?> (%)</td>
-                        <td data-label="UV Index"><?php echo htmlspecialchars($day->uvindex); ?></td>
-                    </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
+        <!-- Current Weather -->
+        <div class="current-weather">
+            <h2>Current Weather in <?php echo htmlspecialchars($resolvedAddress); ?></h2>
+            <div class="current-info">
+                <div class="weather-icon">
+                    <!-- Dynamic weather icon -->
+                    <img src="https://openweathermap.org/img/wn/<?php echo $current_conditions->icon; ?>.png" alt="weather-icon">
+                </div>
+                <div class="temp-details">
+                    <p class="temp"><?php echo $current_conditions->temp; ?>°C</p>
+                    <p class="condition"><?php echo $current_conditions->conditions; ?></p>
+                    <p class="wind-speed">Wind: <?php echo $current_conditions->windspeed; ?> km/h</p>
+                    <p class="humidity">Humidity: <?php echo $current_conditions->humidity; ?>%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7-Day Forecast -->
+        <h3>7-Day Forecast</h3>
+        <div class="forecast">
+            <?php foreach ($days as $day) { ?>
+            <div class="forecast-card">
+                <div class="forecast-icon">
+                    <!-- Dynamic icon for each day -->
+                    <img src="https://openweathermap.org/img/wn/<?php echo $day->icon; ?>.png" alt="weather-icon">
+                </div>
+                <p class="date"><?php echo htmlspecialchars($day->datetime); ?></p>
+                <p class="temp"><?php echo $day->tempmax; ?>°C / <?php echo $day->tempmin; ?>°C</p>
+                <p class="precip">Precip: <?php echo $day->precip; ?>mm</p>
+                <p class="windspeed">Wind: <?php echo $day->windspeed; ?> km/h</p>
+            </div>
+            <?php } ?>
         </div>
     </div>
 </section>
 
 <!-- Styles -->
 <style>
-    h1 {
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    h2, h3 {
         text-align: center;
-        margin-bottom: 40px;
-        font-weight: 300;
         color: #333;
+        font-size: 28px;
     }
 
-    .weather-table {
-        width: 100%;
-        border-collapse: collapse;
-        animation: fadeIn 1s ease-out;
+    .current-weather {
+        display: flex;
+        justify-content: center;
+        background: #fff;
+        padding: 30px;
+        margin-bottom: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
-    .weather-table thead {
-        background-color: #4a90e2;
-        color: #fff;
+    .current-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .weather-table th, .weather-table td {
+    .weather-icon img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .temp-details {
+        margin-left: 20px;
+    }
+
+    .temp {
+        font-size: 48px;
+        color: #4a90e2;
+    }
+
+    .condition {
+        font-size: 20px;
+        color: #555;
+    }
+
+    .wind-speed, .humidity {
+        font-size: 14px;
+        color: #888;
+    }
+
+    .forecast {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .forecast-card {
+        width: 180px;
+        background: #fff;
         padding: 15px;
+        margin: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         text-align: center;
-        vertical-align: middle;
-        border-bottom: 1px solid #ddd;
+        transition: transform 0.3s ease;
     }
 
-    .weather-table tbody tr:nth-child(even) {
-        background-color: #f9f9f9;
+    .forecast-card:hover {
+        transform: scale(1.05);
     }
 
-    .weather-table tbody tr:hover {
-        background-color: #f1f1f1;
+    .forecast-icon img {
+        width: 50px;
+        height: 50px;
     }
 
-    .table-icon {
-        margin-right: 5px;
-        color:rgb(226, 74, 74);
+    .date {
+        font-weight: bold;
+        margin-top: 10px;
     }
 
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
+    .temp {
+        font-size: 16px;
+        margin: 5px 0;
     }
 
-    /* Responsive adjustments */
+    .precip, .windspeed {
+        font-size: 12px;
+        color: #666;
+    }
+
     @media (max-width: 767px) {
-        .weather-table thead {
-            display: none;
-        }
-        .weather-table, .weather-table tbody, .weather-table tr, .weather-table td {
-            display: block;
-            width: 100%;
-        }
-        .weather-table tr {
-            margin-bottom: 15px;
-        }
-        .weather-table td {
-            text-align: right;
-            padding-left: 50%;
-            position: relative;
-        }
-        .weather-table td::before {
-            content: attr(data-label);
-            position: absolute;
-            left: 15px;
-            width: calc(50% - 30px);
-            padding-right: 10px;
-            text-align: left;
-            font-weight: bold;
+        .forecast {
+            flex-direction: column;
         }
     }
 </style>
 
 <!-- JavaScript -->
 <script>
-// You can include more JavaScript here for interactions or animations
+    // Optionally, add interactivity or animations here
 </script>
 
 <?php
@@ -177,5 +212,6 @@ if (isset($_GET["weather"])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
+    
 </body>
 </html>
