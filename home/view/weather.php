@@ -78,9 +78,7 @@ if (isset($_GET["weather"])) {
             </table>
         </div>
 <!-- Embed PAGASA High Seas Forecast in an iframe -->
-
-        <iframe src="https://bagong.pagasa.dost.gov.ph/regional-forecast/visprsd" frameborder="0"></iframe>
-
+<iframe src="https://bagong.pagasa.dost.gov.ph/regional-forecast/visprsd" width="100%" height="600px" frameborder="0"></iframe>
 
         <!-- Chart for analytical graphs -->
         <div class="chart-container">
