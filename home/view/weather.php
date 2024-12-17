@@ -12,7 +12,7 @@ if (isset($_GET["weather"])) {
     $query_str = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
     parse_str($query_str, $query_params);
 
-    // Extract parameters for location and unit group, defaulting to Bantayan Island and metric
+    // Extract parameters for location and unit group
     $location = extractParam($segments, 1, $query_params, "location") ?? 'Bantayan Island';
     $unitGroup = extractParam($segments, 2, $query_params, "unitGroup") ?? 'metric';
 
@@ -58,18 +58,20 @@ if (isset($_GET["weather"])) {
                         <th><i class="fas fa-wind table-icon"></i> Wind Speed (km/h)</th>
                         <th><i class="fas fa-wind table-icon"></i> Wind Gust (km/h)</th>
                         <th><i class="fas fa-cloud table-icon"></i> Cloud Cover (%)</th>
+                        <th><i class="fas fa-sun table-icon"></i> UV Index</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($days as $day) { ?>
                     <tr>
                         <td data-label="Date"><?php echo htmlspecialchars($day->datetime); ?></td>
-                        <td data-label="Max Temp"><?php echo htmlspecialchars($day->tempmax); ?>(°C)</td>
-                        <td data-label="Min Temp"><?php echo htmlspecialchars($day->tempmin); ?>(°C)</td>
-                        <td data-label="Precipitation"><?php echo htmlspecialchars($day->precip); ?>(mm)</td>
-                        <td data-label="Wind Speed"><?php echo htmlspecialchars($day->windspeed); ?>(km/h)</td>
-                        <td data-label="Wind Gust"><?php echo htmlspecialchars($day->windgust); ?>(km/h)</td>
-                        <td data-label="Cloud Cover"><?php echo htmlspecialchars($day->cloudcover); ?>(%)</td>
+                        <td data-label="Max Temp"><?php echo htmlspecialchars($day->tempmax); ?> (°C)</td>
+                        <td data-label="Min Temp"><?php echo htmlspecialchars($day->tempmin); ?> (°C)</td>
+                        <td data-label="Precipitation"><?php echo htmlspecialchars($day->precip); ?> (mm)</td>
+                        <td data-label="Wind Speed"><?php echo htmlspecialchars($day->windspeed); ?> (km/h)</td>
+                        <td data-label="Wind Gust"><?php echo htmlspecialchars($day->windgust); ?> (km/h)</td>
+                        <td data-label="Cloud Cover"><?php echo htmlspecialchars($day->cloudcover); ?> (%)</td>
+                        <td data-label="UV Index"><?php echo htmlspecialchars($day->uvindex); ?></td>
                     </tr>
                     <?php } ?>
                 </tbody>
@@ -90,6 +92,7 @@ if (isset($_GET["weather"])) {
     .weather-table {
         width: 100%;
         border-collapse: collapse;
+        animation: fadeIn 1s ease-out;
     }
 
     .weather-table thead {
@@ -117,27 +120,32 @@ if (isset($_GET["weather"])) {
         color: #4a90e2;
     }
 
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
     /* Responsive adjustments */
     @media (max-width: 767px) {
         .weather-table thead {
             display: none;
         }
-
         .weather-table, .weather-table tbody, .weather-table tr, .weather-table td {
             display: block;
             width: 100%;
         }
-
         .weather-table tr {
             margin-bottom: 15px;
         }
-
         .weather-table td {
             text-align: right;
             padding-left: 50%;
             position: relative;
         }
-
         .weather-table td::before {
             content: attr(data-label);
             position: absolute;
@@ -150,11 +158,14 @@ if (isset($_GET["weather"])) {
     }
 </style>
 
-<!-- JavaScript (optional for any additional functionality) -->
+<!-- JavaScript -->
+<script>
+// You can include more JavaScript here for interactions or animations
+</script>
 
 <?php
 } else {
-    echo "Weather data is unavailable.";
+    echo " ";
 }
 ?>
 <!DOCTYPE html>
@@ -166,6 +177,5 @@ if (isset($_GET["weather"])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    
 </body>
 </html>
