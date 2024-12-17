@@ -96,7 +96,7 @@ if (isset($_GET["weather"])) {
             border-collapse: collapse;
         }
         .weather-table thead {
-            background-color: #4a90e2;
+            background-color:rgb(235, 8, 0);
             color: #fff;
         }
         .weather-table th, .weather-table td {
@@ -113,7 +113,7 @@ if (isset($_GET["weather"])) {
         }
         .table-icon {
             margin-right: 5px;
-            color: #4a90e2;
+            color:rgb(15, 115, 228);
         }
         /* Responsive adjustments */
         @media (max-width: 767px) {
