@@ -113,7 +113,7 @@ if (isset($_GET["weather"])) {
         background-color: #f9f9f9;
     }
     .weather-table tbody tr:hover {
-        background-color: #f1f1f1;
+        background-color:rgb(14, 37, 243);
         cursor: pointer;
         transform: scale(1.05);
         transition: transform 0.2s ease;
