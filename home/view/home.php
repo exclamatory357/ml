@@ -235,7 +235,7 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= 3) {
 ?>
 
 <div class="login-box-body p-absolute-login container mt-5">
-   <p class="login-box-msg text-center">Welcome back!burong11</p>
+   <p class="login-box-msg text-center">Welcome back!</p>
     <form action="function/login.php" method="post">
     <div class="form-group has-feedback">
         <input type="text" class="form-control form-control-lg" placeholder="Enter Username" name="username" required autofocus>
