@@ -25,7 +25,7 @@ $pdf->Ln();
 $pdf->SetX(90); 
 $pdf->SetFont('Arial', 'B', 16);
 $pdf->Cell(90, 10, 'Generate Report C/A', '', 0, 'C');
-$pdf->Ln();
+$pdf->Ln(10);
 $pdf->Cell(90, 10, 'Address: Sitio Kabay-ot, Hilantagaan, Santa Fe, Cebu', '', 0, 'C');
 $pdf->Ln();
 
