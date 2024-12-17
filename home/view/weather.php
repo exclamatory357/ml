@@ -168,6 +168,10 @@ if (isset($_GET["weather"])) {
         }
     }
 </style>
+<head>
+    <!-- Other head content -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
 
 <!-- Chart.js Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -235,4 +239,3 @@ if (isset($_GET["weather"])) {
 <?php
 }
 ?>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css" rel="stylesheet">
