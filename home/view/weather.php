@@ -235,3 +235,4 @@ if (isset($_GET["weather"])) {
 <?php
 }
 ?>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css" rel="stylesheet">
