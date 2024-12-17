@@ -45,8 +45,10 @@ if (isset($_GET["weather"])) {
 
     // Function to map conditions to free icon classes from Weather Icons
     function getWeatherIconClass($condition) {
+        // Mapping from condition description to Weather Icons library class
         switch (strtolower($condition)) {
             case 'clear':
+            case 'clear sky':
                 return 'wi-day-sunny'; // Daytime clear
             case 'cloudy':
                 return 'wi-cloudy';
@@ -58,6 +60,10 @@ if (isset($_GET["weather"])) {
                 return 'wi-snow';
             case 'storm':
                 return 'wi-thunderstorm';
+            case 'fog':
+                return 'wi-fog';
+            case 'haze':
+                return 'wi-day-haze';
             default:
                 return 'wi-na'; // Default fallback icon (Not Available)
         }
@@ -276,6 +282,6 @@ if (isset($_GET["weather"])) {
 
 <?php
 } else {
-    echo "Weather data is not available.";
+    echo "";
 }
 ?>
