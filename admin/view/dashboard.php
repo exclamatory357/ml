@@ -548,39 +548,20 @@ body {
 <canvas id="barChart" width="400" height="200"></canvas>
 
 <script>
-    // Fetch data from the PHP file
-    fetch('fetch_data.php')
-        .then(response => response.json())
-        .then(data => {
-            // Extract labels and data
-            const labels = data.map(item => item.product_name);
-            const sales = data.map(item => item.sales);
+   // Replace '2024-12-17' with your desired catch_date
+const catchDate = '2024-12-17';
 
-            // Create bar chart
-            const ctx = document.getElementById('barChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Sales',
-                        data: sales,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        })
-        .catch(error => console.error('Error fetching data:', error));
+fetch(`fetch_data.php?catch_date=${catchDate}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            console.error(data.error); // Handle the error
+        } else {
+            console.log(data); // Process and display the fetched data
+        }
+    })
+    .catch(error => console.error('Error fetching data:', error));
+
 </script>
 <!-- Weather Forecast 
 <section class="container-fluid">
