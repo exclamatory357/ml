@@ -80,70 +80,144 @@ if (isset($_GET["weather"])) {
 
     <!-- Styles -->
     <style>
-        /* Modern and detailed styles for the weather table */
-     /*   .content {
-            margin-top: 30px;
-            font-family: 'Roboto', sans-serif;
-        } */
-        h1 {
-            text-align: center;
-            margin-bottom: 40px;
-            font-weight: 300;
-            color: #333;
-        }
-        .weather-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    /* Container styling */
+    .content {
+        margin: 30px auto;
+        font-family: 'Roboto', sans-serif;
+        max-width: 1200px;
+        animation: fadeIn 1s ease-out; /* Fade-in effect on page load */
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 40px;
+        font-weight: 500;
+        color: #4a90e2;
+        font-size: 2rem;
+        text-transform: capitalize;
+        animation: slideIn 1s ease-out; /* Slide-in effect for header */
+    }
+
+    .weather-table {
+        width: 100%;
+        border-collapse: collapse;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        animation: fadeInTable 1s ease-out forwards; /* Table fade-in effect */
+    }
+
+    .weather-table thead {
+        background-color: #4a90e2;
+        color: #fff;
+        animation: fadeInThead 0.8s ease-out; /* Header fade-in */
+    }
+
+    .weather-table th,
+    .weather-table td {
+        padding: 15px;
+        text-align: center;
+        border: 1px solid #e0e0e0;
+        transition: transform 0.3s ease-in-out, background-color 0.3s ease;
+    }
+
+    .weather-table tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    .weather-table tbody tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+
+    .weather-table tbody tr:hover {
+        background-color: #dfe9f3;
+        transform: scale(1.02); /* Slight scale effect on hover */
+        transition: transform 0.2s ease-in-out, background-color 0.2s ease;
+    }
+
+    .table-icon {
+        margin-right: 8px;
+        color: #4a90e2;
+    }
+
+    .weather-table td[data-label]:before {
+        font-weight: bold;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        color: #4a90e2;
+    }
+
+    /* Conditional formatting for weather data */
+    .weather-table td[data-label="Max Temp"] {
+        color: #e57373;
+    }
+    .weather-table td[data-label="Min Temp"] {
+        color: #64b5f6;
+    }
+    .weather-table td[data-label="Precipitation"] {
+        color: #81c784;
+    }
+    .weather-table td[data-label="Wind Speed"],
+    .weather-table td[data-label="Wind Gust"] {
+        color: #ffb74d;
+    }
+    .weather-table td[data-label="Cloud Cover"] {
+        color: #90a4ae;
+    }
+
+    /* Fade-in effect for the table when it's loaded */
+    @keyframes fadeInTable {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
+    /* Slide-in animation for the header */
+    @keyframes slideIn {
+        0% { transform: translateY(-30px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Fade-in effect for the table header */
+    @keyframes fadeInThead {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
+    /* Fade-in effect for content */
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
+    /* Responsive styling */
+    @media (max-width: 767px) {
         .weather-table thead {
-            background-color: #4a90e2;
-            color: #fff;
+            display: none;
         }
-        .weather-table th, .weather-table td {
-            padding: 15px;
-            text-align: center;
-            vertical-align: middle;
-            border-bottom: 1px solid #ddd;
+        .weather-table,
+        .weather-table tbody,
+        .weather-table tr,
+        .weather-table td {
+            display: block;
+            width: 100%;
         }
-        .weather-table tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
+        .weather-table tr {
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
         }
-        .weather-table tbody tr:hover {
-            background-color: #f1f1f1;
+        .weather-table td {
+            text-align: right;
+            padding-left: 50%;
+            position: relative;
         }
-        .table-icon {
-            margin-right: 5px;
-            color: #4a90e2;
+        .weather-table td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 15px;
+            font-weight: bold;
         }
-        /* Responsive adjustments */
-        @media (max-width: 767px) {
-            .weather-table thead {
-                display: none;
-            }
-            .weather-table, .weather-table tbody, .weather-table tr, .weather-table td {
-                display: block;
-                width: 100%;
-            }
-            .weather-table tr {
-                margin-bottom: 15px;
-            }
-            .weather-table td {
-                text-align: right;
-                padding-left: 50%;
-                position: relative;
-            }
-            .weather-table td::before {
-                content: attr(data-label);
-                position: absolute;
-                left: 15px;
-                width: calc(50% - 30px);
-                padding-right: 10px;
-                text-align: left;
-                font-weight: bold;
-            }
-        }
-        
-    </style>
+    }
+</style>
+
 
     <!-- JavaScript -->
    
