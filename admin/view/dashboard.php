@@ -14,19 +14,6 @@ session_start();
 
 
 
-// Example: Fetch data for 'Fish Catches' from 'catch_records'
-$query_catches = "SELECT catch_date, SUM(quantity) AS catch_item FROM catch_records GROUP BY catch_date ORDER BY catch_date ASC";
-$result_catches = $con->query($query_catches);
-
-$catch_dates = [];
-$catch_item = [];
-
-if ($result_catches->num_rows > 0) {
-    while ($row = $result_catches->fetch_assoc()) {
-        $catch_dates[] = $row['catch_date'];
-        $catch_item[] = $row['catch_item']; // Total quantity caught per date
-    }
-}
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
@@ -556,9 +543,6 @@ body {
 
 
 </script>
-
-
-
 
 <!-- Weather Forecast 
 <section class="container-fluid">
