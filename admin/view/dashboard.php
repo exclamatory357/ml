@@ -547,7 +547,6 @@ body {
 
 <canvas id="barChart" width="400" height="200"></canvas>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const catchDate = '2024-12-17'; // Replace with your desired date
 
