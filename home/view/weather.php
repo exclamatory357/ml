@@ -120,7 +120,7 @@ if (isset($_GET["weather"])) {
     }
     .table-icon {
         margin-right: 5px;
-        color: rgb(243, 9, 107);
+        color: rgb(218, 14, 245);
     }
     .table-row {
         animation: slideIn 0.5s ease-out;
