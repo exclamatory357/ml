@@ -129,10 +129,6 @@ if (isset($_GET['sale_id'])) {
                 <!-- Logo only in print area -->
                 <img src="../function/uploads/icon.png" alt="Logo" class="header-logo">
                 <h1>Danrose Fishing Agency Management System</h1>
-                <h2>Address: Sitio Kabay-ot, Hilantagaan, Santa Fe, Cebu</h2>
-                <h2>Contact Number: 09123456789</h2>
-                <h2>Gmail: danrosefishing30@gmail.com</h2>
-
                 <div class="content-info">
                     <p>Date: <?php echo htmlspecialchars($receipts[0]['payment_date']); ?></p>
                     <p>Buyer Name: <?php echo htmlspecialchars($receipts[0]['buyer_name']); ?></p>

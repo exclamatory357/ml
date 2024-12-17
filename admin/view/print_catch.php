@@ -128,7 +128,6 @@ if (isset($_SESSION["print_ready_team"]) && isset($_SESSION["added_ids"])) {
             <!-- Logo only in print area -->
             <img src="../function/uploads/icon.png" alt="Logo" class="header-logo">
             <h1>Danrose Fishing Agency Management System</h1>
-            
             <div class="content-info">
                 <p>Date: <?php echo date('Y-m-d'); ?></p>
                 <p>Team: <?php echo $team; ?></p>
