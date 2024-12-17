@@ -23,11 +23,11 @@ if (isset($_GET["weather"])) {
     $api_url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/$location?unitGroup=$unitGroup&key=$apiKey&contentType=json";
 
     // Fetch weather data from the API
-    $json_data = file_get_contents($api_url);
+    $json_data = @file_get_contents($api_url);
 
     // Handle API errors
     if ($json_data === false) {
-        die("Error fetching weather data.");
+        die("Error fetching weather data. Please try again later.");
     }
 
     // Decode the JSON response
@@ -42,6 +42,26 @@ if (isset($_GET["weather"])) {
     $resolvedAddress = $response_data->resolvedAddress;
     $days = $response_data->days;
     $current_conditions = $response_data->currentConditions;
+
+    // Function to map conditions to free icon classes from Weather Icons
+    function getWeatherIconClass($condition) {
+        switch (strtolower($condition)) {
+            case 'clear':
+                return 'wi-day-sunny'; // Daytime clear
+            case 'cloudy':
+                return 'wi-cloudy';
+            case 'partly cloudy':
+                return 'wi-day-cloudy';
+            case 'rain':
+                return 'wi-rain';
+            case 'snow':
+                return 'wi-snow';
+            case 'storm':
+                return 'wi-thunderstorm';
+            default:
+                return 'wi-na'; // Default fallback icon (Not Available)
+        }
+    }
 ?>
 
 <!-- Main content -->
@@ -52,8 +72,8 @@ if (isset($_GET["weather"])) {
             <h2>Current Weather in <?php echo htmlspecialchars($resolvedAddress); ?></h2>
             <div class="current-info">
                 <div class="weather-icon">
-                    <!-- Using open-source icons for weather condition -->
-                    <img src="https://openweathermap.org/img/wn/<?php echo $current_conditions->icon; ?>@2x.png" alt="<?php echo htmlspecialchars($current_conditions->conditions); ?>">
+                    <!-- Using free Weather Icons -->
+                    <i class="wi <?php echo getWeatherIconClass($current_conditions->conditions); ?>"></i>
                 </div>
                 <div class="temp-details">
                     <p class="temp"><?php echo $current_conditions->temp; ?>°C</p>
@@ -71,7 +91,7 @@ if (isset($_GET["weather"])) {
             <div class="forecast-card">
                 <div class="forecast-icon">
                     <!-- Dynamic icon for each day -->
-                    <img src="https://openweathermap.org/img/wn/<?php echo $day->icon; ?>@2x.png" alt="<?php echo htmlspecialchars($day->conditions); ?>">
+                    <i class="wi <?php echo getWeatherIconClass($day->conditions); ?>"></i>
                 </div>
                 <p class="date"><?php echo htmlspecialchars($day->datetime); ?></p>
                 <p class="temp"><?php echo $day->tempmax; ?>°C / <?php echo $day->tempmin; ?>°C</p>
@@ -124,9 +144,9 @@ if (isset($_GET["weather"])) {
         justify-content: center;
     }
 
-    .weather-icon img {
-        width: 100px;
-        height: 100px;
+    .weather-icon i {
+        font-size: 80px;
+        color: #4a90e2;
     }
 
     .temp-details {
@@ -170,9 +190,9 @@ if (isset($_GET["weather"])) {
         transform: scale(1.05);
     }
 
-    .forecast-icon img {
-        width: 50px;
-        height: 50px;
+    .forecast-icon i {
+        font-size: 40px;
+        color: #4a90e2;
     }
 
     .date {
@@ -256,6 +276,6 @@ if (isset($_GET["weather"])) {
 
 <?php
 } else {
-    echo " ";
+    echo "Weather data is not available.";
 }
 ?>
