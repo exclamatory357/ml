@@ -177,7 +177,15 @@ if (isset($_GET["weather"])) {
     const maxTemps = <?php echo json_encode(array_map(function($day) { return $day->tempmax; }, $days)); ?>;
     const minTemps = <?php echo json_encode(array_map(function($day) { return $day->tempmin; }, $days)); ?>;
 
-    // Create chart
+    // Weather icons based on conditions
+    const weatherIcons = {
+        sunny: 'fas fa-sun',
+        cloudy: 'fas fa-cloud',
+        rainy: 'fas fa-cloud-showers-heavy',
+        windy: 'fas fa-wind',
+    };
+
+    // Add dynamic icon for the chart
     const ctx = document.getElementById('weatherChart').getContext('2d');
     new Chart(ctx, {
         type: 'line',
@@ -197,32 +205,33 @@ if (isset($_GET["weather"])) {
         },
         options: {
             responsive: true,
-            scales: {
-                x: { 
-                    beginAtZero: true 
+            plugins: {
+                legend: {
+                    position: 'top',
                 },
-                y: {
-                    min: 0,
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItem) {
+                            const maxTemp = tooltipItem[0].raw;
+                            if (maxTemp >= 30) {
+                                return '☀️ Sunny';
+                            } else if (maxTemp >= 20) {
+                                return '☁️ Cloudy';
+                            } else {
+                                return '🌧️ Rainy';
+                            }
+                        }
+                    }
+                }
+            },
+            elements: {
+                point: {
+                    radius: 0
                 }
             }
         }
     });
 </script>
-
 <?php
-} else {
-    echo " ";
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Forecast</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-<body>
-    
-</body>
-</html>
