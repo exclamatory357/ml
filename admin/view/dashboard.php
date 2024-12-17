@@ -547,22 +547,48 @@ body {
 
 <canvas id="barChart" width="400" height="200"></canvas>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-   // Replace '2024-12-17' with your desired catch_date
-const catchDate = '2024-12-17';
+    const catchDate = '2024-12-17'; // Replace with your desired date
 
-fetch(`fetch_data.php?catch_date=${catchDate}`)
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            console.error(data.error); // Handle the error
-        } else {
-            console.log(data); // Process and display the fetched data
-        }
-    })
-    .catch(error => console.error('Error fetching data:', error));
-
+    fetch(`fetch_data.php?catch_date=${catchDate}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error(data.error); // Handle the error
+            } else {
+                // Extract labels and values from the fetched data
+                const labels = data.map(item => item.product_name); // Assuming product_name column exists
+                const values = data.map(item => item.quantity); // Assuming quantity column exists
+                
+                // Render the bar chart
+                const ctx = document.getElementById('barChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar', // Chart type
+                    data: {
+                        labels: labels, // X-axis labels
+                        datasets: [{
+                            label: 'Quantity', // Dataset label
+                            data: values, // Data values
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Bar colors
+                            borderColor: 'rgba(75, 192, 192, 1)', // Bar borders
+                            borderWidth: 1 // Bar border width
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true // Start Y-axis at 0
+                            }
+                        }
+                    }
+                });
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
 </script>
+
 <!-- Weather Forecast 
 <section class="container-fluid">
     <h1>Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?></h1>
