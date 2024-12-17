@@ -117,7 +117,7 @@ if (isset($_GET["weather"])) {
 
     .table-icon {
         margin-right: 5px;
-        color: #4a90e2;
+        color:rgb(226, 74, 74);
     }
 
     @keyframes fadeIn {
