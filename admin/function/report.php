@@ -121,7 +121,6 @@ if (isset($_POST["btnReport"])) {
         $pdf->Ln();
     }
 }
-
 // Signature section
 $pdf->SetFont('Arial', 'I', 10);
 $pdf->SetXY(180, 250); // Adjust the Y value based on your page layout
@@ -129,10 +128,6 @@ $pdf->Cell(30, 5, 'Signature', 0, 0, 'C');
 
 // Draw the underline for the signature
 $pdf->Line(180, 255, 270, 255); // Adjust the starting and ending X positions to set the length of the underline
-
-// Optional: Add another label below if needed, such as "Authorized Signatory"
-$pdf->SetXY(180, 260); // Adjust the position for the second line of text
-$pdf->Cell(30, 5, 'Authorized Signatory', 0, 0, 'C');
 $pdf->Output();
 
 ?>
