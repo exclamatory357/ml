@@ -150,10 +150,11 @@ if (isset($_GET["users-add"])) { ?>
                                     <input type="text" class="form-control" name="uname" maxlength="15" required>
                                 </div>
                             </div>
+                           <!-- Password Field -->
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Password</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pass" maxlength="30" required>
+                                    <input type="password" class="form-control" name="pass" maxlength="30" required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -303,12 +304,29 @@ if (isset($_GET["users-edit"])) { ?>
         }
     }
 
+    function validatePassword(input) {
+        const password = input.value;
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{11,30}$/;
+
+        if (!passwordRegex.test(password)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Password',
+                text: 'Password must be at least 11 characters long, contain an uppercase letter, a number, and a special character.',
+            });
+            input.value = '';
+            return false;
+        }
+        return true;
+    }
+
     function validateForm() {
         const firstName = document.querySelector('input[name="fname"]').value.trim();
         const middleName = document.querySelector('input[name="mname"]').value.trim();
         const lastName = document.querySelector('input[name="lname"]').value.trim();
         const email = document.querySelector('input[name="email"]').value.trim();
         const address = document.querySelector('input[name="address"]').value.trim();
+        const password = document.querySelector('input[name="pass"]').value.trim();
 
         const nameRegex = /^[A-Za-z\s]+$/;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -352,6 +370,10 @@ if (isset($_GET["users-edit"])) { ?>
                 title: 'Invalid Address',
                 text: "Address must follow the format 'part1, part2, part3' (e.g., kagwangan, pili, bantayan).",
             });
+            return false;
+        }
+
+        if (!validatePassword(document.querySelector('input[name="pass"]'))) {
             return false;
         }
 
