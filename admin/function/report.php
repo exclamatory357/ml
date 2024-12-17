@@ -43,10 +43,10 @@ $pdf->Ln(5);  // Break line with 10mm space
 $pdf->SetFont('Arial', 'B', 10);
 $pdf->SetX(90);
 $pdf->Cell(85, 0, 'FROM: ' . date("M d, Y", strtotime($from)) . '  ' . 'TO: ' . date("M d, Y", strtotime($to)), '', 0, 'C');
-$pdf->Ln(150);  // Break line with 10mm space
+$pdf->Ln(15);  // Break line with 10mm space
 
 // Reset Y and Left margin settings
-$pdf->SetY(40);
+$pdf->SetY(60);
 $pdf->SetLeftMargin(20);
 
 // Set colors for the table headers
