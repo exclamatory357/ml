@@ -184,7 +184,7 @@ if (isset($_GET["weather"])) {
             }
         }
     </style>
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css" rel="stylesheet">
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
