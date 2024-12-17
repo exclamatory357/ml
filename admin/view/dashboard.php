@@ -558,61 +558,7 @@ body {
 </script>
 
 
-<div class="dashboard-row">
-    <div class="dashboard-col chart-container">
-        <canvas id="newChart"></canvas>
-    </div>
-</div>
 
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    // Existing Cash Advances Chart Code...
-
-    // New Chart: Fish Catches
-    const ctxNewChart = document.getElementById('newChart').getContext('2d');
-    const newChart = new Chart(ctxNewChart, {
-        type: 'bar', // Bar chart type
-        data: {
-            labels: <?= json_encode($catch_dates) ?>, // Dates from catch_records
-            datasets: [
-                {
-                    label: 'Fish Catches',
-                    data: <?= json_encode($catch_item) ?>, // Quantities caught
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Catch Date'
-                    }
-                },
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Total Quantity'
-                    }
-                }
-            }
-        }
-    });
-
-    // Resize listener for the new chart
-    window.addEventListener('resize', function() {
-        newChart.resize();
-    });
-});
-
-</script>
 
 <!-- Weather Forecast 
 <section class="container-fluid">
