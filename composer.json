@@ -3,13 +3,12 @@
     "description": "A website for Dan Rose Fishing",
     "type": "project",
     "require": {
-        "php": "^8.2",
+        "php": "^7.2",
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-openssl": "*",
-        "guzzlehttp/guzzle": "^7.0",
-        "infobip/infobip-api-php-client": "*",
-        "monolog/monolog": "^2.0"
+        "monolog/monolog": "^2.0",
+        "guzzlehttp/guzzle": "^7.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0"
@@ -20,8 +19,17 @@
         }
     },
     "scripts": {
-        "post-install-cmd": [],
-        "post-update-cmd": []
+        "post-install-cmd": [
+            "php artisan clear-compiled",
+            "php artisan optimize"
+        ],
+        "post-update-cmd": [
+            "php artisan clear-compiled",
+            "php artisan optimize"
+        ],
+        "post-create-project-cmd": [
+            "php artisan key:generate"
+        ]
     },
     "config": {
         "optimize-autoloader": true,
