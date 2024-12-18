@@ -50,7 +50,7 @@ if (isset($_GET["users"])) { ?>
                             <tr>
                                 <th>#</th>
                                 <th>First Name</th>
-                                <th>Middle Initial</th>
+                                <th>Middle Name</th>
                                 <th>Last Name</th>
                                 <th>Address</th>
                                 <th>Email</th>
@@ -85,7 +85,7 @@ if (isset($_GET["users-add"])) { ?>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Add Agent</li>
+                            <li class="breadcrumb-item active" aria-current="page">Add User</li>
                         </ol>
                     </nav>
                 </div>
@@ -96,7 +96,7 @@ if (isset($_GET["users-add"])) { ?>
     <section class="content container-fluid">
         <div class="box box-default">
             <div class="box-header with-border">
-                <h3 class="box-title">Add Agent</h3>
+                <h3 class="box-title">Add User</h3>
             </div>
             <form class="form-horizontal" method="post" action="function/function_crud.php" onsubmit="return validateForm()">
                 <div class="box-body">
@@ -109,7 +109,7 @@ if (isset($_GET["users-add"])) { ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Middle Initial</label>
+                                <label class="col-sm-4 control-label">Middle Name</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" name="mname" maxlength="1" required>
                                 </div>
@@ -150,11 +150,10 @@ if (isset($_GET["users-add"])) { ?>
                                     <input type="text" class="form-control" name="uname" maxlength="15" required>
                                 </div>
                             </div>
-                           <!-- Password Field -->
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Password</label>
                                 <div class="col-sm-8">
-                                    <input type="password" class="form-control" name="pass" maxlength="30" required>
+                                    <input type="text" class="form-control" name="pass" maxlength="30" required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -222,7 +221,7 @@ if (isset($_GET["users-edit"])) { ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Middle Initial</label>
+                                <label class="col-sm-4 control-label">Middle Name</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" value="<?php echo $fetch["mname"]?>" name="mname" maxlength="1" required>
                                 </div>
@@ -304,29 +303,12 @@ if (isset($_GET["users-edit"])) { ?>
         }
     }
 
-    function validatePassword(input) {
-        const password = input.value;
-        const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{11,30}$/;
-
-        if (!passwordRegex.test(password)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Invalid Password',
-                text: 'Password must be at least 11 characters long, contain an uppercase letter, a number, and a special character.',
-            });
-            input.value = '';
-            return false;
-        }
-        return true;
-    }
-
     function validateForm() {
         const firstName = document.querySelector('input[name="fname"]').value.trim();
         const middleName = document.querySelector('input[name="mname"]').value.trim();
         const lastName = document.querySelector('input[name="lname"]').value.trim();
         const email = document.querySelector('input[name="email"]').value.trim();
         const address = document.querySelector('input[name="address"]').value.trim();
-        const password = document.querySelector('input[name="pass"]').value.trim();
 
         const nameRegex = /^[A-Za-z\s]+$/;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -343,8 +325,8 @@ if (isset($_GET["users-edit"])) { ?>
         if (!nameRegex.test(middleName)) {
             Swal.fire({
                 icon: 'error',
-                title: 'Invalid Middle Initial',
-                text: 'Middle Initial can only contain letters and spaces.',
+                title: 'Invalid Middle Name',
+                text: 'Middle name can only contain letters and spaces.',
             });
             return false;
         }
@@ -370,10 +352,6 @@ if (isset($_GET["users-edit"])) { ?>
                 title: 'Invalid Address',
                 text: "Address must follow the format 'part1, part2, part3' (e.g., kagwangan, pili, bantayan).",
             });
-            return false;
-        }
-
-        if (!validatePassword(document.querySelector('input[name="pass"]'))) {
             return false;
         }
 

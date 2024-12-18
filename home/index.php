@@ -259,27 +259,6 @@ if (isset($_SESSION["notify"])) {
                     showConfirmButton: false
                 });";
             break;
-            case "success-add":
-            echo  "Swal.fire({
-                  icon: 'success',
-                  title: 'Success!',
-                  text: 'Your request was successfully added.',
-                  timer: 5000,
-                  timerProgressBar: true,
-                  showConfirmButton: false
-              })";
-              break;
-  
-          case "failed-add":
-          echo    "Swal.fire({
-                  icon: 'error',
-                  title: 'Error!',
-                  text: 'There was a problem adding your request. Please try again.',
-                  timer: 5000,
-                  timerProgressBar: true,
-                  showConfirmButton: false
-              })";
-              break;
     }
     unset($_SESSION["notify"]);
 }

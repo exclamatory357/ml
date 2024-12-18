@@ -21,58 +21,6 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
     exit();
 }
 
-// Fetch aggregated data from catch_records
-$query_catches = "
-    SELECT catch_date, catch_item, SUM(catch_kilo) AS total_kilo
-    FROM catch_records
-    GROUP BY catch_date, catch_item
-    ORDER BY catch_date ASC
-";
-$result_catches = $con->query($query_catches);
-
-$catch_dates = [];
-$catch_data = [];
-
-// Process results
-if ($result_catches->num_rows > 0) {
-    while ($row = $result_catches->fetch_assoc()) {
-        $catch_dates[] = $row['catch_date'];
-        $catch_data[] = [
-            'catch_item' => $row['catch_item'],
-            'total_kilo' => $row['total_kilo'],
-            'catch_date' => $row['catch_date']
-        ];
-    }
-}
-
-// Get unique catch items for datasets
-$unique_items = array_unique(array_column($catch_data, 'catch_item'));
-
-// Initialize dataset structure for Chart.js
-$datasets = [];
-
-foreach ($unique_items as $item) {
-    $data = [];
-    foreach ($catch_dates as $date) {
-        $filtered = array_filter($catch_data, function ($entry) use ($item, $date) {
-            return $entry['catch_item'] === $item && $entry['catch_date'] === $date;
-        });
-        $data[] = $filtered ? array_values($filtered)[0]['total_kilo'] : 0;
-    }
-    $datasets[] = [
-        'label' => $item,
-        'data' => $data,
-        'backgroundColor' => 'rgba(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ',0.5)',
-        'borderColor' => 'rgba(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ',1)',
-        'borderWidth' => 1
-    ];
-}
-
-// Convert PHP arrays to JSON for JavaScript
-$chart_labels = json_encode(array_unique($catch_dates));
-$chart_datasets = json_encode($datasets);
-
-
 // Fetch aggregated data for Total Sales from receipt_records
 $query_receipt = "SELECT payment_date, SUM(total_amount) AS total_amount FROM receipt_records WHERE total_amount > 0 GROUP BY payment_date ORDER BY payment_date ASC";
 $result_receipt = $con->query($query_receipt);
@@ -529,13 +477,6 @@ body {
             <canvas id="cashAdvancesChart"></canvas>
         </div>
     </div>
-
-    <div class="dashboard-row">
-    <div class="dashboard-col chart-container">
-        <canvas id="catchRecordsChart"></canvas>
-    </div>
-</div>
-
 </section>
 
 <!-- Bootstrap JS -->
@@ -603,60 +544,6 @@ body {
 
 </script>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const ctx = document.getElementById('catchRecordsChart').getContext('2d');
-    
-    const catchRecordsChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: <?= $chart_labels ?>, // PHP-generated JSON for labels (catch dates)
-            datasets: <?= $chart_datasets ?> // PHP-generated JSON for datasets (catch items and kilos)
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function (tooltipItem) {
-                            return `${tooltipItem.dataset.label}: ${tooltipItem.raw} kilos`;
-                        }
-                    }
-                },
-                legend: {
-                    display: true,
-                    position: 'top',
-                }
-            },
-            scales: {
-                x: {
-                    type: 'time', // Time-based x-axis
-                    time: {
-                        unit: 'day',
-                        tooltipFormat: 'MMM d, yyyy',
-                        displayFormats: {
-                            day: 'MMM d'
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Catch Date'
-                    }
-                },
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Catch Kilo'
-                    }
-                }
-            }
-        }
-    });
-});
-</script>
-
 <!-- Weather Forecast 
 <section class="container-fluid">
     <h1>Weather Forecast for <?php echo htmlspecialchars($resolvedAddress); ?></h1>
@@ -694,7 +581,45 @@ document.addEventListener('DOMContentLoaded', function () {
 </body>
 </html>
 <?php } ?>
+<script type="text/javascript">
+    // Disable right-click with an alert
+    document.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+        alert("Right-click is disabled on this page.");
+    });
 
+    // Disable F12 key and Inspect Element keyboard shortcuts with alerts
+    document.onkeydown = function(e) {
+        // F12
+        if (e.key === "F12") {
+            alert("F12 (DevTools) is disabled.");
+            e.preventDefault(); // Prevent default action
+            return false;
+        }
+        
+        // Ctrl + Shift + I (Inspect)
+        if (e.ctrlKey && e.shiftKey && e.key === "I") {
+            alert("Inspect Element is disabled.");
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl + Shift + J (Console)
+        if (e.ctrlKey && e.shiftKey && e.key === "J") {
+            alert("Console is disabled.");
+            e.preventDefault();
+            return false;
+        }
+        
+       
+         // Ctrl + U or Ctrl + u (View Source)
+         if (e.ctrlKey && (e.key === "U" || e.key === "u" || e.keyCode === 85)) {
+            alert("Viewing page source is disabled.");
+            e.preventDefault();
+            return false;
+        }
+    };
+</script>
 
 <script>
     (function() {
