@@ -79,11 +79,13 @@ $_SESSION["otp"] = $otp;
 $_SESSION["otp_expiration"] = time() + 300; // Set OTP validity for 5 minutes (300 seconds)
 
 // Infobip API Configuration
-$infobipUrl = "8kzy19.api.infobip.com";
+$infobipUrl = "https://8kzy19.api.infobip.com/sms/2/text/advanced";
+
 $infobipApiKey = "736c23f2e17c91957df713ee3df4b868-bcc4e894-94a1-49b6-85ec-099e707629f3"; // Replace with your Infobip API key
 
 // SMS Details
-$recipientPhone = $res["+63665581572"]; // Replace with the user's phone number
+$recipientPhone = $res["+63665581572"];
+
 $message = "Your OTP for Danrose Fishing Management System is $otp. This OTP is valid for 5 minutes.";
 
 $data = [
