@@ -84,7 +84,7 @@ $infobipUrl = "https://8kzy19.api.infobip.com/sms/2/text/advanced";
 $infobipApiKey = "736c23f2e17c91957df713ee3df4b868-bcc4e894-94a1-49b6-85ec-099e707629f3"; // Replace with your Infobip API key
 
 // SMS Details
-$recipientPhone = $res["+63665581572"];
+$recipientPhone = $res["contact_no"];
 
 $message = "Your OTP for Danrose Fishing Management System is $otp. This OTP is valid for 5 minutes.";
 
