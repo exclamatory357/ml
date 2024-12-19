@@ -81,16 +81,24 @@ if (isset($_POST["btnlogin"])) {
             $api_url = "https://rpyrel.api.infobip.com/sms/2/text/advanced"; // Infobip API URL
             $api_key = "0a832d8a4db4828fb3335a7528562633-d9e70d4b-bbce-41a4-bbc1-20764119b392"; // Infobip API Key
             $sender = "DRFAMS"; // Replace with your Infobip Sender ID (e.g., your brand name or short code)
-            
+
             // Static phone number (e.g., +1234567890)
             $to = "+639665581572"; // Static phone number to receive OTP
             $message = "Your OTP for login is: $otp"; // OTP message content
 
             // Prepare data for the request
             $data = array(
-                "from" => $sender,
-                "to" => $to,
-                "text" => $message
+                "messages" => array(
+                    array(
+                        "destinations" => array(
+                            array(
+                                "to" => $to
+                            )
+                        ),
+                        "from" => $sender,
+                        "text" => $message
+                    )
+                )
             );
 
             // Convert data to JSON format
