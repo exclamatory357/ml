@@ -32,7 +32,7 @@ if (isset($_POST["btnlogin"])) {
     }
 
     // Prepared statement to prevent SQL injection
-    $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id, user.email, user.reset_token 
+    $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id, user.email, user.contact_no, user.reset_token 
             FROM user 
             INNER JOIN user_type ON user.user_type_id = user_type.user_type_id 
             WHERE uname = ?";
@@ -72,62 +72,70 @@ if (isset($_POST["btnlogin"])) {
             $stmt_update->bind_param("si", $new_reset_token, $res["user_id"]);
             $stmt_update->execute();
 
-        
-// OTP Generation and Session Handling
-$otp = rand(100000, 999999); // Generate a 6-digit OTP
-$_SESSION["otp"] = $otp;
-$_SESSION["otp_expiration"] = time() + 300; // Set OTP validity for 5 minutes (300 seconds)
+            // OTP Generation and Session Handling
+            $otp = rand(100000, 999999); // Generate a 6-digit OTP
+            $_SESSION["otp"] = $otp;
+            $_SESSION["otp_expiration"] = time() + 300; // Set OTP validity for 5 minutes
 
-// Infobip API Configuration
-$infobipUrl = "https://8kzy19.api.infobip.com/sms/2/text/advanced";
+            // Infobip API Configuration
+            $infobipUrl = "https://8kzy19.api.infobip.com/sms/2/text/advanced";
+            $infobipApiKey = getenv('INFOBIP_API_KEY'); // Use environment variable for API key
 
-$infobipApiKey = "736c23f2e17c91957df713ee3df4b868-bcc4e894-94a1-49b6-85ec-099e707629f3"; // Replace with your Infobip API key
+            // SMS Details
+            $recipientPhone = $res["contact_no"];
+            if (!preg_match('/^\+?[1-9]\d{1,14}$/', $recipientPhone)) { // Basic validation for phone number
+                $_SESSION["notify"] = "invalid_contact";
+                header("Location: ../?home");
+                exit();
+            }
 
-// SMS Details
-$recipientPhone = $res["contact_no"];
+            $message = "Your OTP for DanRose Fishing Management System is $otp. This OTP is valid for 5 minutes.";
 
-$message = "Your OTP for Danrose Fishing Management System is $otp. This OTP is valid for 5 minutes.";
+            $data = [
+                "messages" => [
+                    [
+                        "from" => "DanRoseFishing",
+                        "destinations" => [
+                            ["to" => $recipientPhone]
+                        ],
+                        "text" => $message
+                    ]
+                ]
+            ];
 
-$data = [
-    "messages" => [
-        [
-            "from" => "DanRoseFishing", // Sender ID (must be approved in Infobip)
-            "destinations" => [
-                ["to" => $recipientPhone]
-            ],
-            "text" => $message
-        ]
-    ]
-];
+            // Send OTP via Infobip API
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $infobipUrl);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "Authorization: App $infobipApiKey",
+                "Content-Type: application/json"
+            ]);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-// Send OTP via Infobip API
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $infobipUrl);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "Authorization: App $infobipApiKey",
-    "Content-Type: application/json"
-]);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            // Get Response
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if ($response === false) {
+                $error = curl_error($ch);
+                curl_close($ch);
+                error_log("cURL Error: $error");
+                $_SESSION["notify"] = "otp_failed";
+                header("Location: ../?home");
+                exit();
+            }
+            curl_close($ch);
 
-// Get Response
-$response = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-curl_close($ch);
-
-// Handle Response
-if ($httpCode == 200) {
-    // Successfully sent OTP
-    header("Location: otp_verification.php"); // Redirect to OTP verification page
-    exit();
-} else {
-    // OTP Sending Failed
-    $_SESSION["notify"] = "otp_failed";
-    header("Location: ../?home"); // Redirect to home page or show error
-    exit();
-}
-
+            // Handle Response
+            if ($httpCode == 200) {
+                header("Location: otp_verification.php");
+                exit();
+            } else {
+                $_SESSION["notify"] = "otp_failed";
+                header("Location: ../?home");
+                exit();
+            }
         } else {
             $_SESSION['login_attempts'] = isset($_SESSION['login_attempts']) ? $_SESSION['login_attempts'] + 1 : 1;
 
