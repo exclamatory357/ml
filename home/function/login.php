@@ -6,6 +6,9 @@ include "../../config/db.php";
 $max_attempts = 3;
 $lockout_duration = 300; // 5 minutes in seconds
 
+// Include Guzzle
+require '../../vendor/autoload.php'; // Adjust the path to your Composer autoload file
+
 if (isset($_POST["btnlogin"])) {
     // Check if the user is locked out
     if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= $max_attempts) {
@@ -80,7 +83,7 @@ if (isset($_POST["btnlogin"])) {
             $_SESSION["otp"] = $otp;
             $_SESSION["otp_expiration"] = time() + 300;
 
-            // Send OTP via Infobip SMS API using cURL
+            // Send OTP via Infobip SMS API using Guzzle (HTTP/2)
             $api_url = "https://rpyrel.api.infobip.com/sms/2/text/advanced";
             $api_key = "0a832d8a4db4828fb3335a7528562633-d9e70d4b-bbce-41a4-bbc1-20764119b392";
             $sender = "unknown"; // Adjust the sender name if needed
@@ -96,28 +99,35 @@ if (isset($_POST["btnlogin"])) {
                 ]
             ];
 
-            // Initialize cURL
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $api_url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                "Authorization: App $api_key",
-                "Content-Type: application/json",
-                "Accept: application/json"
-            ]);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($sms_data));
+            try {
+                // Initialize Guzzle HTTP client
+                $client = new GuzzleHttp\Client([
+                    'base_uri' => $api_url,
+                    'http_version' => '2.0',  // Enable HTTP/2
+                    'headers' => [
+                        'Authorization' => 'App ' . $api_key,
+                        'Content-Type' => 'application/json',
+                        'Accept' => 'application/json',
+                    ]
+                ]);
 
-            // Execute cURL request and check for success
-            $response = curl_exec($ch);
-            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
+                // Send the request
+                $response = $client->post('', [
+                    'json' => $sms_data
+                ]);
 
-            if ($http_code === 200) {
-                // Proceed to OTP verification page
-                header("Location: otp_verification.php");
-                exit();
-            } else {
+                // Check the response status
+                if ($response->getStatusCode() === 200) {
+                    // Proceed to OTP verification page
+                    header("Location: otp_verification.php");
+                    exit();
+                } else {
+                    $_SESSION["notify"] = "otp_failed";
+                    header("Location: ../?home");
+                    exit();
+                }
+            } catch (Exception $e) {
+                // Handle the error and show notification
                 $_SESSION["notify"] = "otp_failed";
                 header("Location: ../?home");
                 exit();
