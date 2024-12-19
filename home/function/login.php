@@ -32,7 +32,7 @@ if (isset($_POST["btnlogin"])) {
     }
 
     // Prepared statement to prevent SQL injection
-    $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id, user.email, user.contact_no, user.reset_token 
+    $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id, user.email, user.reset_token 
             FROM user 
             INNER JOIN user_type ON user.user_type_id = user_type.user_type_id 
             WHERE uname = ?";
@@ -72,71 +72,100 @@ if (isset($_POST["btnlogin"])) {
             $stmt_update->bind_param("si", $new_reset_token, $res["user_id"]);
             $stmt_update->execute();
 
-            // OTP Generation and Session Handling
-            $otp = rand(100000, 999999); // Generate a 6-digit OTP
+            // OTP generation and sending via PHPMailer
+            $otp = rand(100000, 999999);
             $_SESSION["otp"] = $otp;
-            $_SESSION["otp_expiration"] = time() + 300; // Set OTP validity for 5 minutes
+            $_SESSION["otp_expiration"] = time() + 300;
 
-            // Infobip API Configuration
-            $infobipUrl = "https://8kzy19.api.infobip.com/sms/2/text/advanced";
-            $infobipApiKey = '736c23f2e17c91957df713ee3df4b868-bcc4e894-94a1-49b6-85ec-099e707629f3';
+            // Set up PHPMailer to send OTP
+            require 'phpmailer/PHPMailerAutoload.php';
+            $mail = new PHPMailer;
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'danrosefishing30@gmail.com';
+            $mail->Password = 'meyj axmh socg tivf';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
 
-            // SMS Details
-            $recipientPhone = $res["contact_no"];
-            if (!preg_match('/^\+?[1-9]\d{1,14}$/', $recipientPhone)) { // Basic validation for phone number
-                $_SESSION["notify"] = "invalid_contact";
-                header("Location: ../?home");
-                exit();
-            }
+            $mail->setFrom('noreply-danrosefishing30@gmail.com', 'Danrose Fishing Management System');
+            $mail->addAddress($res["email"]);
+            $mail->isHTML(true);
+            $mail->Subject = 'Your OTP for Login';
+            $mail->Body = "
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            color: #333;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .container {
+                            width: 100%;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            background-color: #ffffff;
+                            border-radius: 8px;
+                            overflow: hidden;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                        }
+                        .header {
+                            background-color: #AF0401;
+                            color: #ffffff;
+                            text-align: center;
+                            padding: 20px;
+                            font-size: 24px;
+                        }
+                        .content {
+                            padding: 20px;
+                            text-align: center;
+                        }
+                        .otp-code {
+                            font-size: 32px;
+                            font-weight: bold;
+                            color: #AF0401;
+                            margin: 20px 0;
+                        }
+                        .footer {
+                            background-color: #f4f4f4;
+                            padding: 10px;
+                            text-align: center;
+                            font-size: 12px;
+                            color: #777;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <div class='header'>
+                            Your OTP for Login
+                        </div>
+                        <div class='content'>
+                            <p>Hello,</p>
+                            <p>Please use the following One-Time Password (OTP) to complete your login:</p>
+                            <div class='otp-code'>$otp</div>
+                            <p>This OTP is valid for a limited time only (5 minutes). If you did not request this, please ignore this email.</p>
+                        </div>
+                        <div class='footer'>
+                            © 2024 Danrose Fishing Agency Management System. All rights reserved.
+                        </div>
+                    </div>
+                </body>
+                </html>
+            ";
 
-            $message = "Your OTP for DanRose Fishing Management System is $otp. This OTP is valid for 5 minutes.";
-
-            $data = [
-                "messages" => [
-                    [
-                        "from" => "DanRoseFishing",
-                        "destinations" => [
-                            ["to" => $recipientPhone]
-                        ],
-                        "text" => $message
-                    ]
-                ]
-            ];
-
-            // Send OTP via Infobip API
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $infobipUrl);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                "Authorization: App $infobipApiKey",
-                "Content-Type: application/json"
-            ]);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-            // Get Response
-            $response = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            if ($response === false) {
-                $error = curl_error($ch);
-                curl_close($ch);
-                error_log("cURL Error: $error");
+            if (!$mail->send()) {
                 $_SESSION["notify"] = "otp_failed";
                 header("Location: ../?home");
                 exit();
             }
-            curl_close($ch);
 
-            // Handle Response
-            if ($httpCode == 200) {
-                header("Location: otp_verification.php");
-                exit();
-            } else {
-                error_log("Infobip API Error: HTTP Code $httpCode");
-                $_SESSION["notify"] = "otp_failed";
-                header("Location: ../?home");
-                exit();
-            }
+            header("Location: otp_verification.php");
+            exit();
         } else {
             $_SESSION['login_attempts'] = isset($_SESSION['login_attempts']) ? $_SESSION['login_attempts'] + 1 : 1;
 
