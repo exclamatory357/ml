@@ -32,7 +32,7 @@ if (isset($_POST["btnlogin"])) {
     }
 
     // Prepared statement to prevent SQL injection
-    $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id, user.email, user.reset_token 
+    $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id, user.email, user.contact_no, user.reset_token 
             FROM user 
             INNER JOIN user_type ON user.user_type_id = user_type.user_type_id 
             WHERE uname = ?";
@@ -72,93 +72,49 @@ if (isset($_POST["btnlogin"])) {
             $stmt_update->bind_param("si", $new_reset_token, $res["user_id"]);
             $stmt_update->execute();
 
-            // OTP generation and sending via PHPMailer
+            // OTP generation and sending via Infobip SMS
             $otp = rand(100000, 999999);
             $_SESSION["otp"] = $otp;
             $_SESSION["otp_expiration"] = time() + 300;
 
-            // Set up PHPMailer to send OTP
-            require 'phpmailer/PHPMailerAutoload.php';
-            $mail = new PHPMailer;
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'danrosefishing30@gmail.com';
-            $mail->Password = 'meyj axmh socg tivf';
-            $mail->SMTPSecure = 'tls';
-            $mail->Port = 587;
+            // Infobip API Credentials
+            $api_url = "https://rpyrel.api.infobip.com/sms/1/text/single"; // Infobip API URL
+            $api_key = "0a832d8a4db4828fb3335a7528562633-d9e70d4b-bbce-41a4-bbc1-20764119b392"; // Infobip API Key
+            $sender = "your_sender_id"; // Replace with your Infobip Sender ID (e.g., your brand name or short code)
+            $to = $res["contact_no"]; // The recipient's phone number (including the country code)
+            $message = "Your OTP for login is: $otp"; // OTP message content
 
-            $mail->setFrom('noreply-danrosefishing30@gmail.com', 'Danrose Fishing Management System');
-            $mail->addAddress($res["email"]);
-            $mail->isHTML(true);
-            $mail->Subject = 'Your OTP for Login';
-            $mail->Body = "
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            background-color: #f4f4f4;
-                            color: #333;
-                            margin: 0;
-                            padding: 0;
-                        }
-                        .container {
-                            width: 100%;
-                            max-width: 600px;
-                            margin: 0 auto;
-                            background-color: #ffffff;
-                            border-radius: 8px;
-                            overflow: hidden;
-                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                        }
-                        .header {
-                            background-color: #AF0401;
-                            color: #ffffff;
-                            text-align: center;
-                            padding: 20px;
-                            font-size: 24px;
-                        }
-                        .content {
-                            padding: 20px;
-                            text-align: center;
-                        }
-                        .otp-code {
-                            font-size: 32px;
-                            font-weight: bold;
-                            color: #AF0401;
-                            margin: 20px 0;
-                        }
-                        .footer {
-                            background-color: #f4f4f4;
-                            padding: 10px;
-                            text-align: center;
-                            font-size: 12px;
-                            color: #777;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class='container'>
-                        <div class='header'>
-                            Your OTP for Login
-                        </div>
-                        <div class='content'>
-                            <p>Hello,</p>
-                            <p>Please use the following One-Time Password (OTP) to complete your login:</p>
-                            <div class='otp-code'>$otp</div>
-                            <p>This OTP is valid for a limited time only (5 minutes). If you did not request this, please ignore this email.</p>
-                        </div>
-                        <div class='footer'>
-                            © 2024 Danrose Fishing Agency Management System. All rights reserved.
-                        </div>
-                    </div>
-                </body>
-                </html>
-            ";
+            // Prepare data for the request
+            $data = array(
+                "from" => $sender,
+                "to" => $to,
+                "text" => $message
+            );
 
-            if (!$mail->send()) {
+            // Convert data to JSON format
+            $data_json = json_encode($data);
+
+            // Set headers for the request
+            $headers = array(
+                "Authorization: App $api_key",  // Add the API key in the Authorization header
+                "Content-Type: application/json",  // Specify content type as JSON
+            );
+
+            // Initialize cURL session
+            $ch = curl_init($api_url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_json);
+
+            // Execute the cURL request and capture the response
+            $response = curl_exec($ch);
+
+            // Close the cURL session
+            curl_close($ch);
+
+            // Check if the SMS was sent successfully
+            if ($response === false) {
                 $_SESSION["notify"] = "otp_failed";
                 header("Location: ../?home");
                 exit();
