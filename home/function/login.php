@@ -127,11 +127,12 @@ if (isset($_POST["btnlogin"])) {
                     exit();
                 }
             } catch (Exception $e) {
-                // Handle the error and show notification
+                error_log($e->getMessage()); // Log the error message for debugging
                 $_SESSION["notify"] = "otp_failed";
                 header("Location: ../?home");
                 exit();
             }
+            
 
         } else {
             // Increment login attempts on failed login
