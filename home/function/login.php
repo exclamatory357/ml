@@ -32,7 +32,8 @@ if (isset($_POST["btnlogin"])) {
     }
 
     // Prepared statement to prevent SQL injection
-    $sql = "SELECT user.user_id, user.uname, user.pass, user.contact_no, user_type.user_type_name, user_type.user_type_id, user.reset_token 
+    $sql = "SELECT user.user_id, user.uname, user.pass, user.contact_no, user_type.user_type_name, 
+            user_type.user_type_id, user.reset_token 
             FROM user 
             INNER JOIN user_type ON user.user_type_id = user_type.user_type_id 
             WHERE uname = ?";
@@ -54,8 +55,9 @@ if (isset($_POST["btnlogin"])) {
             exit();
         }
 
+        // Verify password
         if (password_verify($password, $get_password_hash)) {
-            session_regenerate_id(true);
+            session_regenerate_id(true); // Prevent session fixation
 
             // Reset login attempts on successful login
             $_SESSION['login_attempts'] = 0;
@@ -73,47 +75,59 @@ if (isset($_POST["btnlogin"])) {
             $stmt_update->bind_param("si", $new_reset_token, $res["user_id"]);
             $stmt_update->execute();
 
-            // OTP generation and sending via Infobip SMS API
+            // OTP generation
             $otp = rand(100000, 999999);
             $_SESSION["otp"] = $otp;
             $_SESSION["otp_expiration"] = time() + 300;
 
-            // Infobip SMS API configuration
-            $api_base_url = "rpyrel.api.infobip.com";
+            // Send OTP via Infobip SMS API using cURL
+            $api_url = "https://rpyrel.api.infobip.com/sms/2/text/advanced";
             $api_key = "0a832d8a4db4828fb3335a7528562633-d9e70d4b-bbce-41a4-bbc1-20764119b392";
             $sender = "unknown"; // Adjust the sender name if needed
 
+            // Prepare message data for Infobip
             $sms_data = [
-                "from" => $sender,
-                "to" => $contact_no,
-                "text" => "Your OTP for login is: $otp"
+                "messages" => [
+                    [
+                        "from" => $sender,
+                        "to" => $contact_no,
+                        "text" => "Your OTP for login is: $otp"
+                    ]
+                ]
             ];
 
+            // Initialize cURL
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "$api_base_url/sms/2/text/advanced");
+            curl_setopt($ch, CURLOPT_URL, $api_url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 "Authorization: App $api_key",
-                "Content-Type: application/json"
+                "Content-Type: application/json",
+                "Accept: application/json"
             ]);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["messages" => [$sms_data]]));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($sms_data));
 
+            // Execute cURL request and check for success
             $response = curl_exec($ch);
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
 
-            if ($http_code !== 200) {
+            if ($http_code === 200) {
+                // Proceed to OTP verification page
+                header("Location: otp_verification.php");
+                exit();
+            } else {
                 $_SESSION["notify"] = "otp_failed";
                 header("Location: ../?home");
                 exit();
             }
 
-            header("Location: otp_verification.php");
-            exit();
         } else {
+            // Increment login attempts on failed login
             $_SESSION['login_attempts'] = isset($_SESSION['login_attempts']) ? $_SESSION['login_attempts'] + 1 : 1;
 
+            // Lock the user out after reaching maximum attempts
             if ($_SESSION['login_attempts'] >= $max_attempts) {
                 $_SESSION['timeout'] = time() + $lockout_duration;
             }
@@ -123,9 +137,11 @@ if (isset($_POST["btnlogin"])) {
             exit();
         }
     } else {
+        // Invalid username
         $_SESSION["notify"] = "invalid";
         $_SESSION['login_attempts'] = isset($_SESSION['login_attempts']) ? $_SESSION['login_attempts'] + 1 : 1;
 
+        // Lock the user out after reaching maximum attempts
         if ($_SESSION['login_attempts'] >= $max_attempts) {
             $_SESSION['timeout'] = time() + $lockout_duration;
         }
