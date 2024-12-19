@@ -280,6 +280,17 @@ if (isset($_SESSION["notify"])) {
                   showConfirmButton: false
               })";
               break;
+
+              case "otp_failed":
+                echo    "Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'There was a problem adding your request. Please try again.',
+                        timer: 5000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    })";
+                    break;
     }
     unset($_SESSION["notify"]);
 }
