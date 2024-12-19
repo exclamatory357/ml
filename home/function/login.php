@@ -79,7 +79,7 @@ if (isset($_POST["btnlogin"])) {
 
             // Infobip API Configuration
             $infobipUrl = "https://8kzy19.api.infobip.com/sms/2/text/advanced";
-            $infobipApiKey = getenv('736c23f2e17c91957df713ee3df4b868-bcc4e894-94a1-49b6-85ec-099e707629f3'); // Use environment variable for API key
+            $infobipApiKey = '736c23f2e17c91957df713ee3df4b868-bcc4e894-94a1-49b6-85ec-099e707629f3';
 
             // SMS Details
             $recipientPhone = $res["contact_no"];
@@ -132,6 +132,7 @@ if (isset($_POST["btnlogin"])) {
                 header("Location: otp_verification.php");
                 exit();
             } else {
+                error_log("Infobip API Error: HTTP Code $httpCode");
                 $_SESSION["notify"] = "otp_failed";
                 header("Location: ../?home");
                 exit();
