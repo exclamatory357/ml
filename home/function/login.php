@@ -6,9 +6,6 @@ include "../../config/db.php";
 $max_attempts = 3;
 $lockout_duration = 300; // 5 minutes in seconds
 
-// Include Guzzle
-require '../../vendor/autoload.php'; // Adjust the path to your Composer autoload file
-
 if (isset($_POST["btnlogin"])) {
     // Check if the user is locked out
     if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= $max_attempts) {
@@ -35,8 +32,7 @@ if (isset($_POST["btnlogin"])) {
     }
 
     // Prepared statement to prevent SQL injection
-    $sql = "SELECT user.user_id, user.uname, user.pass, user.contact_no, user_type.user_type_name, 
-            user_type.user_type_id, user.reset_token 
+    $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id, user.email, user.reset_token 
             FROM user 
             INNER JOIN user_type ON user.user_type_id = user_type.user_type_id 
             WHERE uname = ?";
@@ -49,7 +45,6 @@ if (isset($_POST["btnlogin"])) {
         $res = $result->fetch_assoc();
         $get_password_hash = $res["pass"];
         $reset_token = $res["reset_token"];
-        $contact_no = $res["contact_no"];
 
         // Check if the user is already logged in (using reset_token as an indicator)
         if ($reset_token !== NULL && $reset_token !== '') {
@@ -58,9 +53,8 @@ if (isset($_POST["btnlogin"])) {
             exit();
         }
 
-        // Verify password
         if (password_verify($password, $get_password_hash)) {
-            session_regenerate_id(true); // Prevent session fixation
+            session_regenerate_id(true);
 
             // Reset login attempts on successful login
             $_SESSION['login_attempts'] = 0;
@@ -78,67 +72,103 @@ if (isset($_POST["btnlogin"])) {
             $stmt_update->bind_param("si", $new_reset_token, $res["user_id"]);
             $stmt_update->execute();
 
-            // OTP generation
+            // OTP generation and sending via PHPMailer
             $otp = rand(100000, 999999);
             $_SESSION["otp"] = $otp;
             $_SESSION["otp_expiration"] = time() + 300;
 
-            // Send OTP via Infobip SMS API using Guzzle (HTTP/2)
-            $api_url = "https://rpyrel.api.infobip.com/sms/2/text/advanced";
-            $api_key = "0a832d8a4db4828fb3335a7528562633-d9e70d4b-bbce-41a4-bbc1-20764119b392";
-            $sender = "unknown"; // Adjust the sender name if needed
+            // Set up PHPMailer to send OTP
+            require 'phpmailer/PHPMailerAutoload.php';
+            $mail = new PHPMailer;
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'danrosefishing30@gmail.com';
+            $mail->Password = 'meyj axmh socg tivf';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
 
-            // Prepare message data for Infobip
-            $sms_data = [
-                "messages" => [
-                    [
-                        "from" => $sender,
-                        "to" => $contact_no,
-                        "text" => "Your OTP for login is: $otp"
-                    ]
-                ]
-            ];
+            $mail->setFrom('noreply-danrosefishing30@gmail.com', 'Danrose Fishing Management System');
+            $mail->addAddress($res["email"]);
+            $mail->isHTML(true);
+            $mail->Subject = 'Your OTP for Login';
+            $mail->Body = "
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            color: #333;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .container {
+                            width: 100%;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            background-color: #ffffff;
+                            border-radius: 8px;
+                            overflow: hidden;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                        }
+                        .header {
+                            background-color: #AF0401;
+                            color: #ffffff;
+                            text-align: center;
+                            padding: 20px;
+                            font-size: 24px;
+                        }
+                        .content {
+                            padding: 20px;
+                            text-align: center;
+                        }
+                        .otp-code {
+                            font-size: 32px;
+                            font-weight: bold;
+                            color: #AF0401;
+                            margin: 20px 0;
+                        }
+                        .footer {
+                            background-color: #f4f4f4;
+                            padding: 10px;
+                            text-align: center;
+                            font-size: 12px;
+                            color: #777;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <div class='header'>
+                            Your OTP for Login
+                        </div>
+                        <div class='content'>
+                            <p>Hello,</p>
+                            <p>Please use the following One-Time Password (OTP) to complete your login:</p>
+                            <div class='otp-code'>$otp</div>
+                            <p>This OTP is valid for a limited time only (5 minutes). If you did not request this, please ignore this email.</p>
+                        </div>
+                        <div class='footer'>
+                            © 2024 Danrose Fishing Agency Management System. All rights reserved.
+                        </div>
+                    </div>
+                </body>
+                </html>
+            ";
 
-            try {
-                // Initialize Guzzle HTTP client
-                $client = new GuzzleHttp\Client([
-                    'base_uri' => $api_url,
-                    'http_version' => '2.0',  // Enable HTTP/2
-                    'headers' => [
-                        'Authorization' => 'App ' . $api_key,
-                        'Content-Type' => 'application/json',
-                        'Accept' => 'application/json',
-                    ]
-                ]);
-
-                // Send the request
-                $response = $client->post('', [
-                    'json' => $sms_data
-                ]);
-
-                // Check the response status
-                if ($response->getStatusCode() === 200) {
-                    // Proceed to OTP verification page
-                    header("Location: otp_verification.php");
-                    exit();
-                } else {
-                    $_SESSION["notify"] = "otp_failed";
-                    header("Location: ../?home");
-                    exit();
-                }
-            } catch (Exception $e) {
-                error_log($e->getMessage()); // Log the error message for debugging
+            if (!$mail->send()) {
                 $_SESSION["notify"] = "otp_failed";
                 header("Location: ../?home");
                 exit();
             }
-            
 
+            header("Location: otp_verification.php");
+            exit();
         } else {
-            // Increment login attempts on failed login
             $_SESSION['login_attempts'] = isset($_SESSION['login_attempts']) ? $_SESSION['login_attempts'] + 1 : 1;
 
-            // Lock the user out after reaching maximum attempts
             if ($_SESSION['login_attempts'] >= $max_attempts) {
                 $_SESSION['timeout'] = time() + $lockout_duration;
             }
@@ -148,11 +178,9 @@ if (isset($_POST["btnlogin"])) {
             exit();
         }
     } else {
-        // Invalid username
         $_SESSION["notify"] = "invalid";
         $_SESSION['login_attempts'] = isset($_SESSION['login_attempts']) ? $_SESSION['login_attempts'] + 1 : 1;
 
-        // Lock the user out after reaching maximum attempts
         if ($_SESSION['login_attempts'] >= $max_attempts) {
             $_SESSION['timeout'] = time() + $lockout_duration;
         }
