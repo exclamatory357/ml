@@ -78,7 +78,7 @@ if (isset($_POST["btnlogin"])) {
             $_SESSION["otp_expiration"] = time() + 300;
 
             // Infobip API Credentials
-            $api_url = "rpyrel.api.infobip.com"; // Infobip API URL
+            $api_url = "https://rpyrel.api.infobip.com/sms/2/text/advanced"; // Infobip API URL
             $api_key = "0a832d8a4db4828fb3335a7528562633-d9e70d4b-bbce-41a4-bbc1-20764119b392"; // Infobip API Key
             $sender = "DRFAMS"; // Replace with your Infobip Sender ID (e.g., your brand name or short code)
             
