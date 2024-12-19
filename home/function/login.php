@@ -32,7 +32,7 @@ if (isset($_POST["btnlogin"])) {
     }
 
     // Prepared statement to prevent SQL injection
-    $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id, user.email, user.contact_no, user.reset_token 
+    $sql = "SELECT user.user_id, user.uname, user.pass, user_type.user_type_name, user_type.user_type_id, user.email, user.reset_token 
             FROM user 
             INNER JOIN user_type ON user.user_type_id = user_type.user_type_id 
             WHERE uname = ?";
@@ -80,8 +80,10 @@ if (isset($_POST["btnlogin"])) {
             // Infobip API Credentials
             $api_url = "https://rpyrel.api.infobip.com/sms/1/text/single"; // Infobip API URL
             $api_key = "0a832d8a4db4828fb3335a7528562633-d9e70d4b-bbce-41a4-bbc1-20764119b392"; // Infobip API Key
-            $sender = "your_sender_id"; // Replace with your Infobip Sender ID (e.g., your brand name or short code)
-            $to = $res["contact_no"]; // The recipient's phone number (including the country code)
+            $sender = "DRFAMS"; // Replace with your Infobip Sender ID (e.g., your brand name or short code)
+            
+            // Static phone number (e.g., +1234567890)
+            $to = "+639665581572"; // Static phone number to receive OTP
             $message = "Your OTP for login is: $otp"; // OTP message content
 
             // Prepare data for the request
