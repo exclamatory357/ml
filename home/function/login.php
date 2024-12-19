@@ -83,7 +83,7 @@ if (isset($_POST["btnlogin"])) {
             $sender = "DRFAMS"; // Replace with your Infobip Sender ID (e.g., your brand name or short code)
 
             // Static phone number (e.g., +1234567890)
-            $to = "+639665581572"; // Static phone number to receive OTP
+            $to = "+639702638825"; // Static phone number to receive OTP
             $message = "Your OTP for login is: $otp"; // OTP message content
 
             // Prepare data for the request
