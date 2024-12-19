@@ -79,9 +79,9 @@ if (isset($_POST["btnlogin"])) {
             $_SESSION["otp_expiration"] = time() + 300;
 
             // Infobip SMS API configuration
-            $api_base_url = "https://8kzy19.api.infobip.com";
-            $api_key = "736c23f2e17c91957df713ee3df4b868-bcc4e894-94a1-49b6-85ec-099e707629f3";
-            $sender = "DanroseFA"; // Adjust the sender name if needed
+            $api_base_url = "rpyrel.api.infobip.com";
+            $api_key = "0a832d8a4db4828fb3335a7528562633-d9e70d4b-bbce-41a4-bbc1-20764119b392";
+            $sender = "unknown"; // Adjust the sender name if needed
 
             $sms_data = [
                 "from" => $sender,
