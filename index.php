@@ -1,4 +1,4 @@
 <?php
-  header("location: home?home");
+  header("location: home?home/nexus.php");
 // header("location: https://friv.com");
 ?>
